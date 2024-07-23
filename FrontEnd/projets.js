@@ -30,7 +30,9 @@ function genererProjets(projets) {
         const useridProjet = document.createElement("p");
         useridProjet.innerText = projet.userId;
         const categoryidProjet = document.createElement("p");
-        categoryidProjet.innerText = projet.categoryId;
+        categoryidProjet.innerText = projet.category.id;
+        const categorynameProjet = document.createElement("p");
+        categorynameProjet.innerText = projet.category.name;
 
         // Rattachement de la balise projet a la division Gallery
         divGallery.appendChild(idProjet);
@@ -38,7 +40,7 @@ function genererProjets(projets) {
         idProjet.appendChild(titreProjet);
         idProjet.appendChild(useridProjet);
         idProjet.appendChild(categoryidProjet);
-
+        idProjet.appendChild(categorynameProjet);
     }
 }
 
@@ -46,3 +48,14 @@ function genererProjets(projets) {
 genererProjets(projets);
 
 console.log(idProjet);
+
+//gestion des boutons                XXXXXXXXXXX en cours XXXXXXXXXXXXXXx
+const boutonFiltrer = document.querySelector(".btn-filtrer");
+
+boutonFiltrer.addEventListener("click", function () {
+    const projetsFiltres = projets.filter(function (projet) {
+        return projet.categoryId = 35;
+    });
+    document.querySelector(".gallery").innerHTML = "";
+    genererProjets(projetsFiltres);
+});
