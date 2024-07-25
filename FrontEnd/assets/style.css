@@ -142,7 +142,8 @@ li:hover {
 	border-radius: 25px;
 }
 
-.filtre #btn-tous {
+/* bouton activé */
+.btn-tous {
 	color: white;
 	background-color: #1D6154;
     border: 1px #1D6154 solid;
@@ -150,7 +151,8 @@ li:hover {
 	height: 37px;
 }
 
-.filtre #btn-objets {
+/* bouton non activé */
+.btn-objets {
 	color: #1D6154;
 	background-color: white;
     border: 1px #1D6154 solid;
@@ -158,7 +160,7 @@ li:hover {
 	height: 37px;
 }
 
-.filtre #btn-appartements {
+.btn-appartements {
 	color: #1D6154;
 	background-color: white;
     border: 1px #1D6154 solid;
@@ -166,7 +168,7 @@ li:hover {
 	height: 37px;
 }
 
-.filtre #btn-hotels {
+.btn-hotels {
 	color: #1D6154;
 	background-color: white;
     border: 1px #1D6154 solid;

@@ -1,9 +1,11 @@
+console.log("Point 1");
+
 //Récupération des projets eventuellement stockés dans le localStorage
 let projets = window.localStorage.getItem('projets');
 
 if (projets === null) {
     // Récupération des projets depuis l'API
-    const reponse = await fetch('http://localhost:5678/api/works/');
+    const reponse = await fetch('http://localhost:5678/api/works');
     projets = await reponse.json();
     // Transformation des projets en JSON
     const valeurProjets = JSON.stringify(projets);
@@ -17,11 +19,12 @@ function genererProjets(projets) {
     for (let i = 0; i <= projets.length; i++) {
 
         const projet = projets[i];
+        console.log(projets); // vérif
         // Récupération de l'élément du DOM qui accueillera la gallerie
         const divGallery = document.querySelector(".gallery");
         // Création d’une balise dédiée à un projet
         const idProjet = document.createElement("figure");
-        idProjet.dataset.id = projets[i].id;
+        idProjet.dataset.id = projets[i].id
         // Création des balises 
         const imageProjet = document.createElement("img");
         imageProjet.src = projet.imageUrl;
@@ -44,18 +47,22 @@ function genererProjets(projets) {
     }
 }
 
+console.log("Point 2");
+
 //genererProjets(projetElement);
 genererProjets(projets);
 
-console.log(idProjet);
+console.log("Point 3");
+console.log(projets);
+console.log("Point 4");
 
 //gestion des boutons                XXXXXXXXXXX en cours XXXXXXXXXXXXXXx
-const boutonFiltrer = document.querySelector(".btn-filtrer");
+const boutonFiltrerObjets = document.querySelector(".btn-objets");
 
-boutonFiltrer.addEventListener("click", function () {
-    const projetsFiltres = projets.filter(function (projet) {
-        return projet.categoryId = 35;
+boutonFiltrerObjets.addEventListener("click", function () {
+    const projetsFiltresObjets = projets.filter(function (projet) {
+        return projet.categorynameProjet === "Objets";
     });
     document.querySelector(".gallery").innerHTML = "";
-    genererProjets(projetsFiltres);
+    genererProjets(projetsFiltresObjets);
 });
