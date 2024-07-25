@@ -143,37 +143,21 @@ li:hover {
 }
 
 /* bouton activé */
-.btn-tous {
+.btn-filtre:hover {
 	color: white;
 	background-color: #1D6154;
     border: 1px #1D6154 solid;
-	width: 100px;
+	padding: 0 20px 0 20px;
 	height: 37px;
 }
 
 /* bouton non activé */
-.btn-objets {
+.btn-filtre {
 	color: #1D6154;
 	background-color: white;
     border: 1px #1D6154 solid;
-	width: 100px;
+	padding: 0 20px 0 20px;
 	height: 37px;
-}
-
-.btn-appartements {
-	color: #1D6154;
-	background-color: white;
-    border: 1px #1D6154 solid;
-	width: 157px;
-	height: 37px;
-}
-
-.btn-hotels {
-	color: #1D6154;
-	background-color: white;
-    border: 1px #1D6154 solid;
-	width: 198px;
-	height: 40px;
 }
 
 .gallery {

@@ -16,13 +16,14 @@ if (projets === null) {
 }
 
 function genererProjets(projets) {
-    for (let i = 0; i <= projets.length; i++) {
+    for (let i = 0; i < projets.length; i++) {
 
         const projet = projets[i];
-        console.log(projets); // vérif
+//        console.log(projets); // vérif
         // Récupération de l'élément du DOM qui accueillera la gallerie
         const divGallery = document.querySelector(".gallery");
         // Création d’une balise dédiée à un projet
+        console.log(projets[i]);
         const idProjet = document.createElement("figure");
         idProjet.dataset.id = projets[i].id
         // Création des balises 
@@ -57,12 +58,24 @@ console.log(projets);
 console.log("Point 4");
 
 //gestion des boutons                XXXXXXXXXXX en cours XXXXXXXXXXXXXXx
-const boutonFiltrerObjets = document.querySelector(".btn-objets");
+const boutonFiltres = document.querySelectorAll(".btn-filtre");
 
-boutonFiltrerObjets.addEventListener("click", function () {
-    const projetsFiltresObjets = projets.filter(function (projet) {
-        return projet.categorynameProjet === "Objets";
+for (let bouton of boutonFiltres) {
+    bouton.addEventListener("click", function () {
+        //if Idbouton = 1 ("objet")...
+        // voir avec filter peut-être, ajouter une classe pour modifer le display dans le css
+
+        document.querySelector(".gallery").innerHTML = ""; //remplacer par display none en css
+        genererProjets(projetsFiltres);
     });
-    document.querySelector(".gallery").innerHTML = "";
-    genererProjets(projetsFiltresObjets);
-});
+}
+
+// fetch sur API Categories avec dataset.id
+
+
+
+
+
+
+
+
