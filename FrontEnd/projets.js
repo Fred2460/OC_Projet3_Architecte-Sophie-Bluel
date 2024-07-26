@@ -72,6 +72,8 @@ for (let bouton of boutonFiltres) {
         const idBouton = bouton.id;
         console.log("Vérif dans boucle for, bouton.id :", bouton.id, " et idBouton :", idBouton);
         //console.log("bouton.id :", bouton.id, "idBouton :", idBouton);
+        // en cours modif class des boutons XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        // const monFiltre = document.getElementById("btn-tous") 
         if (idBouton == "btn-objets") {
             monChoix = 1;
         } else if (idBouton == "btn-appartements") {
@@ -98,8 +100,6 @@ for (let bouton of boutonFiltres) {
 //        genererProjets(projetsFiltres);
 //    }
 };
-
-console.log("monChoix à la fin", monChoix);
 
     //if Idbouton = 1 ("objet")...
     // voir avec filter peut-être, ajouter une classe pour modifer le display dans le css
