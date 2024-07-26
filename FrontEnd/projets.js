@@ -1,5 +1,3 @@
-console.log("Point 1");
-
 //Récupération des projets eventuellement stockés dans le localStorage
 let projets = window.localStorage.getItem('projets');
 
@@ -16,14 +14,15 @@ if (projets === null) {
 }
 
 function genererProjets(projets) {
-    for (let i = 0; i < projets.length; i++) {
 
+    for (let i = 0; i < projets.length; i++) {
+        
         const projet = projets[i];
-//        console.log(projets); // vérif
+        //console.log(projets); // vérif
         // Récupération de l'élément du DOM qui accueillera la gallerie
         const divGallery = document.querySelector(".gallery");
         // Création d’une balise dédiée à un projet
-        console.log(projets[i]);
+        //console.log(projets[i]);
         const idProjet = document.createElement("figure");
         idProjet.dataset.id = projets[i].id
         // Création des balises 
@@ -45,37 +44,71 @@ function genererProjets(projets) {
         idProjet.appendChild(useridProjet);
         idProjet.appendChild(categoryidProjet);
         idProjet.appendChild(categorynameProjet);
+
     }
 }
-
-console.log("Point 2");
 
 //genererProjets(projetElement);
 genererProjets(projets);
 
-console.log("Point 3");
+// Vérif affichage tableau "projets"
+console.log("Point Vérif tableau projets");
 console.log(projets);
-console.log("Point 4");
 
-//gestion des boutons                XXXXXXXXXXX en cours XXXXXXXXXXXXXXx
+//gestion des boutons
 const boutonFiltres = document.querySelectorAll(".btn-filtre");
+const monChoix = 0
+const idBouton = "btn-tous"
 
 for (let bouton of boutonFiltres) {
     bouton.addEventListener("click", function () {
-        //if Idbouton = 1 ("objet")...
-        // voir avec filter peut-être, ajouter une classe pour modifer le display dans le css
-
-        document.querySelector(".gallery").innerHTML = ""; //remplacer par display none en css
-        genererProjets(projetsFiltres);
+        const idBouton = bouton.id;
+        console.log("boucle for, vérif bouton.id :", bouton.id, " et idBouton :", idBouton);
     });
+    console.log("bouton.id :", bouton.id, "idBouton :", idBouton);
+    if (idBouton = "btn-objets") {
+        monChoix == 1;
+        const projetsFiltres = projets.filter(function (projet) {
+            return projet.categoryidProjet == monChoix;
+        });
+        console.log("monChoix :", monChoix);
+        console.log("Point 5.1");
+        document.querySelector(".gallery").innerHTML = "";
+        genererProjets(projetsFiltres);
+    } else if (idBouton = "btn-appartements") {
+        monChoix = 2;
+        const projetsFiltres = projets.filter(function (projet) {
+            return projet.categoryidProjet == monChoix;
+        });
+        console.log("monChoix :", monChoix);
+        console.log("Point 5.2");
+        document.querySelector(".gallery").innerHTML = "";
+        genererProjets(projetsFiltres);
+    } else if (idBouton = "btn-hotels") {
+        monChoix = 3;
+        const projetsFiltres = projets.filter(function (projet) {
+            return projet.categoryidProjet == monChoix;
+        });
+        console.log("monChoix :", monChoix);
+        console.log("Point 5.3");
+        document.querySelector(".gallery").innerHTML = "";
+        genererProjets(projetsFiltres);
+    } else {
+        monChoix = 0;
+        const projetsFiltres = projets.filter(function (projet) {
+            return projet.categoryidProjet > monChoix;
+        });
+        console.log("monChoix :", monChoix);
+        console.log("Point 5.0");
+        document.querySelector(".gallery").innerHTML = "";
+        genererProjets(projetsFiltres);
+    }
 }
+    //if Idbouton = 1 ("objet")...
+    // voir avec filter peut-être, ajouter une classe pour modifer le display dans le css
+
+    //document.querySelector(".gallery").innerHTML = ""; //remplacer par display none en css
+    //genererProjets(projetsFiltres);
+
 
 // fetch sur API Categories avec dataset.id
-
-
-
-
-
-
-
-
