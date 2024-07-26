@@ -142,7 +142,7 @@ li:hover {
 	border-radius: 25px;
 }
 
-/* bouton activé */
+/* passage de la souris sur le bouton */
 .btn-filtre:hover {
 	color: white;
 	background-color: #1D6154;
@@ -159,6 +159,15 @@ li:hover {
 	padding: 0 20px 0 20px;
 	height: 37px;
 }
+
+/* bouton actif */
+/*.btn-filtre {
+	color: white;
+	background-color: #1D6154;
+    border: 1px #1D6154 solid;
+	padding: 0 20px 0 20px;
+	height: 37px;
+}*/
 
 .gallery {
 	width: 100%;
