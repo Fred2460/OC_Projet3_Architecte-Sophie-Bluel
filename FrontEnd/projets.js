@@ -57,53 +57,44 @@ console.log(projets);
 
 //gestion des boutons
 const boutonFiltres = document.querySelectorAll(".btn-filtre");
-const monChoix = 0
-const idBouton = "btn-tous"
+let monChoix;
+const idBouton = "btn-tous";
 
 for (let bouton of boutonFiltres) {
+    
+    //buttons.forEach(button => {
+    //    button.addEventListener('click', () => {
+    //        button.classList.toggle('active');
+    //    });
+    //});
+
     bouton.addEventListener("click", function () {
         const idBouton = bouton.id;
         console.log("boucle for, vérif bouton.id :", bouton.id, " et idBouton :", idBouton);
     });
     console.log("bouton.id :", bouton.id, "idBouton :", idBouton);
-    if (idBouton = "btn-objets") {
-        monChoix == 1;
-        const projetsFiltres = projets.filter(function (projet) {
-            return projet.categoryidProjet == monChoix;
-        });
-        console.log("monChoix :", monChoix);
-        console.log("Point 5.1");
-        document.querySelector(".gallery").innerHTML = "";
-        genererProjets(projetsFiltres);
-    } else if (idBouton = "btn-appartements") {
+    if (idBouton == "btn-objets") {
+        monChoix = 1;
+    } else if (idBouton == "btn-appartements") {
         monChoix = 2;
-        const projetsFiltres = projets.filter(function (projet) {
-            return projet.categoryidProjet == monChoix;
-        });
-        console.log("monChoix :", monChoix);
-        console.log("Point 5.2");
-        document.querySelector(".gallery").innerHTML = "";
-        genererProjets(projetsFiltres);
-    } else if (idBouton = "btn-hotels") {
+    } else if (idBouton == "btn-hotels") {
         monChoix = 3;
-        const projetsFiltres = projets.filter(function (projet) {
-            return projet.categoryidProjet == monChoix;
-        });
-        console.log("monChoix :", monChoix);
-        console.log("Point 5.3");
-        document.querySelector(".gallery").innerHTML = "";
-        genererProjets(projetsFiltres);
     } else {
         monChoix = 0;
+    }
+
+    if (monChoix == 0) {
+        document.querySelector(".gallery").innerHTML = "";
+        genererProjets(projets);
+    } else {
         const projetsFiltres = projets.filter(function (projet) {
-            return projet.categoryidProjet > monChoix;
+            return projet.categoryidProjet == monChoix;
         });
-        console.log("monChoix :", monChoix);
-        console.log("Point 5.0");
         document.querySelector(".gallery").innerHTML = "";
         genererProjets(projetsFiltres);
     }
-}
+};
+
     //if Idbouton = 1 ("objet")...
     // voir avec filter peut-être, ajouter une classe pour modifer le display dans le css
 
