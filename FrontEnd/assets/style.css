@@ -183,27 +183,29 @@ li:hover {
 }
 
 /* cadre ajouté pour faciliter la visualisation des figures */
-.gallery figure {
+/*.gallery figure {
 	border: 1px solid black;
 	padding: 4px;
-}
+}*/
 
 /* couleur ajoutée pour faciliter la visualisation des titres */
-.gallery figcaption{
+/*.gallery figcaption{
 	color: blue;
-}
+}*/
 
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
+
 #contact > * {
 	text-align: center;
-
 }
+
 #contact h2{
 	margin-bottom: 20px;
 }
+
 #contact form {
 	text-align: left;
 	margin-top:30px;

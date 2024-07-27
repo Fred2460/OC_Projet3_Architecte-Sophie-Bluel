@@ -41,9 +41,9 @@ function genererProjets(projets) {
         divGallery.appendChild(idProjet);
         idProjet.appendChild(imageProjet);
         idProjet.appendChild(titreProjet);
-        idProjet.appendChild(useridProjet);
-        idProjet.appendChild(categoryidProjet);
-        idProjet.appendChild(categorynameProjet);
+        //idProjet.appendChild(useridProjet);
+        //idProjet.appendChild(categoryidProjet);
+        //idProjet.appendChild(categorynameProjet);
 
     }
 }
@@ -52,13 +52,13 @@ function genererProjets(projets) {
 genererProjets(projets);
 
 // Vérif affichage tableau "projets"
-console.log("Point Vérif tableau projets");
-console.log(projets);
+//console.log("Point Vérif tableau projets");
+//console.log(projets);
 
 //gestion des boutons
 const boutonFiltres = document.querySelectorAll(".btn-filtre");
 var monChoix = 0;
-const idBouton = "btn-tous";
+const idBouton = "Tous";
 
 for (let bouton of boutonFiltres) {
     
@@ -70,20 +70,30 @@ for (let bouton of boutonFiltres) {
 
     bouton.addEventListener("click", function () {
         const idBouton = bouton.id;
-        console.log("Vérif dans boucle for, bouton.id :", bouton.id, " et idBouton :", idBouton);
+        //console.log("Vérif dans boucle for, bouton.id :", bouton.id, " et idBouton :", idBouton);
         //console.log("bouton.id :", bouton.id, "idBouton :", idBouton);
         // en cours modif class des boutons XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         // const monFiltre = document.getElementById("btn-tous") 
-        if (idBouton == "btn-objets") {
+        if (idBouton == "Objets") {
             monChoix = 1;
-        } else if (idBouton == "btn-appartements") {
+        } else if (idBouton == "Appartements") {
             monChoix = 2;
-        } else if (idBouton == "btn-hotels") {
+        } else if (idBouton == "Hotels & restaurants") {
             monChoix = 3;
         } else {
             monChoix = 0;
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(projets);
         }
-        console.log("monChoix dans boucle for", monChoix);
+        if ((idBouton != "Tous")) {
+            const projetsFiltres = projets.filter(function (projet) {
+                return projet.category.name == idBouton;
+            });
+            //console.log("idBouton =", idBouton);
+            //console.log(projetsFiltres);
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(projetsFiltres);
+        }
         //activerBouton(monChoix)
     });
 
