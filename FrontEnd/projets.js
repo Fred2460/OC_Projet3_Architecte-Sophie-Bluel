@@ -51,6 +51,51 @@ genererProjets(projets);
 //console.log("Point Vérif tableau projets");
 //console.log(projets);
 
+// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+//Récupération des catégories éventuellement stockées dans le localStorage
+let categories = window.localStorage.getItem('categories');
+
+if (categories === null) {
+    // Récupération des catégories depuis l'API
+    const reponse = await fetch('http://localhost:5678/api/categories')
+    categories = await reponse.json();
+    // Transformation des catégories en JSON
+    const valeurCategories = JSON.stringify(categories);
+    // Stockage des informations dans le localStorage
+    window.localStorage.setItem("categories", valeurCategories);
+} else {
+    categories = JSON.parse(categories);
+}
+
+function genererFiltre(categories) {
+    
+    console.log("catégories =", categories); // vérif
+
+    for (let i = 0; i < categories.length; i++) {
+        const categorie = categories[i];
+
+        // Récupération de l'élément du DOM qui accueillera les filtres
+        const divFiltre = document.querySelector(".filtre");
+        // Création d’une balise dédiée à une catégorie
+        console.log(categories[i]);
+        const idCategorie = document.createElement("button");
+        idCategorie.dataset.id = categories[i].id;
+        // Création des balises 
+        const nomCategorie = document.createElement("button");
+        nomCategorie.innerText = categorie.name;
+
+        // Rattachement de la balise projet à la division Filtre
+        divFiltre.appendChild(nomCategorie);
+        nomCategorie.classList.add("btn-filtre");
+
+    }
+}
+document.querySelector(".filtre").innerHTML = "";
+genererFiltre(categories);
+
+// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 //gestion des boutons
 const boutonFiltres = document.querySelectorAll(".btn-filtre");
 //var monChoix = 0;
