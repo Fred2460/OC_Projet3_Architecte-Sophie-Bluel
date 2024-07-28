@@ -14,9 +14,7 @@ if (projets === null) {
 }
 
 function genererProjets(projets) {
-
     for (let i = 0; i < projets.length; i++) {
-        
         const projet = projets[i];
         //console.log(projets); // vérif
         // Récupération de l'élément du DOM qui accueillera la gallerie
@@ -37,7 +35,7 @@ function genererProjets(projets) {
         const categorynameProjet = document.createElement("p");
         categorynameProjet.innerText = projet.category.name;
 
-        // Rattachement de la balise projet a la division Gallery
+        // Rattachement de la balise projet à la division Gallery
         divGallery.appendChild(idProjet);
         idProjet.appendChild(imageProjet);
         idProjet.appendChild(titreProjet);
@@ -47,68 +45,65 @@ function genererProjets(projets) {
 
     }
 }
-
-//genererProjets(projetElement);
+document.querySelector(".gallery").innerHTML = "";
 genererProjets(projets);
-
 // Vérif affichage tableau "projets"
 //console.log("Point Vérif tableau projets");
 //console.log(projets);
 
 //gestion des boutons
 const boutonFiltres = document.querySelectorAll(".btn-filtre");
-var monChoix = 0;
+//var monChoix = 0;
 const idBouton = "Tous";
+let baliseBoutonTous = document.getElementById("Tous");
+let baliseBoutonObjets = document.getElementById("Objets");
+let baliseBoutonAppartements = document.getElementById("Appartements");
+let baliseBoutonHotels = document.getElementById("Hotels & restaurants");
+
+//console.log("baliseBoutonTous avant boucle =", baliseBoutonTous)
+//console.log("baliseBoutonObjets avant boucle =", baliseBoutonObjets)
 
 for (let bouton of boutonFiltres) {
-    
-    //buttons.forEach(button => {
-    //    button.addEventListener('click', () => {
-    //        button.classList.toggle('active');
-    //    });
-    //});
-
     bouton.addEventListener("click", function () {
         const idBouton = bouton.id;
-        //console.log("Vérif dans boucle for, bouton.id :", bouton.id, " et idBouton :", idBouton);
-        //console.log("bouton.id :", bouton.id, "idBouton :", idBouton);
-        // en cours modif class des boutons XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        // const monFiltre = document.getElementById("btn-tous") 
-        if (idBouton == "Objets") {
-            monChoix = 1;
-        } else if (idBouton == "Appartements") {
-            monChoix = 2;
-        } else if (idBouton == "Hotels & restaurants") {
-            monChoix = 3;
-        } else {
-            monChoix = 0;
-            document.querySelector(".gallery").innerHTML = "";
-            genererProjets(projets);
-        }
+//        console.log("Vérif dans boucle for, bouton.id :", bouton.id, " et idBouton :", idBouton);
         if ((idBouton != "Tous")) {
             const projetsFiltres = projets.filter(function (projet) {
                 return projet.category.name == idBouton;
             });
-            //console.log("idBouton =", idBouton);
-            //console.log(projetsFiltres);
+            if (idBouton == "Objets") {
+                baliseBoutonTous.classList.remove("btn-on")
+                baliseBoutonObjets.classList.add("btn-on")
+                baliseBoutonAppartements.classList.remove("btn-on")
+                baliseBoutonHotels.classList.remove("btn-on")
+            } else if (idBouton == "Appartements") {
+                baliseBoutonTous.classList.remove("btn-on")
+                baliseBoutonObjets.classList.remove("btn-on")
+                baliseBoutonAppartements.classList.add("btn-on")
+                baliseBoutonHotels.classList.remove("btn-on")
+            } else if (idBouton == "Hotels & restaurants") {
+                baliseBoutonTous.classList.remove("btn-on")
+                baliseBoutonObjets.classList.remove("btn-on")
+                baliseBoutonAppartements.classList.remove("btn-on")
+                baliseBoutonHotels.classList.add("btn-on")
+            }
             document.querySelector(".gallery").innerHTML = "";
             genererProjets(projetsFiltres);
+        } else {
+        //    monChoix = 0;
+            baliseBoutonTous.classList.add("btn-on")
+            baliseBoutonObjets.classList.remove("btn-on")
+            baliseBoutonAppartements.classList.remove("btn-on")
+            baliseBoutonHotels.classList.remove("btn-on")
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(projets);
         }
         //activerBouton(monChoix)
     });
-
-//    if (idBouton == "btn-tous") {
-//        console.log("Vérif filtre, idBouton =", idBouton);
-//        document.querySelector(".gallery").innerHTML = "";
-//        genererProjets(projets);
-//    } else {
-//        console.log("Vérif filtre, idBouton =", idBouton);
-//        const projetsFiltres = projets.filter(function (projet) {
-//            return projet.categorynameProjet == idBouton;
-//        });
-//        document.querySelector(".gallery").innerHTML = "";
-//        genererProjets(projetsFiltres);
-//    }
+//console.log("idBouton après boucle =", idBouton)
+//console.log("boutonFiltres après boucle =", boutonFiltres)
+//console.log("baliseBoutonTous après boucle =", baliseBoutonTous)
+//console.log("baliseBoutonObjets après boucle =", baliseBoutonObjets)
 };
 
     //if Idbouton = 1 ("objet")...
