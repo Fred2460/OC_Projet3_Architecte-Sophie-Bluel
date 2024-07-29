@@ -1,3 +1,5 @@
+
+
 //Récupération des projets eventuellement stockés dans le localStorage
 let projets = window.localStorage.getItem('projets');
 
@@ -105,18 +107,11 @@ function genererFiltre(categories) {
     divFiltre.appendChild(nomCategorie);
     nomCategorie.classList.add("btn-filtre");
     categories.sort((a, b) => a.id - b.id);
+    nomCategorie.classList.add("btn-on")
     console.log("catégories après tri =", categories); // vérif
 }
 
-// Tri des catégories dans l'ordre des id
-//function genererTriCategories (categories) {
-//    const categoriesOrdonnees = Array.from(categories);
-//    categoriesOrdonnees.sort(function (a, b) {
-//        return a.id.categorie - b.id.categorie;
-//    });
-//}
-//genererTriCategories (categories);
-//console.log("catégories après tri =", categories); // vérif
+console.log("catégories après tri =", categories); // vérif
 document.querySelector(".filtre").innerHTML = "";
 genererFiltre(categories);
 
