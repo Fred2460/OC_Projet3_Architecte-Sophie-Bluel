@@ -59,8 +59,6 @@ if (categories === null) {
 
 function genererFiltre(categories) {
     
-    //console.log("catégories =", categories); // vérif
-
     // Ajout du bouton "Tous" dans tableau categories si inexistant
     if (categories.includes("Tous") == false) {
         const boutonTous = {
@@ -73,16 +71,14 @@ function genererFiltre(categories) {
     // Tri des boutons Filtres selon l'id de la catégorie
     categories.sort((a, b) => a.id - b.id);
 
+//    console.log("catégories après test Tous après tri =", categories); // vérif
+
     for (let i = 0; i < categories.length; i++) {
         const categorie = categories[i];
 
         // Récupération de l'élément du DOM qui accueillera les filtres
         const divFiltre = document.querySelector(".filtre");
-        // Création d’une balise dédiée à une catégorie
-        //console.log(categories[i]);
-        const idCategorie = document.createElement("button");
-        idCategorie.dataset.id = categories[i].id;
-        // Création des balises 
+        // Création des balises des boutons filtre des catégories
         const nomCategorie = document.createElement("button");
         nomCategorie.innerText = categorie.name;
 
@@ -91,16 +87,13 @@ function genererFiltre(categories) {
         nomCategorie.classList.add("btn-filtre");
         
         // Activation du bouton "Tous" par défaut
-        if (nomCategorie == "Tous") {
+        if (categorie.name == "Tous") {
             nomCategorie.classList.add("btn-on")
         }
     }
-
-//    nomCategorie.classList.add("btn-on")
-    //console.log("catégories après tri =", categories); // vérif
 }
 
-//console.log("catégories avant affichage =", categories); // vérif
+console.log("catégories avant affichage =", categories); // vérif
 
 document.querySelector(".filtre").innerHTML = "";
 genererFiltre(categories);
