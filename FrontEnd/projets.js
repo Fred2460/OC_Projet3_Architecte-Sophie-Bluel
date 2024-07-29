@@ -1,5 +1,3 @@
-
-
 //Récupération des projets eventuellement stockés dans le localStorage
 let projets = window.localStorage.getItem('projets');
 
@@ -18,11 +16,9 @@ if (projets === null) {
 function genererProjets(projets) {
     for (let i = 0; i < projets.length; i++) {
         const projet = projets[i];
-        //console.log(projets); // vérif
         // Récupération de l'élément du DOM qui accueillera la gallerie
         const divGallery = document.querySelector(".gallery");
         // Création d’une balise dédiée à un projet
-        //console.log(projets[i]);
         const idProjet = document.createElement("figure");
         idProjet.dataset.id = projets[i].id
         // Création des balises 
@@ -41,19 +37,10 @@ function genererProjets(projets) {
         divGallery.appendChild(idProjet);
         idProjet.appendChild(imageProjet);
         idProjet.appendChild(titreProjet);
-        //idProjet.appendChild(useridProjet);
-        //idProjet.appendChild(categoryidProjet);
-        //idProjet.appendChild(categorynameProjet);
-
     }
 }
 document.querySelector(".gallery").innerHTML = "";
 genererProjets(projets);
-// Vérif affichage tableau "projets"
-//console.log("Point Vérif tableau projets");
-//console.log(projets);
-
-// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 //Récupération des catégories éventuellement stockées dans le localStorage
 let categories = window.localStorage.getItem('categories');
@@ -74,13 +61,25 @@ function genererFiltre(categories) {
     
     //console.log("catégories =", categories); // vérif
 
+    // Ajout du bouton "Tous" dans tableau categories si inexistant
+    if (categories.includes("Tous") == false) {
+        const boutonTous = {
+            id: 0,
+            name: "Tous"
+        }
+        categories.push(boutonTous);
+    }
+
+    // Tri des boutons Filtres selon l'id de la catégorie
+    categories.sort((a, b) => a.id - b.id);
+
     for (let i = 0; i < categories.length; i++) {
         const categorie = categories[i];
 
         // Récupération de l'élément du DOM qui accueillera les filtres
         const divFiltre = document.querySelector(".filtre");
         // Création d’une balise dédiée à une catégorie
-        console.log(categories[i]);
+        //console.log(categories[i]);
         const idCategorie = document.createElement("button");
         idCategorie.dataset.id = categories[i].id;
         // Création des balises 
@@ -90,34 +89,25 @@ function genererFiltre(categories) {
         // Rattachement de la balise projet à la division Filtre
         divFiltre.appendChild(nomCategorie);
         nomCategorie.classList.add("btn-filtre");
+        
+        // Activation du bouton "Tous" par défaut
+        if (nomCategorie == "Tous") {
+            nomCategorie.classList.add("btn-on")
+        }
     }
-    
-    // Ajout du bouton "Tous" dans tableau categories
-    const boutonTous = {
-        id: 0,
-        name: "Tous"
-    }
-    categories.push(boutonTous);
-    console.log("catégories après ajout Tous =", categories); // vérif
-    const divFiltre = document.querySelector(".filtre");
-    const idCategorie = document.createElement("button");
-    idCategorie.dataset.id = boutonTous.id;
-    const nomCategorie = document.createElement("button");
-    nomCategorie.innerText = boutonTous.name;
-    divFiltre.appendChild(nomCategorie);
-    nomCategorie.classList.add("btn-filtre");
-    categories.sort((a, b) => a.id - b.id);
-    nomCategorie.classList.add("btn-on")
-    console.log("catégories après tri =", categories); // vérif
+
+//    nomCategorie.classList.add("btn-on")
+    //console.log("catégories après tri =", categories); // vérif
 }
 
-console.log("catégories après tri =", categories); // vérif
+//console.log("catégories avant affichage =", categories); // vérif
+
 document.querySelector(".filtre").innerHTML = "";
 genererFiltre(categories);
 
 // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-//gestion des boutons
+//gestion des boutons Filtre
 const boutonFiltres = document.querySelectorAll(".btn-filtre");
 //var monChoix = 0;
 const idBouton = "Tous";
@@ -129,6 +119,7 @@ let baliseBoutonHotels = document.getElementById("Hotels & restaurants");
 //console.log("baliseBoutonTous avant boucle =", baliseBoutonTous)
 //console.log("baliseBoutonObjets avant boucle =", baliseBoutonObjets)
 
+/*
 for (let bouton of boutonFiltres) {
     bouton.addEventListener("click", function () {
         const idBouton = bouton.id;
@@ -170,7 +161,8 @@ for (let bouton of boutonFiltres) {
 //console.log("boutonFiltres après boucle =", boutonFiltres)
 //console.log("baliseBoutonTous après boucle =", baliseBoutonTous)
 //console.log("baliseBoutonObjets après boucle =", baliseBoutonObjets)
-};
+};*/
+
 
     //if Idbouton = 1 ("objet")...
     // voir avec filter peut-être, ajouter une classe pour modifer le display dans le css
