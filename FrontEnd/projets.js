@@ -70,7 +70,7 @@ if (categories === null) {
 
 function genererFiltre(categories) {
     
-    console.log("catégories =", categories); // vérif
+    //console.log("catégories =", categories); // vérif
 
     for (let i = 0; i < categories.length; i++) {
         const categorie = categories[i];
@@ -88,9 +88,35 @@ function genererFiltre(categories) {
         // Rattachement de la balise projet à la division Filtre
         divFiltre.appendChild(nomCategorie);
         nomCategorie.classList.add("btn-filtre");
-
     }
+    
+    // Ajout du bouton "Tous" dans tableau categories
+    const boutonTous = {
+        id: 0,
+        name: "Tous"
+    }
+    categories.push(boutonTous);
+    console.log("catégories après ajout Tous =", categories); // vérif
+    const divFiltre = document.querySelector(".filtre");
+    const idCategorie = document.createElement("button");
+    idCategorie.dataset.id = boutonTous.id;
+    const nomCategorie = document.createElement("button");
+    nomCategorie.innerText = boutonTous.name;
+    divFiltre.appendChild(nomCategorie);
+    nomCategorie.classList.add("btn-filtre");
+    categories.sort((a, b) => a.id - b.id);
+    console.log("catégories après tri =", categories); // vérif
 }
+
+// Tri des catégories dans l'ordre des id
+//function genererTriCategories (categories) {
+//    const categoriesOrdonnees = Array.from(categories);
+//    categoriesOrdonnees.sort(function (a, b) {
+//        return a.id.categorie - b.id.categorie;
+//    });
+//}
+//genererTriCategories (categories);
+//console.log("catégories après tri =", categories); // vérif
 document.querySelector(".filtre").innerHTML = "";
 genererFiltre(categories);
 
