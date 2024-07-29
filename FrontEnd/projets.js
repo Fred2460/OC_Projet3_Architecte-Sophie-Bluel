@@ -87,9 +87,9 @@ function genererFiltre(categories) {
         nomCategorie.classList.add("btn-filtre");
         
         // Activation du bouton "Tous" par défaut
-        if (categorie.name == "Tous") {
-            nomCategorie.classList.add("btn-on")
-        }
+        //if (categorie.name == "Tous") {
+        //    nomCategorie.classList.add("btn-on")
+        //}
     }
 }
 
@@ -98,25 +98,88 @@ console.log("catégories avant affichage =", categories); // vérif
 document.querySelector(".filtre").innerHTML = "";
 genererFiltre(categories);
 
-// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
 //gestion des boutons Filtre
-const boutonFiltres = document.querySelectorAll(".btn-filtre");
-//var monChoix = 0;
-const idBouton = "Tous";
-let baliseBoutonTous = document.getElementById("Tous");
-let baliseBoutonObjets = document.getElementById("Objets");
-let baliseBoutonAppartements = document.getElementById("Appartements");
-let baliseBoutonHotels = document.getElementById("Hotels & restaurants");
+//const idBouton = "Tous";
 
-//console.log("baliseBoutonTous avant boucle =", baliseBoutonTous)
-//console.log("baliseBoutonObjets avant boucle =", baliseBoutonObjets)
+
+
+
+
+
+
+
+//const boutonFiltrer = document.querySelector(".btn-filtre");
+const boutonFiltrer = document.querySelectorAll(".btn-filtre");
+const Bouton = "";
+for (let Bouton of boutonFiltrer) {
+    Bouton.addEventListener("click", function () {
+        //console.log("boutonFiltrer =", boutonFiltrer);
+        //console.log("Bouton =", Bouton);
+        
+        const baliseBoutonTous = document.getElementById("Tous");
+        const baliseBoutonObjets = document.getElementById("Objets");
+        const baliseBoutonAppartements = document.getElementById("Appartements");
+        const baliseBoutonHotels = document.getElementById("Hotels & restaurants");
+        console.log("baliseBoutonTous avant boucle =", baliseBoutonTous) // Vérif
+        console.log("baliseBoutonObjets avant boucle =", baliseBoutonObjets) // Vérif
+
+        const baliseBoutonOn = document.getElementsByClassName(".btn-filtre btn-on");
+        console.log("Bouton on =", baliseBoutonOn);
+        const nomBouton = Bouton.firstChild.nodeValue;
+        console.log("Vérif nomBouton =", nomBouton);
+
+        if (nomBouton != "Tous") {
+                const projetsFiltres = projets.filter(function (projet) {
+                    return projet.category.name == nomBouton;
+                });
+                console.log("Projets =", projets) // Vérif
+                console.log("Projets filtrés =", projetsFiltres) // Vérif
+                if (nomBouton == "Objets") {
+                    baliseBoutonTous.classList.remove("btn-on")
+                    baliseBoutonObjets.classList.add("btn-on")
+                    baliseBoutonAppartements.classList.remove("btn-on")
+                    baliseBoutonHotels.classList.remove("btn-on")
+                } else if (nomBouton == "Appartements") {
+                    baliseBoutonTous.classList.remove("btn-on")
+                    baliseBoutonObjets.classList.remove("btn-on")
+                    baliseBoutonAppartements.classList.add("btn-on")
+                    baliseBoutonHotels.classList.remove("btn-on")
+                } else if (nomBouton == "Hotels & restaurants") {
+                    baliseBoutonTous.classList.remove("btn-on")
+                    baliseBoutonObjets.classList.remove("btn-on")
+                    baliseBoutonAppartements.classList.remove("btn-on")
+                    baliseBoutonHotels.classList.add("btn-on")
+                }
+                document.querySelector(".gallery").innerHTML = "";
+                genererProjets(projetsFiltres);
+        } else {
+            baliseBoutonTous.classList.add("btn-on")
+            baliseBoutonObjets.classList.remove("btn-on")
+            baliseBoutonAppartements.classList.remove("btn-on")
+            baliseBoutonHotels.classList.remove("btn-on")
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(projets);
+        }
+
+    });
+}    
+
+/*
+    const projetsFiltres = projets.filter(function (projet) {
+        return projet.category.name == idBouton;
+    });
+    document.querySelector(".gallery").innerHTML = "";
+    genererPieces(projetsFiltres);
+});
+*/
+
 
 /*
 for (let bouton of boutonFiltres) {
     bouton.addEventListener("click", function () {
         const idBouton = bouton.id;
-//        console.log("Vérif dans boucle for, bouton.id :", bouton.id, " et idBouton :", idBouton);
+        console.log("Vérif dans boucle for, bouton.id :", bouton.id, " et idBouton :", idBouton);
+        //console.log("Vérif nomBouton", )
         if ((idBouton != "Tous")) {
             const projetsFiltres = projets.filter(function (projet) {
                 return projet.category.name == idBouton;
@@ -149,13 +212,16 @@ for (let bouton of boutonFiltres) {
             genererProjets(projets);
         }
         //activerBouton(monChoix)
+        console.log("idBouton après boucle =", idBouton)
+        console.log("boutonFiltres après boucle =", boutonFiltres)
+        console.log("baliseBoutonTous après boucle =", baliseBoutonTous)
+        console.log("baliseBoutonObjets après boucle =", baliseBoutonObjets)
     });
-//console.log("idBouton après boucle =", idBouton)
-//console.log("boutonFiltres après boucle =", boutonFiltres)
-//console.log("baliseBoutonTous après boucle =", baliseBoutonTous)
-//console.log("baliseBoutonObjets après boucle =", baliseBoutonObjets)
-};*/
 
+
+
+
+};*/
 
     //if Idbouton = 1 ("objet")...
     // voir avec filter peut-être, ajouter une classe pour modifer le display dans le css
