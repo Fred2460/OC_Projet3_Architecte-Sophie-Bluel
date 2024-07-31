@@ -22,6 +22,7 @@ function genererProjets(projets) {
         // Création d’une balise dédiée à un projet
         const idProjet = document.createElement("figure");
         idProjet.dataset.id = projets[i].id
+        idProjet.dataset.idCategorie = projet.category.id;
         // Création des balises 
         const imageProjet = document.createElement("img");
         imageProjet.src = projet.imageUrl;
@@ -90,10 +91,11 @@ function genererFiltre(categories, boutonOn) {
         // Création des balises des boutons filtre des catégories
         const nomCategorie = document.createElement("button");
         nomCategorie.innerText = categorie.name;
+        nomCategorie.dataset.id = categorie.id;
         nomCategorie.id = categorie.name;
 
         // Rattachement de la balise projet à la division Filtre
-        if (nomCategorie.id == boutonOn) {
+        if (nomCategorie.id === boutonOn) {
             divFiltre.appendChild(nomCategorie);
             nomCategorie.classList.add("btn-filtre","btn-on");  
         } else {
@@ -116,6 +118,7 @@ const Bouton = "";
 for (let Bouton of boutonFiltrer) {
     Bouton.addEventListener("click", function () {
         const nomBouton = Bouton.firstChild.nodeValue;
+        const idCategory = Bouton.dataset.id;
         //console.log("Vérif nomBouton =", nomBouton); // Vérif
 
         if (nomBouton != "Tous") {
@@ -133,6 +136,12 @@ for (let Bouton of boutonFiltrer) {
                 }
             };
             */
+
+            // boucler sur tous les projets
+            // récupérer l'iDcategory de chaque projet
+            // maj de la balise visibilité
+            // si "Tous", tous en visible
+            // 
             // filtrage des projets selon selon sélection bouton filtre
             const projetsFiltres = projets.filter(function (projet) {
                 return projet.category.name == nomBouton;
@@ -159,7 +168,7 @@ for (let Bouton of boutonFiltrer) {
             document.querySelector(".gallery").innerHTML = "";
             genererProjets(projetsFiltres);
         }
-        event.preventDefault();
+        //event.preventDefault();
     });
 };
 
