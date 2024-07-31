@@ -182,16 +182,9 @@ li:hover {
 
 }
 
-/* cadre ajouté pour faciliter la visualisation des figures */
-/*.gallery figure {
-	border: 1px solid black;
-	padding: 4px;
-}*/
-
-/* couleur ajoutée pour faciliter la visualisation des titres */
-/*.gallery figcaption{
-	color: blue;
-}*/
+.gallery .invisib {
+	display: none;
+}
 
 #contact {
 	width: 50%;

@@ -12,7 +12,7 @@ if (projets === null) {
     window.localStorage.setItem("projets", valeurProjets);
 } else {
     projets = JSON.parse(projets);
-}
+};
 
 function genererProjets(projets) {
     for (let i = 0; i < projets.length; i++) {
@@ -38,8 +38,11 @@ function genererProjets(projets) {
         divGallery.appendChild(idProjet);
         idProjet.appendChild(imageProjet);
         idProjet.appendChild(titreProjet);
-    }
-}
+
+        // ajout d'une balise de visibilité pour affichage projet
+        idProjet.classList.add("visib");
+    };
+};
 
 document.querySelector(".gallery").innerHTML = "";
 genererProjets(projets);
@@ -90,7 +93,6 @@ function genererFiltre(categories, boutonOn) {
         nomCategorie.id = categorie.name;
 
         // Rattachement de la balise projet à la division Filtre
-        //console.log("Avant test. nomCategorie =", i, nomCategorie, "boutonOn =", boutonOn); // Vérif
         if (nomCategorie.id == boutonOn) {
             divFiltre.appendChild(nomCategorie);
             nomCategorie.classList.add("btn-filtre","btn-on");  
@@ -98,15 +100,13 @@ function genererFiltre(categories, boutonOn) {
             divFiltre.appendChild(nomCategorie);
             nomCategorie.classList.add("btn-filtre");
         }
-        //console.log("Après test. nomCategorie =", i, nomCategorie, "boutonOn =", boutonOn); // Vérif
     }
-}
+};
 
-//console.log("catégories avant affichage =", categories); // vérif
 const boutonOn = "Tous";
 document.querySelector(".filtre").innerHTML = "";
 genererFiltre(categories, boutonOn);
-//console.log("catégories après affichage =", categories); // vérif
+
 
 // ************** GESTION DES APPUIS BOUTONS FILTRE *****************
 
@@ -116,27 +116,40 @@ const Bouton = "";
 for (let Bouton of boutonFiltrer) {
     Bouton.addEventListener("click", function () {
         const nomBouton = Bouton.firstChild.nodeValue;
-        console.log("Vérif nomBouton =", nomBouton);
+        //console.log("Vérif nomBouton =", nomBouton); // Vérif
 
         if (nomBouton != "Tous") {
+            /*
+            // changement class visibilité pour gérer l'affichage avec le css     ***** NON FONCTIONNEL *****
+            for (let i = 0; i < projets.length; i++) {
+                const divGallery = document.querySelector(".gallery");
+                const projet = projets[i];
+                const idProjet = document.createElement("figure");
+                idProjet.dataset.id = projets[i].id;
+                divGallery.appendChild(idProjet);
+                idProjet.classList.add("visib");
+                if (projet.category.name != nomBouton) {
+                    idProjet.classList.remove("visib");
+                }
+            };
+            */
+            // filtrage des projets selon selon sélection bouton filtre
             const projetsFiltres = projets.filter(function (projet) {
                 return projet.category.name == nomBouton;
             });
-            console.log("projetsFiltres dans la boucle après tri =", projetsFiltres); // Vérif
+            //console.log("projetsFiltres dans la boucle après tri =", projetsFiltres); // Vérif
             
-            // afficher la liste des catégories selon sélection filtre
+            // afficher la liste des catégories selon sélection bouton filtre
             document.querySelector(".filtre").innerHTML = "";
-            //console.log("Génération filtre. categories = ", categories, "nomBouton", nomBouton); // Vérif
             genererFiltre(categories, nomBouton);
             
             // afficher la liste des projets selon sélection filtre
             document.querySelector(".gallery").innerHTML = "";
-            //console.log("Génération gallery. projetsFiltres = ", projetsFiltres); // Vérif
             genererProjets(projetsFiltres);
             
         } else {
             const projetsFiltres = projets
-            console.log("projetsFiltres dans la boucle après tri =", projetsFiltres);
+            //console.log("projetsFiltres dans la boucle après tri =", projetsFiltres); // Vérif
 
             // afficher la liste des catégories avec Tous activé
             document.querySelector(".filtre").innerHTML = "";
@@ -146,14 +159,12 @@ for (let Bouton of boutonFiltrer) {
             document.querySelector(".gallery").innerHTML = "";
             genererProjets(projetsFiltres);
         }
+        event.preventDefault();
     });
 };
 
-    //if Idbouton = 1 ("objet")...
-    // voir avec filter peut-être, ajouter une classe pour modifer le display dans le css
-
     //document.querySelector(".gallery").innerHTML = ""; //remplacer par display none en css
-    //genererProjets(projetsFiltres);
+
 
 
 // fetch sur API Categories avec dataset.id
