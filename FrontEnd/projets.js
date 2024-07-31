@@ -41,6 +41,10 @@ function genererProjets(projets) {
     }
 }
 
+document.querySelector(".gallery").innerHTML = "";
+genererProjets(projets);
+
+
 // ************** CATEGORIES *****************
 //Récupération des catégories éventuellement stockées dans le localStorage
 let categories = window.localStorage.getItem('categories');
@@ -56,6 +60,7 @@ if (categories === null) {
 } else {
     categories = JSON.parse(categories);
 }
+
 
 // ************** FILTRE *****************
 // Ajout du bouton "Tous" dans tableau categories si inexistant
@@ -82,23 +87,26 @@ function genererFiltre(categories, boutonOn) {
         // Création des balises des boutons filtre des catégories
         const nomCategorie = document.createElement("button");
         nomCategorie.innerText = categorie.name;
+        nomCategorie.id = categorie.name;
 
         // Rattachement de la balise projet à la division Filtre
-        if (nomCategorie == boutonOn) {
+        //console.log("Avant test. nomCategorie =", i, nomCategorie, "boutonOn =", boutonOn); // Vérif
+        if (nomCategorie.id == boutonOn) {
             divFiltre.appendChild(nomCategorie);
-            nomCategorie.classList.add("btn-filtre btn-on");
+            nomCategorie.classList.add("btn-filtre","btn-on");  
         } else {
             divFiltre.appendChild(nomCategorie);
             nomCategorie.classList.add("btn-filtre");
         }
+        //console.log("Après test. nomCategorie =", i, nomCategorie, "boutonOn =", boutonOn); // Vérif
     }
 }
 
-console.log("catégories avant affichage =", categories); // vérif
+//console.log("catégories avant affichage =", categories); // vérif
 const boutonOn = "Tous";
 document.querySelector(".filtre").innerHTML = "";
 genererFiltre(categories, boutonOn);
-console.log("catégories après affichage =", categories); // vérif
+//console.log("catégories après affichage =", categories); // vérif
 
 // ************** GESTION DES APPUIS BOUTONS FILTRE *****************
 
@@ -114,16 +122,16 @@ for (let Bouton of boutonFiltrer) {
             const projetsFiltres = projets.filter(function (projet) {
                 return projet.category.name == nomBouton;
             });
-            console.log("projetsFiltres dans la boucle après tri =", projetsFiltres);
+            console.log("projetsFiltres dans la boucle après tri =", projetsFiltres); // Vérif
             
             // afficher la liste des catégories selon sélection filtre
             document.querySelector(".filtre").innerHTML = "";
-            console.log("Génération filtre. categories = ", categories, "nomBouton", nomBouton); // Vérif
+            //console.log("Génération filtre. categories = ", categories, "nomBouton", nomBouton); // Vérif
             genererFiltre(categories, nomBouton);
             
             // afficher la liste des projets selon sélection filtre
             document.querySelector(".gallery").innerHTML = "";
-            console.log("Génération gallery. projetsFiltres = ", projetsFiltres); // Vérif
+            //console.log("Génération gallery. projetsFiltres = ", projetsFiltres); // Vérif
             genererProjets(projetsFiltres);
             
         } else {
@@ -139,8 +147,7 @@ for (let Bouton of boutonFiltrer) {
             genererProjets(projetsFiltres);
         }
     });
-}
-
+};
 
     //if Idbouton = 1 ("objet")...
     // voir avec filter peut-être, ajouter une classe pour modifer le display dans le css
