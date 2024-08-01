@@ -201,12 +201,18 @@ li:hover {
 	width: 100%;
 }
 
-.figure .masque {
-	display: none;
+/*.figure {
+	display: block;
+}*/
+
+/* Affichage ou masquage des projets selon sélection filtre */
+.image {
+	display: block;
+	border: 2px black solid; /* test pour vérif visualisation */
 }
 
-.figure .visible {
-	display: block;
+.image .masque {
+	display: none;
 }
 
 #contact {
