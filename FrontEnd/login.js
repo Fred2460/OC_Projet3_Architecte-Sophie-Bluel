@@ -5,7 +5,7 @@ let users = window.localStorage.getItem("users");
 
 if (users === null) {
     // Connexion du user depuis l'API
-    const reponse = await fetch('http://localhost:5678/api/users/login'{
+    const reponse = await fetch('http://localhost:5678/api/users/login', {
         method: "POST",
         body: {
             "email": "sophie.bluel@test.tld",
