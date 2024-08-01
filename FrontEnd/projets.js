@@ -21,7 +21,7 @@ function genererProjets(projets) {
         const divGallery = document.querySelector(".gallery");
         // Création d’une balise dédiée à un projet
         const idProjet = document.createElement("figure");
-        idProjet.dataset.id = projets[i].id
+        idProjet.dataset.id = projets[i].id;
         idProjet.dataset.idCategorie = projet.category.id;
         // Création des balises 
         const imageProjet = document.createElement("img");
@@ -41,9 +41,11 @@ function genererProjets(projets) {
         idProjet.appendChild(titreProjet);
 
         // ajout d'une balise de visibilité pour affichage projet
-        idProjet.classList.add("visib");
+        idProjet.classList.add("visible");
     };
 };
+
+console.log("projets =", projets); // Vérif
 
 document.querySelector(".gallery").innerHTML = "";
 genererProjets(projets);
@@ -68,7 +70,7 @@ if (categories === null) {
 
 // ************** FILTRE *****************
 // Ajout du bouton "Tous" dans tableau categories si inexistant
-console.log("categories initiales avant =", categories); // Vérif
+//console.log("categories initiales avant =", categories); // Vérif
 if (categories.includes("Tous") == false) {
     const boutonTous = {
         id: 0,
@@ -76,7 +78,7 @@ if (categories.includes("Tous") == false) {
     }
     categories.push(boutonTous);
 }
-console.log("categories initiales après =", categories); // Vérif
+//console.log("categories initiales après =", categories); // Vérif
 
 function genererFiltre(categories, boutonOn) {
 
@@ -114,28 +116,14 @@ genererFiltre(categories, boutonOn);
 
 const boutonFiltrer = document.querySelectorAll(".btn-filtre");
 
-const Bouton = "";
+const Bouton = "Tous";
 for (let Bouton of boutonFiltrer) {
     Bouton.addEventListener("click", function () {
         const nomBouton = Bouton.firstChild.nodeValue;
         const idCategory = Bouton.dataset.id;
-        //console.log("Vérif nomBouton =", nomBouton); // Vérif
-
-        if (nomBouton != "Tous") {
-            /*
-            // changement class visibilité pour gérer l'affichage avec le css     ***** NON FONCTIONNEL *****
-            for (let i = 0; i < projets.length; i++) {
-                const divGallery = document.querySelector(".gallery");
-                const projet = projets[i];
-                const idProjet = document.createElement("figure");
-                idProjet.dataset.id = projets[i].id;
-                divGallery.appendChild(idProjet);
-                idProjet.classList.add("visib");
-                if (projet.category.name != nomBouton) {
-                    idProjet.classList.remove("visib");
-                }
-            };
-            */
+        console.log("Vérif nomBouton =", nomBouton); // Vérif
+        console.log("Vérif idCategory sélectionnée =", idCategory); // Vérif
+        console.log("projets =", projets);
 
             // boucler sur tous les projets
             // récupérer l'iDcategory de chaque projet
@@ -143,19 +131,52 @@ for (let Bouton of boutonFiltrer) {
             // si "Tous", tous en visible
             // 
             // filtrage des projets selon selon sélection bouton filtre
-            const projetsFiltres = projets.filter(function (projet) {
-                return projet.category.name == nomBouton;
-            });
+
+        for (let i = 0; i < projets.length; i++) { 
+            const projet = projets[i];
+            const idProjet = projets[i].id;
+            console.log("projet =",projet);
+            const idCategoryprojet = projet.category.id;
+            //const classVisible = document.querySelector(".visible");
+            const classMasque = document.querySelector(".masque");
+            //console.log("Classe visible ?", classVisible);
+            console.log("Classe masque ?", classMasque);
+
+            if (idCategory === 0) { // Bouton "Tous" sélectionné
+                // suppression balise "masque" pour le projet
+                if (classMasque != false) {
+                    idProjet.classList.add("visible");
+                    idProjet.classList.remove("masque");
+                };
+            } else if (idCategoryprojet != idCategory) {
+                // ajout balise "masque" pour le projet
+                if (classMasque === false) {
+                    idProjet.classList.add("masque");
+                    idProjet.classList.remove("visible");
+                };
+            } else {
+                // suppression balise "masque" pour le projet
+                if (classMasque != false) {
+                    idProjet.classList.add("visible");
+                    idProjet.classList.remove("masque");
+                };
+            };
+        };
+        //genererProjets(projets);
+
+//            const projetsFiltres = projets.filter(function (projet) {
+//                return projet.category.name == nomBouton;
+//            });
             //console.log("projetsFiltres dans la boucle après tri =", projetsFiltres); // Vérif
             
-            // afficher la liste des catégories selon sélection bouton filtre
-            document.querySelector(".filtre").innerHTML = "";
-            genererFiltre(categories, nomBouton);
-            
+        // afficher la liste des catégories selon sélection bouton filtre
+        document.querySelector(".filtre").innerHTML = "";
+        genererFiltre(categories, nomBouton);
+    });
             // afficher la liste des projets selon sélection filtre
-            document.querySelector(".gallery").innerHTML = "";
-            genererProjets(projetsFiltres);
-            
+//            document.querySelector(".gallery").innerHTML = "";
+//            genererProjets(projetsFiltres);
+/*
         } else {
             const projetsFiltres = projets
             //console.log("projetsFiltres dans la boucle après tri =", projetsFiltres); // Vérif
@@ -167,9 +188,8 @@ for (let Bouton of boutonFiltrer) {
             // afficher la liste de tous les projets
             document.querySelector(".gallery").innerHTML = "";
             genererProjets(projetsFiltres);
-        }
-        //event.preventDefault();
-    });
+        }*/
+
 };
 
     //document.querySelector(".gallery").innerHTML = ""; //remplacer par display none en css

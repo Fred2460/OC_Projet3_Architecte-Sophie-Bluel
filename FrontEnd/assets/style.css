@@ -199,13 +199,15 @@ li:hover {
 
 .gallery img {
 	width: 100%;
-
 }
 
-/* a revoir !!!!!!!!!!!!!!!
-.gallery .invisib {
+.figure .masque {
 	display: none;
-} */
+}
+
+.figure .visible {
+	display: block;
+}
 
 #contact {
 	width: 50%;
