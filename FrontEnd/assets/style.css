@@ -206,14 +206,14 @@ li:hover {
 }*/
 
 /* Affichage ou masquage des projets selon sélection filtre */
-.image {
+.gallery figure {
 	display: block;
-	border: 2px black solid; /* test pour vérif visualisation */
+	border: 1px black solid; /* test pour vérif visualisation */
 }
-
+/*
 .image .masque {
 	display: none;
-}
+}*/
 
 #contact {
 	width: 50%;

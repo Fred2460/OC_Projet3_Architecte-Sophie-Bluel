@@ -22,7 +22,7 @@ function genererProjets(projets) {
         // Création d’une balise dédiée à un projet
         const idProjet = document.createElement("figure");
         idProjet.dataset.id = projets[i].id;
-        idProjet.dataset.idCategorie = projet.category.id;
+        idProjet.dataset.idCategorie = projet.category.id; // A vérifier pourquoi 2 fois définition d'idProjet XXXXXXXXXXXX
         // Création des balises 
         const imageProjet = document.createElement("img");
         imageProjet.src = projet.imageUrl;
@@ -39,13 +39,19 @@ function genererProjets(projets) {
         divGallery.appendChild(idProjet);
         idProjet.appendChild(imageProjet);
         idProjet.appendChild(titreProjet);
+        idProjet.appendChild(useridProjet); //suppl       
+        idProjet.appendChild(categoryidProjet); //suppl 
+        idProjet.appendChild(categorynameProjet); //suppl 
+
 
         // ajout d'une balise image pour affichage projet
-        idProjet.classList.add("image");
+        //idProjet.classList.add("image");
+
     };
+    console.log("projets fin fonction =", projets); // Vérif projets
 };
 
-console.log("projets =", projets); // Vérif
+console.log("projets après appel fonction =", projets); // Vérif
 
 document.querySelector(".gallery").innerHTML = "";
 genererProjets(projets);
@@ -78,7 +84,7 @@ if (categories.includes("Tous") == false) {
     }
     categories.push(boutonTous);
 }
-//console.log("categories initiales après =", categories); // Vérif
+console.log("categories initiales après =", categories); // Vérif
 
 function genererFiltre(categories, boutonOn) {
 
@@ -192,10 +198,14 @@ for (let Bouton of boutonFiltrer) {
             //console.log("projetsFiltres dans la boucle après tri =", projetsFiltres); // Vérif
             
         // afficher la liste des catégories selon sélection bouton filtre
+        
+        /* test 05/08/2024
         document.querySelector(".filtre").innerHTML = "";
         genererFiltre(categories, nomBouton);
         document.querySelector(".gallery").innerHTML = "";
         genererProjets(projets);
+        */
+
     });
             // afficher la liste des projets selon sélection filtre
 //            document.querySelector(".gallery").innerHTML = "";
