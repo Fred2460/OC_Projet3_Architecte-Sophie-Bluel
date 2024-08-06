@@ -210,10 +210,10 @@ li:hover {
 	display: block;
 	border: 1px black solid; /* test pour vérif visualisation */
 }
-/*
-.image .masque {
+
+.gallery figure.masque {
 	display: none;
-}*/
+}
 
 #contact {
 	width: 50%;
