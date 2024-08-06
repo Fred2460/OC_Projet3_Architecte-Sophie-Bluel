@@ -221,12 +221,20 @@ for (let Bouton of boutonFiltrer) {
                 //idProjet.classList.replace(".image.masque", ".image");
                 console.log("idCategoryprojet == idCategorybouton");
                 // test si element masqué
-                let idTest = "data-id=\""+iduniqueProjet+"\"";
+                //let elementTest = document.getElementById
+                let idTest = idProjet.getAttribute("data-columns"); //NOK
                 console.log("idTest =",idTest, " i=",i);
+                if (idTest != null) {
+                    idProjet.classList.add("masque");
+                    console.log("Element passé en masqué. i=", i);
+                };
+                //let idTest = "data-id=\""+iduniqueProjet+"\"";
+                //console.log("idTest =",idTest, " i=",i);
+
                 //console.log("iduniqueProjet=", iduniqueProjet);
                 //let elementTest = document.getElementById(idTest);
-                let elementTest = document.querySelector(idTest);
-                console.log("elementTest=", elementTest);
+                //let elementTest = document.querySelector(idTest);
+                //console.log("elementTest=", elementTest);
                 /*
                 //let elementavecMasque = document.getElementById(iduniqueProjet).getElementsByClassName("masque"); NOK
                 if (document.getElementById(iduniqueProjet).getElementsByClassName("masque") === null) {
@@ -245,8 +253,10 @@ for (let Bouton of boutonFiltrer) {
                 //idProjet.classList.replace(".image.masque", ".image.masque");
                 console.log("idCategoryprojet != idCategorybouton");
                 // test si element masqué
-                let elementavecMasque = document.getElementById(iduniqueProjet).getElementsByClassName("masque");
-                console.log("elementavecMasque =", elementavecMasque, " i=", i);
+                let idTest = idProjet.getAttribute("data-columns");
+                console.log("idTest =",idTest, " i=",i);
+                //let elementavecMasque = document.getElementById(iduniqueProjet).getElementsByClassName("masque");
+                //console.log("elementavecMasque =", elementavecMasque, " i=", i);
                 // suppression balise "masque" pour le projet
                 //if (classMasque != undefined) {
                 //    idProjet.classList.add("visible");
