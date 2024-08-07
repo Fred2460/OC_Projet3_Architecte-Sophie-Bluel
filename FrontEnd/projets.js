@@ -47,7 +47,6 @@ function genererProjets(projets) {
     };
 };
 
-
 document.querySelector(".gallery").innerHTML = "";
 genererProjets(projets);
 
@@ -79,9 +78,7 @@ if (categories.includes("Tous") == false) {
     categories.push(boutonTous);
 }
 
-
 function genererFiltre(categories, boutonOn) {
-
     // Tri des boutons Filtres selon l'id de la catégorie
     categories.sort((a, b) => a.id - b.id);
 
