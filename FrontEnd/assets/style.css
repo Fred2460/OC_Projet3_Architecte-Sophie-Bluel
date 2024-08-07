@@ -195,10 +195,13 @@ li:hover {
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
+	font-size: 16px;
 }
 
 .gallery img {
 	width: 100%;
+	border: 1px #c4c4c4 solid;
+	margin-bottom: 7px;
 }
 
 /*.figure {
@@ -208,7 +211,7 @@ li:hover {
 /* Affichage ou masquage des projets selon sélection filtre */
 .gallery figure {
 	display: block;
-	border: 1px black solid; /* test pour vérif visualisation */
+	/*border: 1px black solid; /* test pour vérif visualisation */
 }
 
 .gallery figure.masque {
