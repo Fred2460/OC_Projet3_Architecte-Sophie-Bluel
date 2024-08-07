@@ -96,6 +96,8 @@ function genererFiltre(categories, boutonOn) {
         nomCategorie.dataset.id = categorie.id; // A vérifier l'utilité de dataset XXXXXXXXXXXXXXXXXXXXXXX
         //nomCategorie.id = categorie.id;
         nomCategorie.id = categorie.name;
+        // Ajout balise href pour affiche titre des projets en haut de page
+        nomCategorie.setAttribute("href", "#portfolio");
 
         // Rattachement de la balise projet à la division Filtre et activation fond de couleur du bouton actif
         if (nomCategorie.id === boutonOn) {

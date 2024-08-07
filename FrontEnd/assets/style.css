@@ -204,14 +204,9 @@ li:hover {
 	margin-bottom: 7px;
 }
 
-/*.figure {
-	display: block;
-}*/
-
 /* Affichage ou masquage des projets selon sélection filtre */
 .gallery figure {
 	display: block;
-	/*border: 1px black solid; /* test pour vérif visualisation */
 }
 
 .gallery figure.masque {
