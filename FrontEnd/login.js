@@ -13,8 +13,10 @@ function genererLogin(email,password) {
     fetch('http://localhost:5678/api/users/login', {
         method: "POST",
         headers: {
-            "contentyType": "application/json",
-            "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyMTcxMzQ3OSwiZXhwIjoxNzIxNzk5ODc5fQ.GZvbjtRRbRV_m-WyMDRApeHpt_elcWgOl85NJikmYDo"
+            "contentType": "application/json"
+            //"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyMTcxMzQ3OSwiZXhwIjoxNzIxNzk5ODc5fQ.GZvbjtRRbRV_m-WyMDRApeHpt_elcWgOl85NJikmYDo",
+            //"Access-Control-Allow-Origin": "*",
+            //"Access-Control-Allow-Headers": "*"
         },
         body: {
             "email": email,
@@ -22,9 +24,7 @@ function genererLogin(email,password) {
             //    "email": "sophie.bluel@test.tld",
             //    "password": "S0phie"
         },
-        origin: {
-            "Access-Control-Allow-Origin": "*"
-        }
+        mode: "cors"
     })
 
     .then (response => {
