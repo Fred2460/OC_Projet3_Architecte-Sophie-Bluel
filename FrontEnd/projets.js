@@ -21,7 +21,7 @@ function genererProjets(projets) {
         const divGallery = document.querySelector(".gallery");
         // Création d’une balise dédiée à un projet
         const idProjet = document.createElement("figure");
-        //idProjet.dataset.id = projets[i].id;  // A vérifier l'utilité de dataset XXXXXXXXXXXXXXXXXXXXXXX 
+        //idProjet.dataset.id = projets[i].id; 
         idProjet.id = projets[i].id;
         idProjet.dataset.idCategorie = projet.category.id;
         // Création des balises 
@@ -90,7 +90,7 @@ function genererFiltre(categories, boutonOn) {
         // Création des balises des boutons filtre des catégories
         const nomCategorie = document.createElement("button");
         nomCategorie.innerText = categorie.name;
-        nomCategorie.dataset.id = categorie.id; // A vérifier l'utilité de dataset XXXXXXXXXXXXXXXXXXXXXXX
+        nomCategorie.dataset.id = categorie.id;
         //nomCategorie.id = categorie.id;
         nomCategorie.id = categorie.name;
         // Ajout balise href pour affiche titre des projets en haut de page
@@ -104,7 +104,7 @@ function genererFiltre(categories, boutonOn) {
             divFiltre.appendChild(nomCategorie);
             nomCategorie.classList.add("btn-filtre");
         }
-    }
+    };
 };
 
 let boutonOn = "Tous";
@@ -137,5 +137,8 @@ for (let Bouton of boutonFiltrer) {
                 idProjet.setAttribute("class", "image masque"); // changement classe en "image masque" pour masquer le projet
             };
         };
+        // repositionnement (en mode smooth) de l'affichage avec le titre des projets en haut de page 
+        const targetPortfolio = document.getElementById("portfolio");
+        targetPortfolio.scrollIntoView({behavior: "smooth"}); 
     });
 };

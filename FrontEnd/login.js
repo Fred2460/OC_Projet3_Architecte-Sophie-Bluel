@@ -14,7 +14,6 @@ function genererLogin(email,password) {
         method: "POST",
         headers: {
             "contentType": "application/json"
-            //"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyMTcxMzQ3OSwiZXhwIjoxNzIxNzk5ODc5fQ.GZvbjtRRbRV_m-WyMDRApeHpt_elcWgOl85NJikmYDo",
             //"Access-Control-Allow-Origin": "*",
             //"Access-Control-Allow-Headers": "*"
         },
@@ -35,7 +34,8 @@ function genererLogin(email,password) {
                 console.log("Succés :", data);
                 window.localStorage.setItem("usersId", data.userId); // stockage du userId récupéré
                 window.localStorage.setItem("token", data.token); // stockage du token récupéré
-                window.location.replace("index.html"); // redirection vers la page d'accueil
+
+                window.location.replace("index.html#tportfolio"); // redirection vers la page d'accueil à la balise des projets
             });
         } else if (response.status === 401) {
             console.log("Erreur 401: accès non autorisé");
@@ -49,7 +49,7 @@ function genererLogin(email,password) {
     
     .catch(error => {
         console.error("Il y a eu une erreur avec votre fetch :", error);
-        errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur";
+        errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur.";
     });
 };
 
