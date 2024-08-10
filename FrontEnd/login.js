@@ -39,7 +39,7 @@ console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm
 
 // ************** FONCTION CONNEXION *****************
 
-async function genererLogin(email,password) {
+async function genererLogin(email, password) {
     
     let req = await fetch('http://localhost:5678/api/users/login', {
         method: "POST",
@@ -48,7 +48,8 @@ async function genererLogin(email,password) {
             "contentType": "application/json"
             //"Access-Control-Allow-Origin": "*"
             //"Access-Control-Allow-Origin": "http://login.html" / "http://localhost:5678"
-            //"Access-Control-Allow-Origin": "http:/localhost:5500/login.html"
+            //"Access-Control-Allow-Origin": "http://127.0.0.1:5500"
+//            "Access-Control-Allow-Origin": "*"
             //"Access-Control-Allow-Headers": "*"
         },
         body: {
@@ -77,7 +78,7 @@ async function genererLogin(email,password) {
             // throw new Error("Réponse du réseau NOK");
         } else if (response.status === 404) {
             console.log("Erreur 404: utilisateur non trouvé");
-            errorMessage.textContent = "Erreur d'email ou de mot de passe";
+            errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur.";
         }
     })
     
@@ -92,7 +93,7 @@ async function genererLogin(email,password) {
 
 // Ecoute appuie bouton "Se connecter"
 loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault(); // empêche le comportement pas défaut
+    event.preventDefault(); // empêche le comportement pas défaut de rechargement de la page
 
     // récupération des valeurs du formulaire
     let email = emailInput.value;
