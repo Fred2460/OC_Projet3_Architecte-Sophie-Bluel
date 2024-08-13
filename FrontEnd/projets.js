@@ -6,7 +6,7 @@ let token = window.localStorage.getItem("token"); // récupération du token sto
 console.log("userId récupéré=", userId); // Vérif
 console.log("token récupéré=", token); // Vérif
 
-if (userId != null) { // cas "pas de user connecté"
+if (userId === null) { // cas "pas de user connecté"
     console.log("userId existant", userId);  // Vérif
 
 } else { // cas "user connecté"

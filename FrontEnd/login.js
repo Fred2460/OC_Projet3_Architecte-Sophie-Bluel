@@ -39,7 +39,7 @@ console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm
 // ************** FONCTION CONNEXION *****************
 
 async function genererLogin(email, password) {
-    /* simulation réponse requête ok pour dev autres actions
+
     let req = await fetch('http://localhost:5678/api/users/login', {
         method: "POST",
         mode: "cors",
@@ -81,11 +81,11 @@ async function genererLogin(email, password) {
         console.error("Il y a eu une erreur avec votre fetch :", error);
         errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur.";
     });
-    */
-   
+    
+   /*
     // simulation requête ok (suite)
     window.location.replace("index.html#portfolio"); // redirection vers la page d'accueil à la balise des projets
-
+    */
 };
 
 // ************** LANCEMENT CONNEXION *****************
