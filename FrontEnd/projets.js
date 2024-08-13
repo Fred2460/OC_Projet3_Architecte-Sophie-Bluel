@@ -1,3 +1,43 @@
+// ************** USERS *****************
+//Récupération du user eventuellement connecté dans le localStorage
+let userId = window.localStorage.getItem("userId"); // récupération du userId stocké
+let token = window.localStorage.getItem("token"); // récupération du token stocké
+
+console.log("userId récupéré=", userId); // Vérif
+console.log("token récupéré=", token); // Vérif
+
+if (userId != null) { // cas "pas de user connecté"
+    console.log("userId existant", userId);  // Vérif
+
+} else { // cas "user connecté"
+    console.log("userId inexistant"); // Vérif
+    // changement nav lien "Login" en "Logout"
+    const logLink = document.getElementById("logLink");
+    logLink.textContent = "Logout";
+    logLink.href = "#Logout";
+    // barre des filtres masquée
+    const affichageFiltre = document.getElementById("affichageFiltre");
+    affichageFiltre.classList.add("filtre-off");
+    // ajout icône et bouton "modifier"
+    const sectionPortfolio = document.querySelector("#portfolio h2");
+    console.log("section portfolio=", sectionPortfolio);
+    const lieniconeModifier = document.createElement("a");
+    const iconeModifier = document.createElement("i");
+    // iconeModifier.href = "#modifyProject";
+    lieniconeModifier.href = "#modifyProject";
+    iconeModifier.classList.add("fa-regular");
+    iconeModifier.classList.add("fa-pen-to-square");
+//    <i id="locat" class="fa-solid fa-location-dot fa-lg"></i>
+    const boutonModifier = document.createElement("a");
+    boutonModifier.innerText = "modifier";
+    boutonModifier.href = "#modifyProject";
+    console.log("boutonModifier=",boutonModifier);
+    sectionPortfolio.appendChild(lieniconeModifier);
+    lieniconeModifier.appendChild(iconeModifier);
+    sectionPortfolio.appendChild(boutonModifier);
+
+};
+
 // ************** PROJETS *****************
 //Récupération des projets eventuellement stockés dans le localStorage
 let projets = window.localStorage.getItem('projets');

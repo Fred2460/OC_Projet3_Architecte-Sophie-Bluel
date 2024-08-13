@@ -28,7 +28,6 @@ app.use((req, res, next) => {
 });
 */
 
-
 // ************** RECUPERATION DES DONNEES DE CONNEXION **************
 let loginForm = document.getElementById("loginForm");
 let emailInput = document.getElementById("email");
@@ -40,17 +39,12 @@ console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm
 // ************** FONCTION CONNEXION *****************
 
 async function genererLogin(email, password) {
-    
+    /* simulation réponse requête ok pour dev autres actions
     let req = await fetch('http://localhost:5678/api/users/login', {
         method: "POST",
         mode: "cors",
         headers: {
             "contentType": "application/json"
-            //"Access-Control-Allow-Origin": "*"
-            //"Access-Control-Allow-Origin": "http://login.html" / "http://localhost:5678"
-            //"Access-Control-Allow-Origin": "http://127.0.0.1:5500"
-//            "Access-Control-Allow-Origin": "*"
-            //"Access-Control-Allow-Headers": "*"
         },
         body: {
             "email": email,
@@ -58,13 +52,13 @@ async function genererLogin(email, password) {
             //    "email": "sophie.bluel@test.tld",
             //    "password": "S0phie"
         }
-
     })
 
     .then (response => {
         console.log("Réponse du serveur");
         if (response.ok) {
             return response.json()
+            
             .then (data => {
                 console.log("Succés :", data);
                 window.localStorage.setItem("usersId", data.userId); // stockage du userId récupéré
@@ -72,6 +66,7 @@ async function genererLogin(email, password) {
 
                 window.location.replace("index.html#tportfolio"); // redirection vers la page d'accueil à la balise des projets
             });
+            
         } else if (response.status === 401) {
             console.log("Erreur 401: accès non autorisé");
             errorMessage.textContent = "Erreur d'email ou de mot de passe";
@@ -86,7 +81,11 @@ async function genererLogin(email, password) {
         console.error("Il y a eu une erreur avec votre fetch :", error);
         errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur.";
     });
-        
+    */
+   
+    // simulation requête ok (suite)
+    window.location.replace("index.html#portfolio"); // redirection vers la page d'accueil à la balise des projets
+
 };
 
 // ************** LANCEMENT CONNEXION *****************
