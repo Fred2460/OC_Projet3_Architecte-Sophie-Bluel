@@ -10,10 +10,11 @@ console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm
 // ************** FONCTION CONNEXION *****************
 
 async function genererLogin(email, password) {
-    /* Simulation connexion user ok ********************************************************
-    let req = await fetch('http://localhost:5678/api/users/login', {
+    ///* Simulation connexion user ok
+    //let req = await fetch('http://localhost:5678/api/users/login', { // avant explication Slack
+    let req = await fetch('/api/users/login', {
         method: "POST",
-        mode: "cors",
+        //mode: "cors",
         headers: {
             "contentType": "application/json"
         },
@@ -52,11 +53,12 @@ async function genererLogin(email, password) {
         console.error("Il y a eu une erreur avec votre fetch :", error);
         errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur.";
     });
-    */
-   
-    // simulation requête ok (suite) ***************************************************************
+    //*/
+
+    /*
+    // simulation requête ok (suite)
     window.location.replace("index.html#portfolio"); // redirection vers la page d'accueil à la balise des projets
-    
+*/
 };
 
 // ************** LANCEMENT CONNEXION *****************

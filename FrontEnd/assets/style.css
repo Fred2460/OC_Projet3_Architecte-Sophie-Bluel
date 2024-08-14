@@ -147,6 +147,7 @@ li:hover {
 	
 }
 
+/* lien après login pour modification et ajout projets */
 #portfolio a {
 	vertical-align: middle;
 	color: black;
@@ -165,13 +166,42 @@ li:hover {
 	margin-right: 5px;
 }
 
+/* modal ajout projet */
+#modifyProject .fa-solid {
+	vertical-align: text-top;
+	color: black;
+	font-size: 14px;
+	font-weight: 400;
+}
+
+#modifyProject p {
+	width: 80%;
+	align-content: center;
+	justify-content: center;
+	border: 1px #B3B3B3 solid;
+}
+
+#modifyProject .btn-on {
+	align-content: center;
+	justify-content: center;
+	margin-top: 50px;
+	font-size: 16px;
+	font-weight: 700;
+	font-family: 'Syne';
+	border-radius: 25px;
+}
+
+#modifyProject .btn-on:hover {
+	background-color: #0E2F28;
+}
+
+/* Gestion des boutons filtres des projets */
 .filtre {
     display: flex;
 	justify-content: center;
     flex-wrap: wrap;
     gap: 15px;
 	margin-top: 50px;
-	/*margin-bottom: 50px;*/
 }
 
 .filtre.filtre-off {
@@ -183,12 +213,16 @@ li:hover {
 	font-weight: 700;
 	font-family: 'Syne';
 	border-radius: 25px;
+	color: white;
+	background-color: #1D6154;
+    border: 1px #1D6154 solid;
+	padding: 0 20px 0 20px;
+	height: 37px;
 }
 
 /* passage de la souris sur le bouton */
 .btn-filtre:hover {
 	color: white;
-	/*background-color: #1D6154;*/
 	background-color: #0E2F28;
 	border: 1px #1D6154 solid;
 	padding: 0 20px 0 20px;

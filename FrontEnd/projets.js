@@ -3,14 +3,15 @@
 let userId = window.localStorage.getItem("userId"); // récupération du userId stocké
 let token = window.localStorage.getItem("token"); // récupération du token stocké
 
-/* simulation connexion ok *************************************************
+///* simulation connexion ok *************************************************
 console.log("userId récupéré=", userId); // Vérif
 console.log("token récupéré=", token); // Vérif
-*/
+//*/
+/*
 // simulation connexion ok *************************************************
 userId = 1;
 token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyMzY0NDk2OCwiZXhwIjoxNzIzNzMxMzY4fQ.oYGh7MRgQla_mjvFXkSveI3fL1deKtHVEAyniSuV414";
-
+*/
 if (userId === null) { // cas "pas de user connecté"
     console.log("userId existant", userId);  // Vérif
 
