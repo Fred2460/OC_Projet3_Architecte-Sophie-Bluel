@@ -37,17 +37,6 @@ const errorHandler = error => {
 
 const server = http.createServer(app);
 
-// Ajout pour résoudre l'erreur CORS lors de la requête user
-server.on('request', (req, res) => {
-	//res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5500/');
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	// Autres en-têtes CORS (si nécessaire)
-	res.setHeader('contentSecurityPolicy.cors.disable', 'true'); // essai doc MDN
-	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-	res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-	// ...
-});
-
 server.on('error', errorHandler);
 server.on('listening', () => {
 	const address = server.address();

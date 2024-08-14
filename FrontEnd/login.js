@@ -1,32 +1,3 @@
-/*
-// ************** CONFIGURATION DES ENTETES CORS *********************
-const server = require("http").createServer((req, res) => {
-    // Autoriser les requêtes provenant de tous les domaines
-    res.setHeader('Access-Control-Allow-Origin', '*');
-  
-    // Autoriser les méthodes suivantes :
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  
-    // Autoriser les en-têtes suivants :
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  
-  
-    // Continuer de traiter la requête...
-  });
-  
-  server.listen(5678, () => {
-    console.log('API en écoute sur le port 5678');
-  });
-*/
-
-/*
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:5500/login.html'); // Remplacez par l'origine autorisée
-    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
-*/
 
 // ************** RECUPERATION DES DONNEES DE CONNEXION **************
 let loginForm = document.getElementById("loginForm");
@@ -39,7 +10,7 @@ console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm
 // ************** FONCTION CONNEXION *****************
 
 async function genererLogin(email, password) {
-
+    /* Simulation connexion user ok ********************************************************
     let req = await fetch('http://localhost:5678/api/users/login', {
         method: "POST",
         mode: "cors",
@@ -81,11 +52,11 @@ async function genererLogin(email, password) {
         console.error("Il y a eu une erreur avec votre fetch :", error);
         errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur.";
     });
-    
-   /*
-    // simulation requête ok (suite)
-    window.location.replace("index.html#portfolio"); // redirection vers la page d'accueil à la balise des projets
     */
+   
+    // simulation requête ok (suite) ***************************************************************
+    window.location.replace("index.html#portfolio"); // redirection vers la page d'accueil à la balise des projets
+    
 };
 
 // ************** LANCEMENT CONNEXION *****************

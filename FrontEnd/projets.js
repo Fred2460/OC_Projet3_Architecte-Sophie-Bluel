@@ -3,8 +3,13 @@
 let userId = window.localStorage.getItem("userId"); // récupération du userId stocké
 let token = window.localStorage.getItem("token"); // récupération du token stocké
 
+/* simulation connexion ok *************************************************
 console.log("userId récupéré=", userId); // Vérif
 console.log("token récupéré=", token); // Vérif
+*/
+// simulation connexion ok *************************************************
+userId = 1;
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyMzY0NDk2OCwiZXhwIjoxNzIzNzMxMzY4fQ.oYGh7MRgQla_mjvFXkSveI3fL1deKtHVEAyniSuV414";
 
 if (userId === null) { // cas "pas de user connecté"
     console.log("userId existant", userId);  // Vérif
@@ -23,11 +28,9 @@ if (userId === null) { // cas "pas de user connecté"
     console.log("section portfolio=", sectionPortfolio);
     const lieniconeModifier = document.createElement("a");
     const iconeModifier = document.createElement("i");
-    // iconeModifier.href = "#modifyProject";
     lieniconeModifier.href = "#modifyProject";
     iconeModifier.classList.add("fa-regular");
     iconeModifier.classList.add("fa-pen-to-square");
-//    <i id="locat" class="fa-solid fa-location-dot fa-lg"></i>
     const boutonModifier = document.createElement("a");
     boutonModifier.innerText = "modifier";
     boutonModifier.href = "#modifyProject";
