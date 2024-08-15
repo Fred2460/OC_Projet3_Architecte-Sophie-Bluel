@@ -4,7 +4,7 @@ let emailInput = document.getElementById("email");
 let passwordInput = document.getElementById("password");
 let errorMessage = document.getElementById("errorMessage");
 
-console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm, emailInput, passwordInput); // Vérif
+//console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm, emailInput, passwordInput); // Vérif
 
 /*
 // ************** USER *****************
@@ -21,6 +21,7 @@ function genererLogin(email, password) {
     console.log("valeurs envoyées (email, password) Function=", email, password); // Vérif
     fetch("http://localhost:5678/api/users/login", {
         method: "POST",
+        mode: "cors",
         headers: {
             "accept": "application/json",
             "content-type": "application/json"
@@ -50,7 +51,7 @@ function genererLogin(email, password) {
 
     .catch(error => {
         errorMessage.textContent = "Erreur d'accès au site (catch), contactez votre administrateur.";
-        console.error("Il y a eu une erreur avec votre fetch :", error, " - ", error.status, error.statusText);
+        //console.error("Il y a eu une erreur avec votre fetch :", error, " - ", error.status, error.statusText);
     })
 
 };

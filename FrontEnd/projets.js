@@ -12,7 +12,7 @@ token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyMzY0ND
 */
 
 let userLogin = false;
-if (userIdLogin > "0" || tokenLogin.length === "0") { // cas "pas de user connecté"
+if (userIdLogin > 0 || tokenLogin.length === 0 || userIdLogin === null || tokenLogin === null ) { // cas "pas de user connecté"
     console.log("userId ou token inexistant", userIdLogin, tokenLogin);  // Vérif
     userLogin = false;
 
