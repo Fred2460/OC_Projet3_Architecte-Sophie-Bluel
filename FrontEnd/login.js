@@ -9,57 +9,49 @@ console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm
 
 // ************** FONCTION CONNEXION *****************
 
-async function genererLogin(email, password) {
+function genererLogin(email, password) {
     ///* Simulation connexion user ok
-    //let req = await fetch('http://localhost:5678/api/users/login', { // avant explication Slack
-    let req = await fetch('/api/users/login', {
+    console.log("valeurs envoyées (email, password) Function=", email, password); // Vérif
+    fetch('/users/login', {
         method: "POST",
-        //mode: "cors",
         headers: {
-            "contentType": "application/json"
+            "accept": "application/json",
+            "contentType": "application/json",
         },
-        body: {
-            "email": email,
-            "password": password
-            //    "email": "sophie.bluel@test.tld",
-            //    "password": "S0phie"
-        }
+        body: JSON.stringify({ email, password }),
+        // "sophie.bluel@test.tld" "S0phie"
     })
 
     .then (response => {
-        console.log("Réponse du serveur");
-        if (response.ok) {
-            return response.json()
-            
-            .then (data => {
-                console.log("Succés :", data);
-                window.localStorage.setItem("usersId", data.userId); // stockage du userId récupéré
-                window.localStorage.setItem("token", data.token); // stockage du token récupéré
+        if (!response.ok) {
+            errorMessage.textContent = "Erreur d'accès au site (erreur " + response.status + "), contactez votre administrateur.";
+            throw new Error("http error $(response.status) - $(response.statusText)");
 
-                window.location.replace("index.html#tportfolio"); // redirection vers la page d'accueil à la balise des projets
-            });
-            
-        } else if (response.status === 401) {
-            console.log("Erreur 401: accès non autorisé");
-            errorMessage.textContent = "Erreur d'email ou de mot de passe";
-            // throw new Error("Réponse du réseau NOK");
-        } else if (response.status === 404) {
-            console.log("Erreur 404: utilisateur non trouvé");
-            errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur.";
         }
-    })
+        return response.json()
+    })    
     
+    .then (data => {
+        console.log("Succés :", data);
+        window.localStorage.setItem("usersId", data.userId); // stockage du userId récupéré
+        window.localStorage.setItem("token", data.token); // stockage du token récupéré
+    
+        window.location.replace("index.html#tportfolio"); // redirection vers la page d'accueil à la balise des projets
+    })
+
     .catch(error => {
         console.error("Il y a eu une erreur avec votre fetch :", error);
-        errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur.";
-    });
+    })
+
+};
+
     //*/
 
     /*
     // simulation requête ok (suite)
     window.location.replace("index.html#portfolio"); // redirection vers la page d'accueil à la balise des projets
 */
-};
+
 
 // ************** LANCEMENT CONNEXION *****************
 
@@ -70,7 +62,7 @@ loginForm.addEventListener("submit", async (event) => {
     // récupération des valeurs du formulaire
     let email = emailInput.value;
     let password = passwordInput.value;
-    console.log("valeurs envoyées (email, password)=", email, password); // Vérif
+    console.log("valeurs envoyées (email, password) Event=", email, password); // Vérif
 
     let response = genererLogin(email, password);
     console.log("Réponse du serveur=", response); // Vérif
