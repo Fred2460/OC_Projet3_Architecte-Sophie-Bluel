@@ -1,22 +1,24 @@
-// ************** USERS *****************
+// ************** USER *****************
 //Récupération du user eventuellement connecté dans le localStorage
-let userId = window.localStorage.getItem("userId"); // récupération du userId stocké
-let token = window.localStorage.getItem("token"); // récupération du token stocké
+let userIdLogin = window.localStorage.getItem("userId"); // récupération du userId stocké
+let tokenLogin = window.localStorage.getItem("token"); // récupération du token stocké
+console.log("userId récupéré local storage =", userIdLogin); // Vérif
+console.log("token récupéré local storage =", tokenLogin); // Vérif
 
-///* simulation connexion ok *************************************************
-console.log("userId récupéré=", userId); // Vérif
-console.log("token récupéré=", token); // Vérif
-//*/
 /*
 // simulation connexion ok *************************************************
 userId = 1;
 token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyMzY0NDk2OCwiZXhwIjoxNzIzNzMxMzY4fQ.oYGh7MRgQla_mjvFXkSveI3fL1deKtHVEAyniSuV414";
 */
-if (userId === null) { // cas "pas de user connecté"
-    console.log("userId existant", userId);  // Vérif
+
+let userLogin = false;
+if (userIdLogin > "0" || tokenLogin.length === "0") { // cas "pas de user connecté"
+    console.log("userId ou token inexistant", userIdLogin, tokenLogin);  // Vérif
+    userLogin = false;
 
 } else { // cas "user connecté"
-    console.log("userId inexistant"); // Vérif
+    console.log("userId et token existants", userIdLogin, tokenLogin); // Vérif
+    userLogin = true;
     // changement nav lien "Login" en "Logout"
     const logLink = document.getElementById("logLink");
     logLink.textContent = "Logout";
@@ -26,7 +28,7 @@ if (userId === null) { // cas "pas de user connecté"
     affichageFiltre.classList.add("filtre-off");
     // ajout icône et bouton "modifier"
     const sectionPortfolio = document.querySelector("#portfolio h2");
-    console.log("section portfolio=", sectionPortfolio);
+    console.log("section portfolio=", sectionPortfolio); // Vérif
     const lieniconeModifier = document.createElement("a");
     const iconeModifier = document.createElement("i");
     lieniconeModifier.href = "#modifyProject";
@@ -35,7 +37,7 @@ if (userId === null) { // cas "pas de user connecté"
     const boutonModifier = document.createElement("a");
     boutonModifier.innerText = "modifier";
     boutonModifier.href = "#modifyProject";
-    console.log("boutonModifier=",boutonModifier);
+    console.log("boutonModifier=",boutonModifier); // Vérif
     sectionPortfolio.appendChild(lieniconeModifier);
     lieniconeModifier.appendChild(iconeModifier);
     sectionPortfolio.appendChild(boutonModifier);
@@ -44,11 +46,11 @@ if (userId === null) { // cas "pas de user connecté"
 
 // ************** PROJETS *****************
 //Récupération des projets eventuellement stockés dans le localStorage
-let projets = window.localStorage.getItem('projets');
+let projets = window.localStorage.getItem("projets");
 
 if (projets === null) {
     // Récupération des projets depuis l'API
-    const reponse = await fetch('http://localhost:5678/api/works');
+    const reponse = await fetch("http://localhost:5678/api/works");
     projets = await reponse.json();
     // Transformation des projets en JSON
     const valeurProjets = JSON.stringify(projets);
@@ -97,11 +99,11 @@ genererProjets(projets);
 
 // ************** CATEGORIES *****************
 //Récupération des catégories éventuellement stockées dans le localStorage
-let categories = window.localStorage.getItem('categories');
+let categories = window.localStorage.getItem("categories");
 
 if (categories === null) {
     // Récupération des catégories depuis l'API
-    const reponse = await fetch('http://localhost:5678/api/categories')
+    const reponse = await fetch("http://localhost:5678/api/categories")
     categories = await reponse.json();
     // Transformation des catégories en JSON
     const valeurCategories = JSON.stringify(categories);
@@ -151,10 +153,12 @@ function genererFiltre(categories, boutonOn) {
     };
 };
 
-let boutonOn = "Tous";
-document.querySelector(".filtre").innerHTML = "";
-genererFiltre(categories, boutonOn);
 
+/*if (userLogin === false) {*/
+    let boutonOn = "Tous";
+    document.querySelector(".filtre").innerHTML = "";
+    genererFiltre(categories, boutonOn);
+/*};*/
 
 // ************** GESTION DES APPUIS BOUTONS FILTRE *****************
 

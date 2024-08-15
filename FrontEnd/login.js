@@ -1,4 +1,3 @@
-
 // ************** RECUPERATION DES DONNEES DE CONNEXION **************
 let loginForm = document.getElementById("loginForm");
 let emailInput = document.getElementById("email");
@@ -7,16 +6,24 @@ let errorMessage = document.getElementById("errorMessage");
 
 console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm, emailInput, passwordInput); // Vérif
 
-// ************** FONCTION CONNEXION *****************
+/*
+// ************** USER *****************
+//Initialisation du user dans le localStorage
+let userIdLogin = window.localStorage.setItem("userId", null); // initialisation du userId dans local stockage
+let tokenLogin = window.localStorage.setItem("token", null); // initialisation du token dans local stockage
+console.log("userId initialisé dans local storage =", userIdLogin); // Vérif
+console.log("token initialisé dans local storage =", tokenLogin); // Vérif
+*/
 
+// ************** FONCTION CONNEXION *****************
 function genererLogin(email, password) {
     ///* Simulation connexion user ok
     console.log("valeurs envoyées (email, password) Function=", email, password); // Vérif
-    fetch('/users/login', {
+    fetch("http://localhost:5678/api/users/login", {
         method: "POST",
         headers: {
             "accept": "application/json",
-            "contentType": "application/json",
+            "content-type": "application/json"
         },
         body: JSON.stringify({ email, password }),
         // "sophie.bluel@test.tld" "S0phie"
@@ -25,22 +32,25 @@ function genererLogin(email, password) {
     .then (response => {
         if (!response.ok) {
             errorMessage.textContent = "Erreur d'accès au site (erreur " + response.status + "), contactez votre administrateur.";
-            throw new Error("http error $(response.status) - $(response.statusText)");
-
         }
+        //console.log("userId récupéré =", userId, data.userId);
+        //console.log("token récupéré =", token, data.token);
+        console.log("userId récupéré =", userId);
+        console.log("token récupéré =", token);
         return response.json()
     })    
     
     .then (data => {
         console.log("Succés :", data);
-        window.localStorage.setItem("usersId", data.userId); // stockage du userId récupéré
+        window.localStorage.setItem("userId", data.userId); // stockage du userId récupéré
         window.localStorage.setItem("token", data.token); // stockage du token récupéré
     
         window.location.replace("index.html#tportfolio"); // redirection vers la page d'accueil à la balise des projets
     })
 
     .catch(error => {
-        console.error("Il y a eu une erreur avec votre fetch :", error);
+        errorMessage.textContent = "Erreur d'accès au site (catch), contactez votre administrateur.";
+        console.error("Il y a eu une erreur avec votre fetch :", error, " - ", error.status, error.statusText);
     })
 
 };
