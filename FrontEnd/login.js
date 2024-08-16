@@ -6,18 +6,9 @@ let errorMessage = document.getElementById("errorMessage");
 
 //console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm, emailInput, passwordInput); // Vérif
 
-/*
-// ************** USER *****************
-//Initialisation du user dans le localStorage
-let userIdLogin = window.localStorage.setItem("userId", null); // initialisation du userId dans local stockage
-let tokenLogin = window.localStorage.setItem("token", null); // initialisation du token dans local stockage
-console.log("userId initialisé dans local storage =", userIdLogin); // Vérif
-console.log("token initialisé dans local storage =", tokenLogin); // Vérif
-*/
-
 // ************** FONCTION CONNEXION *****************
 function genererLogin(email, password) {
-    ///* Simulation connexion user ok
+    /* Simulation connexion user ok
     console.log("valeurs envoyées (email, password) Function=", email, password); // Vérif
     fetch("http://localhost:5678/api/users/login", {
         method: "POST",
@@ -53,15 +44,14 @@ function genererLogin(email, password) {
         errorMessage.textContent = "Erreur d'accès au site (catch), contactez votre administrateur.";
         //console.error("Il y a eu une erreur avec votre fetch :", error, " - ", error.status, error.statusText);
     })
-
-};
-
-    //*/
-
-    /*
+    */
+    ///*
     // simulation requête ok (suite)
+    window.localStorage.setItem("userId", "1"); // stockage du userId forcé
+    window.localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4"); // stockage du token forcé
     window.location.replace("index.html#portfolio"); // redirection vers la page d'accueil à la balise des projets
-*/
+    //*/
+};
 
 
 // ************** LANCEMENT CONNEXION *****************

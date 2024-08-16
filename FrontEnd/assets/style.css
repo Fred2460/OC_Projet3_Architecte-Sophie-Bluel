@@ -90,6 +90,12 @@ h2 {
 	color: #1D6154;
 }
 
+h3 {
+	font-family: 'Work Sans';
+	font-weight: 400;
+	font-size: 26px;
+}
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -167,11 +173,48 @@ li:hover {
 }
 
 /* modal ajout projet */
-#modifyProject .fa-solid {
-	vertical-align: text-top;
-	color: black;
-	font-size: 14px;
-	font-weight: 400;
+.modal {
+	position: fixed;
+	inset: 0% 0% 0% 0%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+	background: rgba(0, 0, 0, 0.3);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+#modifyProject h3 {
+	margin-bottom: 15px;
+}
+
+.modal-wrapper {
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/*align-items: flex-start;*/
+	width: 630px;
+	height: 688px;
+	max-width: calc(100vh - 20px);
+	max-height: calc(100vh - 20px);
+	padding: 20px;
+	border-radius: 10px;
+	background-color: white;
+}
+
+.modal-masque {
+	display: none;
+}
+
+#modifyProject i {
+	/* quel fonction pour aligner à droite ********************/
+	color: red;
+	font-size: large;
+	margin-bottom: 10px;
 }
 
 #modifyProject p {
