@@ -8,7 +8,7 @@ let errorMessage = document.getElementById("errorMessage");
 
 // ************** FONCTION CONNEXION *****************
 function genererLogin(email, password) {
-    /* Simulation connexion user ok
+    // Simulation connexion user ok
     console.log("valeurs envoyées (email, password) Function=", email, password); // Vérif
     fetch("http://localhost:5678/api/users/login", {
         method: "POST",
@@ -21,18 +21,20 @@ function genererLogin(email, password) {
         // "sophie.bluel@test.tld" "S0phie"
     })
 
-    .then (response => {
-        if (!response.ok) {
-            errorMessage.textContent = "Erreur d'accès au site (erreur " + response.status + "), contactez votre administrateur.";
-        }
+    //.then (response => {
+    .then((response) => response.json())    
+              
         //console.log("userId récupéré =", userId, data.userId);
         //console.log("token récupéré =", token, data.token);
-        console.log("userId récupéré =", userId);
-        console.log("token récupéré =", token);
-        return response.json()
-    })    
+        //console.log("userId récupéré =", userId);
+        //console.log("token récupéré =", token);
+        //return response.json()
+    //})    
     
     .then (data => {
+        if (!data.ok) {
+            errorMessage.textContent = "Erreur d'accès au site (erreur " + data.status + "), contactez votre administrateur.";
+        }
         console.log("Succés :", data);
         window.localStorage.setItem("userId", data.userId); // stockage du userId récupéré
         window.localStorage.setItem("token", data.token); // stockage du token récupéré
@@ -42,15 +44,15 @@ function genererLogin(email, password) {
 
     .catch(error => {
         errorMessage.textContent = "Erreur d'accès au site (catch), contactez votre administrateur.";
-        //console.error("Il y a eu une erreur avec votre fetch :", error, " - ", error.status, error.statusText);
+        console.error("Il y a eu une erreur avec votre fetch :", error, " - ", error.status, error.statusText);
     })
-    */
-    ///*
+    //*/
+    /*
     // simulation requête ok (suite)
     window.localStorage.setItem("userId", "1"); // stockage du userId forcé
     window.localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4"); // stockage du token forcé
     window.location.replace("index.html#portfolio"); // redirection vers la page d'accueil à la balise des projets
-    //*/
+    */
 };
 
 

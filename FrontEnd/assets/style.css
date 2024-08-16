@@ -210,11 +210,19 @@ li:hover {
 	display: none;
 }
 
+#galeriePhoto {
+	position: absolute;
+}
+
 #modifyProject i {
 	/* quel fonction pour aligner à droite ********************/
 	color: red;
 	font-size: large;
 	margin-bottom: 10px;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	cursor: pointer;
 }
 
 #modifyProject p {
