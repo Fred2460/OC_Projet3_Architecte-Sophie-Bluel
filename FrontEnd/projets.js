@@ -2,8 +2,8 @@
 //Récupération du user eventuellement connecté dans le localStorage
 let userIdLogin = window.localStorage.getItem("userId"); // récupération du userId stocké
 let tokenLogin = window.localStorage.getItem("token"); // récupération du token stocké
-console.log("userId récupéré local storage =", userIdLogin); // Vérif
-console.log("token récupéré local storage =", tokenLogin); // Vérif
+console.log("userIdLogin récupéré local storage =", userIdLogin); // Vérif
+console.log("tokenLogin récupéré local storage =", tokenLogin); // Vérif
 
 /*
 // simulation connexion ok *************************************************
@@ -12,7 +12,7 @@ token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyMzY0ND
 */
 
 let userLogin = false;
-if (userIdLogin > 0 || tokenLogin.length === 0 || userIdLogin === null || tokenLogin === null ) { // cas "pas de user connecté"
+if ((userIdLogin === "null") || (tokenLogin === "null")) { // cas "pas de user connecté"
     console.log("userId ou token inexistant", userIdLogin, tokenLogin);  // Vérif
     userLogin = false;
 
