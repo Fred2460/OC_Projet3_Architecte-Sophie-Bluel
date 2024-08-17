@@ -4,6 +4,7 @@ let userIdLogin = window.localStorage.getItem("userId"); // récupération du us
 let tokenLogin = window.localStorage.getItem("token"); // récupération du token stocké
 console.log("userIdLogin récupéré local storage =", userIdLogin); // Vérif
 console.log("tokenLogin récupéré local storage =", tokenLogin); // Vérif
+
 //tokenLogin = null;
 /*
 // simulation connexion ok *************************************************
@@ -12,7 +13,7 @@ token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyMzY0ND
 */
 
 let userLogin = false;
-if ((userIdLogin === null) || (tokenLogin === null)) { // cas "pas de user connecté"
+if ((userIdLogin === "null") || (tokenLogin === "null")) { // cas "pas de user connecté"
     console.log("userId ou token inexistant", userIdLogin, tokenLogin);  // Vérif
     userLogin = false;
 
@@ -190,3 +191,22 @@ for (let Bouton of boutonFiltrer) {
         targetPortfolio.scrollIntoView({behavior: "smooth"}); 
     });
 };
+
+// ********************* LOGOUT ********************
+// changement nav lien "Logout" en "Login"
+const logLink = document.getElementById("logLink");
+logLink.addEventListener("click", function () {
+    console.log("logLink =", logLink);
+    if (logLink.textContent === "Logout") {
+        logLink.textContent = "Login";
+        logLink.href = "index.html";
+        window.localStorage.setItem("userId", null); // réinitialisation du userId stocké
+        window.localStorage.setItem("token", null); // réinitialisation du token stocké
+        userIdLogin = "null";
+        tokenLogin = "null";
+        console.log("userIdLogin récupéré local storage (dans if) =", userIdLogin); // Vérif
+        console.log("tokenLogin récupéré local storage (dans if) =", tokenLogin); // Vérif
+    }
+});
+console.log("userIdLogin récupéré local storage (après if Logout) =", userIdLogin); // Vérif
+console.log("tokenLogin récupéré local storage (après if Logout) =", tokenLogin); // Vérif

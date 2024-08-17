@@ -71,24 +71,3 @@ loginForm.addEventListener("submit", async (event) => {
     console.log("Réponse du serveur=", response); // Vérif
 });
 
-/*
-console.log("Réponse du serveur=", response); // Vérif
-const useridLogin = response.userId;
-const usertokenLogin = response.token;
-console.log("useridLogin=", useridLogin); // Vérif
-console.log("usertokenLogin=", usertokenLogin); // Vérif
-*/
-
-    //users = await reponse.json();
-    // Transformation des projets en JSON
-    //const valeurUsers = JSON.stringify(users);
-    //console.log("users=", users); // Vérif
-    //console.log("valeurUsers=", valeurUsers); // Vérif
-    //const useridLogin = valeurUsers.userId;
-    //const usertokenLogin = valeurUsers.token;
-    
-    // Stockage des informations dans le localStorage
-    //window.localStorage.setItem("users", valeurUsers);
-//} else {
-//    users = JSON.parse(users);
-//};
