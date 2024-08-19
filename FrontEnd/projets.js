@@ -4,7 +4,7 @@ let userIdLogin = window.localStorage.getItem("userId"); // récupération du us
 let tokenLogin = window.localStorage.getItem("token"); // récupération du token stocké
 
 let userLogin = false;
-if ((tokenLogin === "null") || (tokenLogin === "undefined")) { // cas "pas de user connecté"
+if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user connecté"
     console.log("userIdLogin ou tokenLogin inexistant:", userIdLogin, tokenLogin);  // Vérif
     userLogin = false;
 
