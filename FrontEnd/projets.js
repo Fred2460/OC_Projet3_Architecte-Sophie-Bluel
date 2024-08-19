@@ -2,23 +2,14 @@
 //Récupération du user eventuellement connecté dans le localStorage
 let userIdLogin = window.localStorage.getItem("userId"); // récupération du userId stocké
 let tokenLogin = window.localStorage.getItem("token"); // récupération du token stocké
-console.log("userIdLogin récupéré local storage =", userIdLogin); // Vérif
-console.log("tokenLogin récupéré local storage =", tokenLogin); // Vérif
-
-//tokenLogin = null;
-/*
-// simulation connexion ok *************************************************
-userId = 1;
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyMzY0NDk2OCwiZXhwIjoxNzIzNzMxMzY4fQ.oYGh7MRgQla_mjvFXkSveI3fL1deKtHVEAyniSuV414";
-*/
 
 let userLogin = false;
-if ((userIdLogin === "null") || (tokenLogin === "null")) { // cas "pas de user connecté"
-    console.log("userId ou token inexistant", userIdLogin, tokenLogin);  // Vérif
+if ((tokenLogin === "null") || (tokenLogin === "undefined")) { // cas "pas de user connecté"
+    console.log("userIdLogin ou tokenLogin inexistant:", userIdLogin, tokenLogin);  // Vérif
     userLogin = false;
 
 } else { // cas "user connecté"
-    console.log("userId et token existants", userIdLogin, tokenLogin); // Vérif
+    console.log("userIdLogin ou tokenLogin existants:", userIdLogin, tokenLogin); // Vérif
     userLogin = true;
     // changement nav lien "Login" en "Logout"
     const logLink = document.getElementById("logLink");
@@ -154,12 +145,10 @@ function genererFiltre(categories, boutonOn) {
     };
 };
 
+let boutonOn = "Tous";
+document.querySelector(".filtre").innerHTML = "";
+genererFiltre(categories, boutonOn);
 
-/*if (userLogin === false) {*/
-    let boutonOn = "Tous";
-    document.querySelector(".filtre").innerHTML = "";
-    genererFiltre(categories, boutonOn);
-/*};*/
 
 // ************** GESTION DES APPUIS BOUTONS FILTRE *****************
 
@@ -200,13 +189,7 @@ logLink.addEventListener("click", function () {
     if (logLink.textContent === "Logout") {
         logLink.textContent = "Login";
         logLink.href = "index.html";
-        window.localStorage.setItem("userId", null); // réinitialisation du userId stocké
-        window.localStorage.setItem("token", null); // réinitialisation du token stocké
-        userIdLogin = "null";
-        tokenLogin = "null";
-        console.log("userIdLogin récupéré local storage (dans if) =", userIdLogin); // Vérif
-        console.log("tokenLogin récupéré local storage (dans if) =", tokenLogin); // Vérif
+        window.localStorage.removeItem("userId"); // réinitialisation du userId stocké
+        window.localStorage.removeItem("token"); // réinitialisation du token stocké
     }
 });
-console.log("userIdLogin récupéré local storage (après if Logout) =", userIdLogin); // Vérif
-console.log("tokenLogin récupéré local storage (après if Logout) =", tokenLogin); // Vérif

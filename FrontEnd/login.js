@@ -4,8 +4,6 @@ let emailInput = document.getElementById("email");
 let passwordInput = document.getElementById("password");
 let errorMessage = document.getElementById("errorMessage");
 
-//console.log("Elements du DOM sélectionnés (loginForm, email, mdp)=", loginForm, emailInput, passwordInput); // Vérif
-
 // ************** FONCTION CONNEXION *****************
 function genererLogin(email, password) {
     // Simulation connexion user ok
@@ -21,38 +19,29 @@ function genererLogin(email, password) {
         // "sophie.bluel@test.tld" "S0phie"
     })
 
-    //.then (response => {
-    .then((response) => response.json())    
-              
-        //console.log("userId récupéré =", userId, data.userId);
-        //console.log("token récupéré =", token, data.token);
-        //console.log("userId récupéré =", userId);
-        //console.log("token récupéré =", token);
-        //return response.json()
-    //})    
-    
-    .then (data => {
-        if (!data.ok) {
-            errorMessage.textContent = "Erreur d'accès au site (erreur " + data.status + "), contactez votre administrateur.";
+    .then((response) => {
+        if (!response.status) {
+            throw new error("Erreur http ! Statut: " + response.status);
         }
-        console.log("Succés :", data);
+        return response.json();
+    })
+
+    .then (data => {
+        JSON.stringify(data)
+        console.log("data =", data); // Vérif
         window.localStorage.setItem("userId", data.userId); // stockage du userId récupéré
         window.localStorage.setItem("token", data.token); // stockage du token récupéré
-    
+        console.log("userId =", data.userId); // Vérif
+        console.log("token =", data.token); // Vérif
         window.location.replace("index.html#tportfolio"); // redirection vers la page d'accueil à la balise des projets
     })
 
     .catch(error => {
         errorMessage.textContent = "Erreur d'accès au site (catch), contactez votre administrateur.";
-        console.error("Il y a eu une erreur avec votre fetch :", error, " - ", error.status, error.statusText);
+        window.localStorage.removeItem("userId"); // réinitialisation du userId stocké
+        window.localStorage.removeItem("token"); // réinitialisation du token stocké
     })
-    //*/
-    /*
-    // simulation requête ok (suite)
-    window.localStorage.setItem("userId", "1"); // stockage du userId forcé
-    window.localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4"); // stockage du token forcé
-    window.location.replace("index.html#portfolio"); // redirection vers la page d'accueil à la balise des projets
-    */
+    
 };
 
 
@@ -65,9 +54,6 @@ loginForm.addEventListener("submit", async (event) => {
     // récupération des valeurs du formulaire
     let email = emailInput.value;
     let password = passwordInput.value;
-    console.log("valeurs envoyées (email, password) Event=", email, password); // Vérif
+    genererLogin(email, password);
 
-    let response = genererLogin(email, password);
-    console.log("Réponse du serveur=", response); // Vérif
 });
-
