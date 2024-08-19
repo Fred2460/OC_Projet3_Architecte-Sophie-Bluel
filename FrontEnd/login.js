@@ -20,20 +20,23 @@ function genererLogin(email, password) {
     })
 
     .then((response) => {
-        if (!response.status) {
-            throw new error("Erreur http ! Statut: " + response.status);
-        }
         return response.json();
     })
 
     .then (data => {
-        JSON.stringify(data)
-        console.log("data =", data); // Vérif
-        window.localStorage.setItem("userId", data.userId); // stockage du userId récupéré
-        window.localStorage.setItem("token", data.token); // stockage du token récupéré
-        console.log("userId =", data.userId); // Vérif
-        console.log("token =", data.token); // Vérif
-        window.location.replace("index.html#tportfolio"); // redirection vers la page d'accueil à la balise des projets
+        //JSON.stringify(data)
+        if (data.token) {
+            console.log("data =", data); // Vérif
+            window.localStorage.setItem("userId", data.userId); // stockage du userId récupéré
+            window.localStorage.setItem("token", data.token); // stockage du token récupéré
+            console.log("userId =", data.userId); // Vérif
+            console.log("token =", data.token); // Vérif
+            window.location.replace("index.html#tportfolio"); // redirection vers la page d'accueil à la balise des projets
+        } else {
+            errorMessage.textContent = "Erreur d'identifiant ou mot de passe.";    
+            //window.localStorage.removeItem("userId"); // réinitialisation du userId stocké}
+            //window.localStorage.removeItem("token"); // réinitialisation du token stocké
+        }
     })
 
     .catch(error => {

@@ -21,17 +21,18 @@ if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user
     // ajout icône et bouton "modifier"
     const sectionPortfolio = document.querySelector("#portfolio h2");
     console.log("section portfolio=", sectionPortfolio); // Vérif
-    const lieniconeModifier = document.createElement("a");
+//    const lieniconeModifier = document.createElement("a");
     const iconeModifier = document.createElement("i");
-    lieniconeModifier.href = "#modifyProject";
+    iconeModifier.href = "#modifyProject";
     iconeModifier.classList.add("fa-regular");
     iconeModifier.classList.add("fa-pen-to-square");
     const boutonModifier = document.createElement("a");
     boutonModifier.innerText = "modifier";
     boutonModifier.href = "#modifyProject";
-    console.log("boutonModifier=",boutonModifier); // Vérif
-    sectionPortfolio.appendChild(lieniconeModifier);
-    lieniconeModifier.appendChild(iconeModifier);
+    boutonModifier.id = "modifier";
+    console.log("boutonModifier=", boutonModifier); // Vérif
+    sectionPortfolio.appendChild(iconeModifier);
+//    lieniconeModifier.appendChild(iconeModifier);
     sectionPortfolio.appendChild(boutonModifier);
 
 };
@@ -55,7 +56,7 @@ if (projets === null) {
 function genererProjets(projets) {
     for (let i = 0; i < projets.length; i++) {
         const projet = projets[i];
-        // Récupération de l'élément du DOM qui accueillera la gallerie
+        // Récupération de l'élément du DOM qui accueillera la galerie
         const divGallery = document.querySelector(".gallery");
         // Création d’une balise dédiée à un projet
         const idProjet = document.createElement("figure");
@@ -164,7 +165,7 @@ for (let Bouton of boutonFiltrer) {
 
         for (let i = 0; i < projets.length; i++) {
             const projet = projets[i];
-            // Récupération de l'élément du DOM qui accueillera la gallerie
+            // Récupération de l'élément du DOM qui accueillera la galerie
             const divGallery = document.querySelector(".gallery");
             const idProjet = document.getElementById(i+1);
             const idCategoryprojet = projet.category.id; //id de la catégorie du projet
@@ -192,4 +193,43 @@ logLink.addEventListener("click", function () {
         window.localStorage.removeItem("userId"); // réinitialisation du userId stocké
         window.localStorage.removeItem("token"); // réinitialisation du token stocké
     }
+});
+
+// ********************* MODIFIER PROJETS *****************
+// affichage de la modale
+const demandeModif = document.getElementById("modifier");
+demandeModif.addEventListener("click", function () {
+    const modifProjets = document.getElementById("modifyProject");
+    console.log("modifProjets=", modifProjets); // Vérif
+    modifProjets.className = "modal"; // affichage de la modale
+    
+    document.querySelector("#projetsList").innerHTML = "";
+    // génération des miniatures des projets
+    genererMiniProjets(projets);
+    
+});
+
+// fonction de génération des miniatures des projets
+function genererMiniProjets(projets) {
+    for (let i = 0; i < projets.length; i++) {
+        const projet = projets[i];
+        // Récupération de l'élément du DOM qui accueillera la galerie
+        const divprojetsList = document.querySelector("#projetsList");
+        // Création d’une balise dédiée à un projet
+        const idProjet = document.createElement("figure");
+        // Création des balises 
+        const imageProjet = document.createElement("img");
+        imageProjet.src = projet.imageUrl;
+        // Rattachement de la balise projet à la division projetsList
+        divprojetsList.appendChild(idProjet);
+        idProjet.appendChild(imageProjet);
+    }
+};
+
+// masquer la modale
+const demandeFermer = document.getElementById("fermer");
+demandeFermer.addEventListener("click", function () {
+    const modifProjets = document.getElementById("modifyProject");
+    console.log("modifProjets=", modifProjets); // Vérif
+    modifProjets.className = "modal-masque"; // masquage de la modale
 });

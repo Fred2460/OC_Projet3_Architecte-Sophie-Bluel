@@ -164,7 +164,7 @@ li:hover {
 }
 
 #portfolio .fa-regular {
-	vertical-align: text-top;
+	vertical-align: middle;
 	color: black;
 	font-size: 14px;
 	font-weight: 400;
@@ -188,6 +188,7 @@ li:hover {
 }
 
 #modifyProject h3 {
+	margin-top: 30px;
 	margin-bottom: 15px;
 }
 
@@ -196,7 +197,6 @@ li:hover {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	/*align-items: flex-start;*/
 	width: 630px;
 	height: 688px;
 	max-width: calc(100vh - 20px);
@@ -204,6 +204,21 @@ li:hover {
 	padding: 20px;
 	border-radius: 10px;
 	background-color: white;
+}
+
+#projetsList {
+	width: 75%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content:first baseline;
+	align-items: start;
+}
+
+.modal-wrapper img {
+	width: 77px;
+	height: 103px;
+	border: 1px #c4c4c4 solid;
+	margin: 15px 5px 15px 5px;
 }
 
 .modal-masque {
@@ -225,17 +240,17 @@ li:hover {
 	cursor: pointer;
 }
 
-#modifyProject p {
-	width: 80%;
-	align-content: center;
-	justify-content: center;
-	border: 1px #B3B3B3 solid;
+hr {
+	width: 75%;
+	border: none;
+	border-top: 1px #B3B3B3 solid;
+	margin: 30px 5px 10px 5px;
 }
 
 #modifyProject .btn-on {
 	align-content: center;
 	justify-content: center;
-	margin-top: 50px;
+	margin-top: 20px;
 	font-size: 16px;
 	font-weight: 700;
 	font-family: 'Syne';

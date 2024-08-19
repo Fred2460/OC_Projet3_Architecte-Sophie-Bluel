@@ -59,15 +59,16 @@
 			</figure>
 		</div>
 	</section>
-	<!-- <section id="modifyProject" class="modal-masque" aria-hidden="true" role="dialog" aria-labelledby="titregaleriePhoto">  classe "modal-masque" pour masquer la modale à gérer par le js -->
 	<section id="modifyProject" class="modal-masque" aria-hidden="true" role="dialog" aria-labelledby="titregaleriePhoto">
 		<div id="galeriePhoto" class="modal-wrapper">
-			<i class="fa-solid fa-xmark"></i>
+			<i id="fermer" class="fa-solid fa-xmark"></i>
 			<h3 id="titregaleriePhoto">Galerie photo</h3>
-			<figure> 
-				<figcaption></figcaption>
-			</figure>
-			<p></p> <!-- ligne horizontale (à revoir) -->
+			<div id="projetsList">
+				<figure> 
+					<figcaption></figcaption>
+				</figure>
+			</div>
+			<hr>
 			<button class="btn-on">Ajouter une photo</button>
 		</div>
 		<!-- <div id="ajoutPhoto"  class="modal-wrapper">
