@@ -20,8 +20,7 @@ if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user
     affichageFiltre.classList.add("filtre-off");
     // ajout icône et bouton "modifier"
     const sectionPortfolio = document.querySelector("#portfolio h2");
-    console.log("section portfolio=", sectionPortfolio); // Vérif
-//    const lieniconeModifier = document.createElement("a");
+    //console.log("section portfolio=", sectionPortfolio); // Vérif
     const iconeModifier = document.createElement("i");
     iconeModifier.href = "#modifyProject";
     iconeModifier.classList.add("fa-regular");
@@ -30,9 +29,8 @@ if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user
     boutonModifier.innerText = "modifier";
     boutonModifier.href = "#modifyProject";
     boutonModifier.id = "modifier";
-    console.log("boutonModifier=", boutonModifier); // Vérif
+    //console.log("boutonModifier=", boutonModifier); // Vérif
     sectionPortfolio.appendChild(iconeModifier);
-//    lieniconeModifier.appendChild(iconeModifier);
     sectionPortfolio.appendChild(boutonModifier);
 
 };
@@ -220,10 +218,41 @@ function genererMiniProjets(projets) {
         // Création des balises 
         const imageProjet = document.createElement("img");
         imageProjet.src = projet.imageUrl;
+        //const iconePoubelle = document.createElement("i");
+        const iconePoubelle = document.createElement("i");
         // Rattachement de la balise projet à la division projetsList
         divprojetsList.appendChild(idProjet);
         idProjet.appendChild(imageProjet);
+        idProjet.appendChild(iconePoubelle);
+        imageProjet.setAttribute("Id", i+1);
+        iconePoubelle.classList.add("fa-solid");
+        iconePoubelle.classList.add("fa-trash-can");
+        //let idSuppr = `Suppr_${i}`;
+        iconePoubelle.setAttribute("Id", i+1);
+
     }
+    //Récupération de tous les boutons poubelle
+    const iconsPoubelle = document.querySelectorAll(".fa-solid.fa-trash-can");
+    //console.log("iconsPoubelle =", iconsPoubelle); // Vérif
+
+    // Ajouter un écouteur d'événement pour chaque icône poubelle
+    iconsPoubelle.forEach(icon => {
+        icon.addEventListener("click", function() {
+            // Récupérer l'attribut Id pour identifier l'icône cliquée
+            const iconId = this.getAttribute("Id");
+            // console.log("Icône cliquée :", iconId); // Vérif
+            // Demande de confirmation de suppression
+            let supprConf;
+            if (confirm("Suppression du projet " + iconId + " ?") == true) {
+                supprConf = "Oui";
+                //console.log("idprojetSuppr =", iconId); // Vérif
+                supprimerProjet(iconId);
+            } else {
+                supprConf = "Non";
+            }
+            console.log(supprConf); // Vérif
+        })
+    });
 };
 
 // masquer la modale
@@ -233,3 +262,13 @@ demandeFermer.addEventListener("click", function () {
     console.log("modifProjets=", modifProjets); // Vérif
     modifProjets.className = "modal-masque"; // masquage de la modale
 });
+
+// ********************* SUPPRESSION D'UN PROJET *****************
+function supprimerProjet(idProjet) {
+
+
+
+    // regénération des miniatures des projets
+    document.querySelector("#projetsList").innerHTML = "";
+    genererMiniProjets(projets);
+};

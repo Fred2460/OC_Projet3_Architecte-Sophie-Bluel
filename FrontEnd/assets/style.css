@@ -172,7 +172,7 @@ li:hover {
 	margin-right: 5px;
 }
 
-/* modal ajout projet */
+/* modal suppression et ajout projet */
 .modal {
 	position: fixed;
 	inset: 0% 0% 0% 0%;
@@ -210,15 +210,19 @@ li:hover {
 	width: 75%;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content:first baseline;
+	/*justify-content: baseline;*/
 	align-items: start;
+}
+
+.modal-wrapper figure {
+	margin-right: -6px;
 }
 
 .modal-wrapper img {
 	width: 77px;
 	height: 103px;
 	border: 1px #c4c4c4 solid;
-	margin: 15px 5px 15px 5px;
+	margin: 15px 0px 15px 0px;
 }
 
 .modal-masque {
@@ -230,21 +234,37 @@ li:hover {
 }
 
 #modifyProject i {
-	/* quel fonction pour aligner à droite ********************/
-	color: red;
+	color: black;
 	font-size: large;
 	margin-bottom: 10px;
-	position: absolute;
+	position: inherit;
 	top: 20px;
 	right: 20px;
 	cursor: pointer;
+}
+/*
+#projetsList figure img {
+	position: inherit;
+}*/
+
+#projetsList i {
+	color: white;
+	background-color: black;
+	font-size: x-small;
+	position: relative;
+	top: -100px;
+	right: 25px;
+	cursor: pointer;
+	margin-bottom: 0;
+	border-radius: 3px;
+	padding: 4px;
 }
 
 hr {
 	width: 75%;
 	border: none;
 	border-top: 1px #B3B3B3 solid;
-	margin: 30px 5px 10px 5px;
+	margin: 30px 0px 10px 0px;
 }
 
 #modifyProject .btn-on {
