@@ -247,6 +247,8 @@ function genererMiniProjets(projets) {
                 supprConf = "Oui";
                 //console.log("idprojetSuppr =", iconId); // Vérif
                 supprimerProjet(iconId);
+                document.querySelector("#projetsList").innerHTML = "";
+                genererMiniProjets(projets);
             } else {
                 supprConf = "Non";
             }
@@ -265,10 +267,26 @@ demandeFermer.addEventListener("click", function () {
 
 // ********************* SUPPRESSION D'UN PROJET *****************
 function supprimerProjet(idProjet) {
+    console.log("tokenLogin avant DELETE=", tokenLogin);
+    console.log("idProjet à supprimer=", idProjet);
+    fetch("http://localhost:5678/api/works/",{idProjet}, {
+        method: "DELETE",
+        headers: {
+            "accept": "application/json",
+            "Authorization": `Bearer ${tokenLogin}`
+        }
+    })
 
-
-
+    .catch(error => {
+        //errorMessage.textContent = "Erreur d'accès au site (catch), contactez votre administrateur.";
+        console.error(error);
+        console.log("Erreur de suppression");
+    })
+    console.log("Suppression effectuée");
+    console.log("Projets avant suppr=", projets);
+    window.localStorage.removeItem("projets", idProjet); // suppression du projet dans le stockage local
     // regénération des miniatures des projets
-    document.querySelector("#projetsList").innerHTML = "";
-    genererMiniProjets(projets);
+    console.log("Projets après suppr=", projets);
+
+
 };
