@@ -1,3 +1,5 @@
+localStorage.clear();
+
 // ************** RECUPERATION DES DONNEES DE CONNEXION **************
 let loginForm = document.getElementById("loginForm");
 let emailInput = document.getElementById("email");

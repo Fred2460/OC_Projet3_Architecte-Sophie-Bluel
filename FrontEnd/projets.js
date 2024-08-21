@@ -1,3 +1,4 @@
+
 // ************** USER *****************
 //Récupération du user eventuellement connecté dans le localStorage
 let userIdLogin = window.localStorage.getItem("userId"); // récupération du userId stocké
@@ -193,8 +194,8 @@ logLink.addEventListener("click", function () {
     }
 });
 
-// ********************* MODIFIER PROJETS *****************
-// affichage de la modale
+// ********************* MODALE MODIFIER PROJETS *****************
+// afficher la modale
 const demandeModif = document.getElementById("modifier");
 demandeModif.addEventListener("click", function () {
     const modifProjets = document.getElementById("modifyProject");
@@ -202,33 +203,43 @@ demandeModif.addEventListener("click", function () {
     modifProjets.className = "modal"; // affichage de la modale
     
     document.querySelector("#projetsList").innerHTML = "";
-    // génération des miniatures des projets
-    genererMiniProjets(projets);
+    genererMiniProjets(projets); // génération des miniatures des projets
     
+});
+
+// masquer la modale
+const demandeFermer = document.getElementById("fermer");
+demandeFermer.addEventListener("click", function () {
+    const modifProjets = document.getElementById("modifyProject");
+    console.log("modifProjets=", modifProjets); // Vérif
+    modifProjets.className = "modal-masque"; // masquage de la modale
 });
 
 // fonction de génération des miniatures des projets
 function genererMiniProjets(projets) {
+    console.log("projets=", projets); // Vérif
     for (let i = 0; i < projets.length; i++) {
         const projet = projets[i];
+        //console.log("projet=", projet, i); // Vérif
         // Récupération de l'élément du DOM qui accueillera la galerie
         const divprojetsList = document.querySelector("#projetsList");
         // Création d’une balise dédiée à un projet
-        const idProjet = document.createElement("figure");
+        const idProjet = projet.id;
+        //console.log("idProjet=", idProjet, i); // Vérif
+        const figProjet = document.createElement("figure");
         // Création des balises 
         const imageProjet = document.createElement("img");
         imageProjet.src = projet.imageUrl;
         //const iconePoubelle = document.createElement("i");
         const iconePoubelle = document.createElement("i");
         // Rattachement de la balise projet à la division projetsList
-        divprojetsList.appendChild(idProjet);
-        idProjet.appendChild(imageProjet);
-        idProjet.appendChild(iconePoubelle);
-        imageProjet.setAttribute("Id", i+1);
+        divprojetsList.appendChild(figProjet);
+        figProjet.appendChild(imageProjet);
+        figProjet.appendChild(iconePoubelle);
+        imageProjet.setAttribute("Id", idProjet);
         iconePoubelle.classList.add("fa-solid");
         iconePoubelle.classList.add("fa-trash-can");
-        //let idSuppr = `Suppr_${i}`;
-        iconePoubelle.setAttribute("Id", i+1);
+        iconePoubelle.setAttribute("Id", idProjet);
 
     }
     //Récupération de tous les boutons poubelle
@@ -242,31 +253,19 @@ function genererMiniProjets(projets) {
             const iconId = this.getAttribute("Id");
             // console.log("Icône cliquée :", iconId); // Vérif
             // Demande de confirmation de suppression
-            let supprConf;
             if (confirm("Suppression du projet " + iconId + " ?") == true) {
-                supprConf = "Oui";
-                //console.log("idprojetSuppr =", iconId); // Vérif
+                console.log("Oui");
+                console.log("idprojetSuppr =", iconId); // Vérif
                 supprimerProjet(iconId);
-                document.querySelector("#projetsList").innerHTML = "";
-                genererMiniProjets(projets);
             } else {
-                supprConf = "Non";
+                console.log("Non");
             }
-            console.log(supprConf); // Vérif
         })
     });
 };
 
-// masquer la modale
-const demandeFermer = document.getElementById("fermer");
-demandeFermer.addEventListener("click", function () {
-    const modifProjets = document.getElementById("modifyProject");
-    console.log("modifProjets=", modifProjets); // Vérif
-    modifProjets.className = "modal-masque"; // masquage de la modale
-});
-
 // ********************* SUPPRESSION D'UN PROJET *****************
-function supprimerProjet(idProjet) {
+async function supprimerProjet(idProjet) {
     console.log("tokenLogin avant DELETE=", tokenLogin);
     console.log("idProjet à supprimer=", idProjet);
     fetch("http://localhost:5678/api/works/",{idProjet}, {
@@ -282,11 +281,27 @@ function supprimerProjet(idProjet) {
         console.error(error);
         console.log("Erreur de suppression");
     })
-    console.log("Suppression effectuée");
-    console.log("Projets avant suppr=", projets);
-    window.localStorage.removeItem("projets", idProjet); // suppression du projet dans le stockage local
+    /*
+    const projet = projets[idProjet-1];
+    console.log("projet=", projet); // Vérif
+    console.log("Suppression effectuée"); // Vérif
+    console.log("Projets avant suppr=", projets); // Vérif
+    window.localStorage.removeItem("projets", projet); // suppression du projet dans le stockage local
     // regénération des miniatures des projets
-    console.log("Projets après suppr=", projets);
+    console.log("Projets après suppr=", projets); // Vérif
+    */
 
+    // Récupération des projets depuis l'API
+    const reponse = fetch("http://localhost:5678/api/works");
+    const projets = await reponse.json();
+    // Transformation des projets en JSON
+    const valeurProjets = JSON.stringify(projets);
+    // Stockage des informations dans le localStorage
+    window.localStorage.setItem("projets", valeurProjets);
+
+    document.querySelector(".gallery").innerHTML = "";
+    genererProjets(projets);
+    document.querySelector("#projetsList").innerHTML = "";
+    genererMiniProjets(projets); // génération des miniatures des projets
 
 };
