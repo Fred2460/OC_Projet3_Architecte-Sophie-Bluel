@@ -1,4 +1,3 @@
-
 // ************** USER *****************
 //Récupération du user eventuellement connecté dans le localStorage
 let userIdLogin = window.localStorage.getItem("userId"); // récupération du userId stocké
@@ -39,6 +38,7 @@ if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user
 // ************** PROJETS *****************
 //Récupération des projets eventuellement stockés dans le localStorage
 let projets = window.localStorage.getItem("projets");
+console.log("projets au début=", projets); // Vérif
 
 if (projets === null) {
     // Récupération des projets depuis l'API
@@ -51,6 +51,7 @@ if (projets === null) {
 } else {
     projets = JSON.parse(projets);
 };
+console.log("projets après vérif début=", projets); // Vérif
 
 function genererProjets(projets) {
     for (let i = 0; i < projets.length; i++) {
@@ -92,7 +93,7 @@ genererProjets(projets);
 // ************** CATEGORIES *****************
 //Récupération des catégories éventuellement stockées dans le localStorage
 let categories = window.localStorage.getItem("categories");
-
+console.log("categories avant récup localStorage=", categories); // Vérif
 if (categories === null) {
     // Récupération des catégories depuis l'API
     const reponse = await fetch("http://localhost:5678/api/categories")
@@ -104,7 +105,7 @@ if (categories === null) {
 } else {
     categories = JSON.parse(categories);
 };
-
+console.log("categories après récup localStorage=", categories); // Vérif
 
 // ************** FILTRE *****************
 // Ajout du bouton "Tous" dans tableau categories si inexistant
@@ -115,6 +116,7 @@ if (categories.includes("Tous") == false) {
     }
     categories.push(boutonTous);
 }
+console.log("categories après récup localStorage et test Tous", categories); // Vérif
 
 function genererFiltre(categories, boutonOn) {
     // Tri des boutons Filtres selon l'id de la catégorie
@@ -161,19 +163,33 @@ for (let Bouton of boutonFiltrer) {
         boutonPreced.setAttribute("class", "btn-filtre"); // suppression du fond de couleur du bouton précédement activé
         const idCategorybouton = Bouton.dataset.id; // id de la catégorie du bouton sélectionné
         Bouton.setAttribute("class", "btn-filtre btn-on"); // affichage du bouton sélectionné en fond de couleur
+        let decalIncrement = 1;
+        //console.log("decalIncrement initial=", decalIncrement); // Vérif
 
         for (let i = 0; i < projets.length; i++) {
             const projet = projets[i];
+            //console.log("projets.length=", projets.length);
             // Récupération de l'élément du DOM qui accueillera la galerie
             const divGallery = document.querySelector(".gallery");
-            const idProjet = document.getElementById(i+1);
-            const idCategoryprojet = projet.category.id; //id de la catégorie du projet
-
-            if ((idCategorybouton == 0 || idCategorybouton == idCategoryprojet)) { // Bouton "Tous" sélectionné ou catégorie du projet sélectionnée
-                idProjet.setAttribute("class", "image"); // changement classe en "image" pour affichage projet
-            } else { // Bouton "Tous" non sélectionné et catégorie du projet non sélectionnée
-                idProjet.setAttribute("class", "image masque"); // changement classe en "image masque" pour masquer le projet
-            };
+            const idProjet = document.getElementById(i + decalIncrement);
+            //console.log("i + decalIncrement=", i + decalIncrement); // Vérif
+            if (idProjet != null) { // cas des projets supprimés
+                const idCategoryprojet = projet.category.id; //id de la catégorie du projet
+                //console.log("idCategorybouton=", idCategorybouton); // Vérif
+                //console.log("Avant class: idCategoryprojet, i, idProjet=", idCategoryprojet, i, idProjet); // Vérif
+                
+                if ((idCategorybouton == 0 || idCategorybouton == idCategoryprojet)) { // Bouton "Tous" sélectionné ou catégorie du projet sélectionnée
+                    idProjet.className = "image"; // changement classe en "image" pour affichage projet
+                    //console.log("Après class: idCategoryprojet, i, idProjet=", idCategoryprojet, i, idProjet); // Vérif
+                } else { // Bouton "Tous" non sélectionné et catégorie du projet non sélectionnée
+                    idProjet.className = "masque"; // changement classe en "image masque" pour masquer le projet
+                    //console.log("Après class: idCategoryprojet, i, idProjet=", idCategoryprojet, i, idProjet); // Vérif
+                }
+            } else {
+                decalIncrement++;
+                i--;
+                //console.log("decalIncrement=", decalIncrement); // Vérif
+            }
         };
         // repositionnement (en mode smooth) de l'affichage avec le titre des projets en haut de page 
         const targetPortfolio = document.getElementById("portfolio");
@@ -195,17 +211,19 @@ logLink.addEventListener("click", function () {
 });
 
 // ********************* MODALE MODIFIER PROJETS *****************
-// afficher la modale
+// afficher la modale 
 const demandeModif = document.getElementById("modifier");
-demandeModif.addEventListener("click", function () {
-    const modifProjets = document.getElementById("modifyProject");
-    console.log("modifProjets=", modifProjets); // Vérif
-    modifProjets.className = "modal"; // affichage de la modale
-    
-    document.querySelector("#projetsList").innerHTML = "";
-    genererMiniProjets(projets); // génération des miniatures des projets
-    
-});
+if (demandeModif != null) {
+    demandeModif.addEventListener("click", function () {
+        const modifProjets = document.getElementById("modifyProject");
+        console.log("modifProjets=", modifProjets); // Vérif
+        modifProjets.className = "modal"; // affichage de la modale
+
+        document.querySelector("#projetsList").innerHTML = "";
+        genererMiniProjets(projets); // génération des miniatures des projets
+
+    })
+};
 
 // masquer la modale
 const demandeFermer = document.getElementById("fermer");
@@ -244,31 +262,31 @@ function genererMiniProjets(projets) {
     }
     //Récupération de tous les boutons poubelle
     const iconsPoubelle = document.querySelectorAll(".fa-solid.fa-trash-can");
-    //console.log("iconsPoubelle =", iconsPoubelle); // Vérif
+    console.log("iconsPoubelle =", iconsPoubelle); // Vérif
 
     // Ajouter un écouteur d'événement pour chaque icône poubelle
     iconsPoubelle.forEach(icon => {
         icon.addEventListener("click", function() {
             // Récupérer l'attribut Id pour identifier l'icône cliquée
             const iconId = this.getAttribute("Id");
-            // console.log("Icône cliquée :", iconId); // Vérif
+            console.log("Icône cliquée :", iconId); // Vérif
             // Demande de confirmation de suppression
             if (confirm("Suppression du projet " + iconId + " ?") == true) {
-                console.log("Oui");
+                console.log("Oui"); // Vérif
                 console.log("idprojetSuppr =", iconId); // Vérif
                 supprimerProjet(iconId);
             } else {
-                console.log("Non");
+                console.log("Non"); // Vérif
             }
         })
     });
 };
 
 // ********************* SUPPRESSION D'UN PROJET *****************
-async function supprimerProjet(idProjet) {
-    console.log("tokenLogin avant DELETE=", tokenLogin);
-    console.log("idProjet à supprimer=", idProjet);
-    fetch("http://localhost:5678/api/works/",{idProjet}, {
+function supprimerProjet(idProjet) {
+    console.log("tokenLogin avant fetch=", tokenLogin); // Vérif
+    console.log("idProjet à supprimer avant fetch=", idProjet); // Vérif
+    fetch("http://localhost:5678/api/works/" + idProjet, {
         method: "DELETE",
         headers: {
             "accept": "application/json",
@@ -281,27 +299,31 @@ async function supprimerProjet(idProjet) {
         console.error(error);
         console.log("Erreur de suppression");
     })
-    /*
+    
+    console.log("idProjet à supprimer après fetch=", idProjet); // Vérif
     const projet = projets[idProjet-1];
     console.log("projet=", projet); // Vérif
-    console.log("Suppression effectuée"); // Vérif
     console.log("Projets avant suppr=", projets); // Vérif
     window.localStorage.removeItem("projets", projet); // suppression du projet dans le stockage local
     // regénération des miniatures des projets
     console.log("Projets après suppr=", projets); // Vérif
-    */
-
+    
+/*
     // Récupération des projets depuis l'API
     const reponse = fetch("http://localhost:5678/api/works");
-    const projets = await reponse.json();
+    const projets = reponse.json();
     // Transformation des projets en JSON
     const valeurProjets = JSON.stringify(projets);
     // Stockage des informations dans le localStorage
     window.localStorage.setItem("projets", valeurProjets);
-
+*/
     document.querySelector(".gallery").innerHTML = "";
-    genererProjets(projets);
+    genererProjets(projets); // génération des images des projets
+
     document.querySelector("#projetsList").innerHTML = "";
+    const modifProjets = document.getElementById("modifyProject");
+    console.log("modifProjets=", modifProjets); // Vérif
+    modifProjets.className = "modal"; // affichage de la modale
     genererMiniProjets(projets); // génération des miniatures des projets
 
 };
