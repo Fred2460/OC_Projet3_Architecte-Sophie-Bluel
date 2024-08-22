@@ -206,11 +206,14 @@ li:hover {
 	background-color: white;
 }
 
+.modal-wrapper-masque {
+	display: none;
+}
+
 #projetsList {
 	width: 75%;
 	display: flex;
 	flex-wrap: wrap;
-	/*justify-content: baseline;*/
 	align-items: start;
 }
 
@@ -233,7 +236,11 @@ li:hover {
 	position: absolute;
 }
 
-#modifyProject i {
+#ajoutPhoto {
+	position: absolute;
+}
+
+#fermer_1 {
 	color: black;
 	font-size: large;
 	margin-bottom: 10px;
@@ -242,10 +249,26 @@ li:hover {
 	right: 20px;
 	cursor: pointer;
 }
-/*
-#projetsList figure img {
+
+#fermer_2 {
+	color: black;
+	font-size: large;
+	margin-bottom: 10px;
 	position: inherit;
-}*/
+	top: 20px;
+	right: 20px;
+	cursor: pointer;
+}
+
+#retour {
+	color: black;
+	font-size: large;
+	margin-bottom: 10px;
+	position: inherit;
+	top: 20px;
+	left: 20px;
+	cursor: pointer;
+}
 
 #projetsList i {
 	color: white;
@@ -267,6 +290,66 @@ hr {
 	margin: 30px 0px 10px 0px;
 }
 
+.cadreajoutPhoto {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #E8F1F6;
+	border: 1px #E8F1F6 solid;
+	width: 420px;
+	height: 170px;
+	margin-top: 15px;
+}
+
+.cadreajoutPhoto img {
+	border: 0;
+	width: 76px;
+	height: 76px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+p {
+	font-family: 'Work Sans';
+	font-size: 10px;
+	font-weight: 400;
+	color: #444444;
+	margin: 10px;
+}
+
+.formAjout {
+	display: flex;
+	flex-direction: column;
+	width: 420px;
+}
+
+.formAjout input {
+	width: 420px;
+	height: 50px;
+	box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+	border: none;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 400;
+	color: #444444;
+}
+
+.formAjout label {
+	align-items: flex-start;
+	align-content: flex-start;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 500;
+	color: #3D3D3D;
+	margin-top: 15px;
+	margin-bottom: 5px;
+}
+
+.formAjout hr {
+	width: 420px;
+	margin-top: 50px;
+}
+
 #modifyProject .btn-on {
 	align-content: center;
 	justify-content: center;
@@ -281,6 +364,38 @@ hr {
 
 #modifyProject .btn-on:hover {
 	background-color: #0E2F28;
+}
+
+/* bouton_1 inactif */
+#modifyProject .btn-off_1 {
+	align-content: center;
+	justify-content: center;
+	font-size: 14px;
+	font-weight: 500;
+	font-family: 'Syne';
+	border-radius: 25px;
+	padding: 10px 20px 10px 20px;
+	height: 37px;
+	color: #306685;
+	background-color: #CBD6DC;
+    border: 1px #CBD6DC solid;
+}
+
+/* bouton_2 inactif */
+#modifyProject .btn-off_2 {
+	align-content: center;
+	justify-content: center;
+	margin-top: 20px;
+	font-size: 14px;
+	font-weight: 700;
+	font-family: 'Syne';
+	border-radius: 25px;
+	padding: 0 25px 0 25px;
+	height: 37px;
+	width: 237px;
+	color: white;
+	background-color: #A7A7A7;
+    border: 1px #A7A7A7 solid;
 }
 
 /* Gestion des boutons filtres des projets */

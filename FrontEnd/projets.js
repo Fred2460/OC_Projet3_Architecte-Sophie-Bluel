@@ -163,32 +163,25 @@ for (let Bouton of boutonFiltrer) {
         boutonPreced.setAttribute("class", "btn-filtre"); // suppression du fond de couleur du bouton précédement activé
         const idCategorybouton = Bouton.dataset.id; // id de la catégorie du bouton sélectionné
         Bouton.setAttribute("class", "btn-filtre btn-on"); // affichage du bouton sélectionné en fond de couleur
-        let decalIncrement = 1;
-        //console.log("decalIncrement initial=", decalIncrement); // Vérif
+
+        let decalIncrement = 1; // décalage entre id des projets et incrément i de la boucle for (cas des projets supprimés)
 
         for (let i = 0; i < projets.length; i++) {
             const projet = projets[i];
-            //console.log("projets.length=", projets.length);
             // Récupération de l'élément du DOM qui accueillera la galerie
             const divGallery = document.querySelector(".gallery");
             const idProjet = document.getElementById(i + decalIncrement);
-            //console.log("i + decalIncrement=", i + decalIncrement); // Vérif
             if (idProjet != null) { // cas des projets supprimés
                 const idCategoryprojet = projet.category.id; //id de la catégorie du projet
-                //console.log("idCategorybouton=", idCategorybouton); // Vérif
-                //console.log("Avant class: idCategoryprojet, i, idProjet=", idCategoryprojet, i, idProjet); // Vérif
                 
                 if ((idCategorybouton == 0 || idCategorybouton == idCategoryprojet)) { // Bouton "Tous" sélectionné ou catégorie du projet sélectionnée
                     idProjet.className = "image"; // changement classe en "image" pour affichage projet
-                    //console.log("Après class: idCategoryprojet, i, idProjet=", idCategoryprojet, i, idProjet); // Vérif
                 } else { // Bouton "Tous" non sélectionné et catégorie du projet non sélectionnée
                     idProjet.className = "masque"; // changement classe en "image masque" pour masquer le projet
-                    //console.log("Après class: idCategoryprojet, i, idProjet=", idCategoryprojet, i, idProjet); // Vérif
                 }
             } else {
-                decalIncrement++;
-                i--;
-                //console.log("decalIncrement=", decalIncrement); // Vérif
+                decalIncrement++; // augmentation de décalage entre id des projets et incrément i de la boucle for
+                i--; // neutralisation de l'incrément de la boucle for (cas d'un projet supprimé)
             }
         };
         // repositionnement (en mode smooth) de l'affichage avec le titre des projets en haut de page 
@@ -225,13 +218,35 @@ if (demandeModif != null) {
     })
 };
 
-// masquer la modale
-const demandeFermer = document.getElementById("fermer");
-demandeFermer.addEventListener("click", function () {
+// masquer la modale (appui bouton Fermer_1)
+const demandeFermer_1 = document.getElementById("fermer_1");
+demandeFermer_1.addEventListener("click", function () {
     const modifProjets = document.getElementById("modifyProject");
-    console.log("modifProjets=", modifProjets); // Vérif
     modifProjets.className = "modal-masque"; // masquage de la modale
 });
+
+// masquer la modale (appui bouton Fermer_2)
+const demandeFermer_2 = document.getElementById("fermer_2");
+demandeFermer_2.addEventListener("click", function () {
+    const modifProjets = document.getElementById("modifyProject");
+    modifProjets.className = "modal-masque"; // masquage de la modale
+    // Afficher la div galeriePhoto et masquer la div ajoutPhoto
+    const galeriePhoto = document.getElementById("galeriePhoto");
+    galeriePhoto.className = "modal-wrapper"; // affichage de la div galeriePhoto
+    const ajoutPhoto = document.getElementById("ajoutPhoto");
+    ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
+});
+
+// Ajout d'un écouteur d'évènement pour bouton "Retour"
+const boutonRetour = document.getElementById("retour")
+boutonRetour.addEventListener("click", function() {
+    // Afficher la div galeriePhoto et masquer la div ajoutPhoto
+    const galeriePhoto = document.getElementById("galeriePhoto");
+    galeriePhoto.className = "modal-wrapper"; // affichage de la div galeriePhoto
+    const ajoutPhoto = document.getElementById("ajoutPhoto");
+    ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
+});
+
 
 // fonction de génération des miniatures des projets
 function genererMiniProjets(projets) {
@@ -260,27 +275,35 @@ function genererMiniProjets(projets) {
         iconePoubelle.setAttribute("Id", idProjet);
 
     }
+    
     //Récupération de tous les boutons poubelle
     const iconsPoubelle = document.querySelectorAll(".fa-solid.fa-trash-can");
     console.log("iconsPoubelle =", iconsPoubelle); // Vérif
 
-    // Ajouter un écouteur d'événement pour chaque icône poubelle
+    // Ajout d'un écouteur d'événement pour chaque icône poubelle
     iconsPoubelle.forEach(icon => {
         icon.addEventListener("click", function() {
             // Récupérer l'attribut Id pour identifier l'icône cliquée
             const iconId = this.getAttribute("Id");
-            console.log("Icône cliquée :", iconId); // Vérif
             // Demande de confirmation de suppression
             if (confirm("Suppression du projet " + iconId + " ?") == true) {
-                console.log("Oui"); // Vérif
-                console.log("idprojetSuppr =", iconId); // Vérif
                 supprimerProjet(iconId);
-            } else {
-                console.log("Non"); // Vérif
             }
         })
     });
+
+    // Ajout d'un écouteur d'évènement pour bouton "Ajouter une photo"
+    const boutonAjoutProjet = document.getElementById("boutonAjoutPhoto")
+    boutonAjoutProjet.addEventListener("click", function() {
+        // Masquer la div galeriePhoto et afficher la div ajoutPhoto
+        const galeriePhoto = document.getElementById("galeriePhoto");
+        galeriePhoto.className = "modal-wrapper-masque"; // masquage de la div galeriePhoto
+        const ajoutPhoto = document.getElementById("ajoutPhoto");
+        ajoutPhoto.className = "modal-wrapper"; // affichage de la div ajoutPhoto
+    });
+
 };
+
 
 // ********************* SUPPRESSION D'UN PROJET *****************
 function supprimerProjet(idProjet) {
@@ -308,22 +331,15 @@ function supprimerProjet(idProjet) {
     // regénération des miniatures des projets
     console.log("Projets après suppr=", projets); // Vérif
     
-/*
-    // Récupération des projets depuis l'API
-    const reponse = fetch("http://localhost:5678/api/works");
-    const projets = reponse.json();
-    // Transformation des projets en JSON
-    const valeurProjets = JSON.stringify(projets);
-    // Stockage des informations dans le localStorage
-    window.localStorage.setItem("projets", valeurProjets);
-*/
+
     document.querySelector(".gallery").innerHTML = "";
     genererProjets(projets); // génération des images des projets
 
-    document.querySelector("#projetsList").innerHTML = "";
+    //document.querySelector("#projetsList").innerHTML = "";
     const modifProjets = document.getElementById("modifyProject");
     console.log("modifProjets=", modifProjets); // Vérif
     modifProjets.className = "modal"; // affichage de la modale
     genererMiniProjets(projets); // génération des miniatures des projets
 
 };
+

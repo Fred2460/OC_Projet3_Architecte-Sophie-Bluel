@@ -61,7 +61,7 @@
 	</section>
 	<section id="modifyProject" class="modal-masque" aria-hidden="true" role="dialog" aria-labelledby="titregaleriePhoto">
 		<div id="galeriePhoto" class="modal-wrapper">
-			<i id="fermer" class="fa-solid fa-xmark"></i>
+			<i id="fermer_1" class="fa-solid fa-xmark"></i>
 			<h3 id="titregaleriePhoto">Galerie photo</h3>
 			<div id="projetsList">
 				<figure> 
@@ -69,12 +69,26 @@
 				</figure>
 			</div>
 			<hr>
-			<button class="btn-on">Ajouter une photo</button>
+			<button id="boutonAjoutPhoto" class="btn-on">Ajouter une photo</button>
 		</div>
-		<!-- <div id="ajoutPhoto"  class="modal-wrapper">
+		<div id="ajoutPhoto"  class="modal-wrapper-masque">
+			<i id="fermer_2" class="fa-solid fa-xmark"></i>
+			<i id="retour" class="fa-solid fa-arrow-left"></i>
 			<h3 id="titreajoutPhoto">Ajout photo</h3>
-			<button class="btn-on">Valider</button>
-		</div> -->
+			<div class="cadreajoutPhoto">
+				<img src="./assets/picture-svgrepo.png" alt="image vide">
+				<button class="btn-off_1">+ Ajouter photo</button>
+				<p class="info">jpg, png : 4mo max</p>
+			</div>
+			<form class="formAjout" action="#" method="post">
+				<label for="titre">Titre</label>
+				<input type="text" name="titre" id="titre">
+				<label for="categorie">Catégorie</label>
+				<input type="text" name="categorie" id="categorie">
+				<hr>
+				<input class="btn-off_2" type="submit" value="Valider">
+			</form>
+		</div>
 	</section>
 	<section id="contact">
 		<h2>Contact</h2>
