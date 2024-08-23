@@ -218,6 +218,14 @@ if (demandeModif != null) {
     })
 };
 
+// masquer la modale (appui sur Escape)
+window.addEventListener("keydown", function (e){
+    if (e.key === "Escape" || e.key === "Esc") {
+        const modifProjets = document.getElementById("modifyProject");
+        modifProjets.className = "modal-masque"; // masquage de la modale
+    }
+});
+
 // masquer la modale (appui bouton Fermer_1)
 const demandeFermer_1 = document.getElementById("fermer_1");
 demandeFermer_1.addEventListener("click", function () {
@@ -328,10 +336,10 @@ function supprimerProjet(idProjet) {
     console.log("projet=", projet); // Vérif
     console.log("Projets avant suppr=", projets); // Vérif
     window.localStorage.removeItem("projets", projet); // suppression du projet dans le stockage local
+    
     // regénération des miniatures des projets
     console.log("Projets après suppr=", projets); // Vérif
     
-
     document.querySelector(".gallery").innerHTML = "";
     genererProjets(projets); // génération des images des projets
 
@@ -340,6 +348,20 @@ function supprimerProjet(idProjet) {
     console.log("modifProjets=", modifProjets); // Vérif
     modifProjets.className = "modal"; // affichage de la modale
     genererMiniProjets(projets); // génération des miniatures des projets
-
+    
 };
+
+// fonction ajouter photo pour nouveau projet
+const boutonInserePhoto = document.getElementById("boutonInserePhoto")
+boutonInserePhoto.addEventListener("click", function() {
+    // Masquer la div galeriePhoto et afficher la div ajoutPhoto
+    const Insertion = document.getElementById("Insertion");
+    Insertion.className = "apresInsertion"; // masquage des éléments de la div cadreAjoutPhoto vide
+    // Choix de la photo du nouveau projet
+    window.open("C:\\", "Sélectionner une photo", "width=800, height=600"); /// *********************** revoir l'url
+    
+    //Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto vide 
+    // *************************** à insérer après ajout du projet ou après une fermeture modale ou retour arrière fenêtre modale ******
+
+});
 

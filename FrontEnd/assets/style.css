@@ -240,6 +240,7 @@ li:hover {
 	position: absolute;
 }
 
+/* icône "fermer" modale galerie photo */
 #fermer_1 {
 	color: black;
 	font-size: large;
@@ -250,6 +251,7 @@ li:hover {
 	cursor: pointer;
 }
 
+/* icône "fermer" modale ajout photo */
 #fermer_2 {
 	color: black;
 	font-size: large;
@@ -260,6 +262,7 @@ li:hover {
 	cursor: pointer;
 }
 
+/* icône "retour" modale ajout photo */
 #retour {
 	color: black;
 	font-size: large;
@@ -299,6 +302,16 @@ hr {
 	width: 420px;
 	height: 170px;
 	margin-top: 15px;
+}
+
+.avantInsertion {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.apresInsertion {
+	display: none;
 }
 
 .cadreajoutPhoto img {
@@ -366,7 +379,7 @@ p {
 	background-color: #0E2F28;
 }
 
-/* bouton_1 inactif */
+/* boutonInserePhoto btn-off_1 inactif */
 #modifyProject .btn-off_1 {
 	align-content: center;
 	justify-content: center;
@@ -379,6 +392,7 @@ p {
 	color: #306685;
 	background-color: #CBD6DC;
     border: 1px #CBD6DC solid;
+	cursor: pointer;
 }
 
 /* bouton_2 inactif */
@@ -416,8 +430,6 @@ p {
 	font-weight: 700;
 	font-family: 'Syne';
 	border-radius: 25px;
-	/*color: white;
-	background-color: #1D6154;*/
     border: 1px #1D6154 solid;
 	padding: 0 20px 0 20px;
 	height: 37px;
