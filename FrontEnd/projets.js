@@ -38,7 +38,7 @@ if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user
 // ************** PROJETS *****************
 //Récupération des projets eventuellement stockés dans le localStorage
 let projets = window.localStorage.getItem("projets");
-console.log("projets au début=", projets); // Vérif
+//console.log("projets au début=", projets); // Vérif
 
 if (projets === null) {
     // Récupération des projets depuis l'API
@@ -93,7 +93,7 @@ genererProjets(projets);
 // ************** CATEGORIES *****************
 //Récupération des catégories éventuellement stockées dans le localStorage
 let categories = window.localStorage.getItem("categories");
-console.log("categories avant récup localStorage=", categories); // Vérif
+//console.log("categories avant récup localStorage=", categories); // Vérif
 if (categories === null) {
     // Récupération des catégories depuis l'API
     const reponse = await fetch("http://localhost:5678/api/categories")
@@ -105,7 +105,7 @@ if (categories === null) {
 } else {
     categories = JSON.parse(categories);
 };
-console.log("categories après récup localStorage=", categories); // Vérif
+//console.log("categories après récup localStorage=", categories); // Vérif
 
 // ************** FILTRE *****************
 // Ajout du bouton "Tous" dans tableau categories si inexistant
@@ -194,7 +194,7 @@ for (let Bouton of boutonFiltrer) {
 // changement nav lien "Logout" en "Login"
 const logLink = document.getElementById("logLink");
 logLink.addEventListener("click", function () {
-    console.log("logLink =", logLink);
+    //console.log("logLink =", logLink);
     if (logLink.textContent === "Logout") {
         logLink.textContent = "Login";
         logLink.href = "index.html";
@@ -209,7 +209,7 @@ const demandeModif = document.getElementById("modifier");
 if (demandeModif != null) {
     demandeModif.addEventListener("click", function () {
         const modifProjets = document.getElementById("modifyProject");
-        console.log("modifProjets=", modifProjets); // Vérif
+        //console.log("modifProjets=", modifProjets); // Vérif
         modifProjets.className = "modal"; // affichage de la modale
 
         document.querySelector("#projetsList").innerHTML = "";
@@ -243,6 +243,12 @@ demandeFermer_2.addEventListener("click", function () {
     galeriePhoto.className = "modal-wrapper"; // affichage de la div galeriePhoto
     const ajoutPhoto = document.getElementById("ajoutPhoto");
     ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
+    // Afficher la div galeriePhoto et masquer la div ajoutPhoto
+    const Insertion = document.getElementById("Insertion");
+    Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
+    // Masquer la photo sélectionnée
+    const Preview = document.getElementById("preview");
+    Preview.className = "masquePreview";
 });
 
 // Ajout d'un écouteur d'évènement pour bouton "Retour"
@@ -253,12 +259,18 @@ boutonRetour.addEventListener("click", function() {
     galeriePhoto.className = "modal-wrapper"; // affichage de la div galeriePhoto
     const ajoutPhoto = document.getElementById("ajoutPhoto");
     ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
+    // Afficher la div galeriePhoto et masquer la div ajoutPhoto
+    const Insertion = document.getElementById("Insertion");
+    Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
+    // Masquer la photo sélectionnée
+    const Preview = document.getElementById("preview");
+    Preview.className = "masquePreview";
 });
 
 
 // fonction de génération des miniatures des projets
 function genererMiniProjets(projets) {
-    console.log("projets=", projets); // Vérif
+    //console.log("projets=", projets); // Vérif
     for (let i = 0; i < projets.length; i++) {
         const projet = projets[i];
         //console.log("projet=", projet, i); // Vérif
@@ -286,7 +298,7 @@ function genererMiniProjets(projets) {
     
     //Récupération de tous les boutons poubelle
     const iconsPoubelle = document.querySelectorAll(".fa-solid.fa-trash-can");
-    console.log("iconsPoubelle =", iconsPoubelle); // Vérif
+    //console.log("iconsPoubelle =", iconsPoubelle); // Vérif
 
     // Ajout d'un écouteur d'événement pour chaque icône poubelle
     iconsPoubelle.forEach(icon => {
@@ -315,8 +327,8 @@ function genererMiniProjets(projets) {
 
 // ********************* SUPPRESSION D'UN PROJET *****************
 function supprimerProjet(idProjet) {
-    console.log("tokenLogin avant fetch=", tokenLogin); // Vérif
-    console.log("idProjet à supprimer avant fetch=", idProjet); // Vérif
+    //console.log("tokenLogin avant fetch=", tokenLogin); // Vérif
+    //console.log("idProjet à supprimer avant fetch=", idProjet); // Vérif
     fetch("http://localhost:5678/api/works/" + idProjet, {
         method: "DELETE",
         headers: {
@@ -331,35 +343,58 @@ function supprimerProjet(idProjet) {
         console.log("Erreur de suppression");
     })
     
-    console.log("idProjet à supprimer après fetch=", idProjet); // Vérif
+    //console.log("idProjet à supprimer après fetch=", idProjet); // Vérif
     const projet = projets[idProjet-1];
-    console.log("projet=", projet); // Vérif
-    console.log("Projets avant suppr=", projets); // Vérif
+    //console.log("projet=", projet); // Vérif
+    //console.log("Projets avant suppr=", projets); // Vérif
     window.localStorage.removeItem("projets", projet); // suppression du projet dans le stockage local
     
     // regénération des miniatures des projets
-    console.log("Projets après suppr=", projets); // Vérif
-    
+    //console.log("Projets après suppr=", projets); // Vérif
     document.querySelector(".gallery").innerHTML = "";
     genererProjets(projets); // génération des images des projets
 
     //document.querySelector("#projetsList").innerHTML = "";
     const modifProjets = document.getElementById("modifyProject");
-    console.log("modifProjets=", modifProjets); // Vérif
+    //console.log("modifProjets=", modifProjets); // Vérif
     modifProjets.className = "modal"; // affichage de la modale
     genererMiniProjets(projets); // génération des miniatures des projets
     
 };
 
 // fonction ajouter photo pour nouveau projet
-const boutonInserePhoto = document.getElementById("boutonInserePhoto")
-boutonInserePhoto.addEventListener("click", function() {
-    // Masquer la div galeriePhoto et afficher la div ajoutPhoto
-    const Insertion = document.getElementById("Insertion");
-    Insertion.className = "apresInsertion"; // masquage des éléments de la div cadreAjoutPhoto vide
+const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto")
+ajoutfichierPhoto.addEventListener("change", function(event) {
     // Choix de la photo du nouveau projet
-    window.open("C:\\", "Sélectionner une photo", "width=800, height=600"); /// *********************** revoir l'url
-    
+    // window.open("C:\\", "Sélectionner une photo", "width=800, height=600"); /// *********************** revoir l'url
+    // si un fichier est sélectionné, afficher l'image
+    const file = event.target.files[0];
+    if (file && (file.type === "image/jpg" || file.type === "image/jpeg" || file.type === "image/png") && (Math.round(file.size / 1024) <= 4000)) {
+        console.log("Fichier sélectionné=", file); // Vérif
+        //console.log("Taille fichier sélectionné=", (Math.round(file.size / 1024))); // Vérif
+        //console.log("Type fichier sélectionné (type)=", file.type); // Vérif
+        //console.log("Nom fichier sélectionné=", file.name); // Vérif
+        //console.log("URL fichier sélectionné=", file.src); // Vérif
+        
+        // Masquer la div galeriePhoto et afficher la div ajoutPhoto
+        const Insertion = document.getElementById("Insertion");
+        Insertion.className = "apresInsertion"; // masquage des éléments de la div cadreAjoutPhoto vide
+        // Affichage de la photo sélectionnée
+        const Preview = document.getElementById("preview");
+        Preview.className = "previewAffiche";
+
+        // Utilisation de FileReader pour afficher aperçu
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const urlPhoto = e.target.result;
+            console.log("URL avec reader=", urlPhoto);
+            //Preview.setAttribute("src", urlPhoto);
+            Preview.src = urlPhoto;
+        }
+        //Preview.src = urlPhoto;
+        
+    };
+
     //Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto vide 
     // *************************** à insérer après ajout du projet ou après une fermeture modale ou retour arrière fenêtre modale ******
 

@@ -273,6 +273,7 @@ li:hover {
 	cursor: pointer;
 }
 
+/* icônes "poubelle" pour chaque miniature de projet */
 #projetsList i {
 	color: white;
 	background-color: black;
@@ -286,6 +287,7 @@ li:hover {
 	padding: 4px;
 }
 
+/* ligne horizontale */
 hr {
 	width: 75%;
 	border: none;
@@ -330,6 +332,57 @@ p {
 	margin: 10px;
 }
 
+/* *************************************************************************************************** */
+/*
+#preview img .avantInsertion {
+	display: none;
+}
+
+#preview img .apresInsertion {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}*/
+
+/* masquage du bouton "Parcourir" par défaut de l'Input type file */
+#ajoutfichierPhoto {
+	display: none;
+}
+
+/* ajoutfichierPhoto btn_1 */
+#modifyProject .avantInsertion .btn_1 {
+	align-content: center;
+	justify-content: center;
+	font-size: 14px;
+	font-weight: 500;
+	font-family: 'Syne';
+	border-radius: 25px;
+	padding: 10px 20px 10px 20px;
+	margin-top: 0;
+	margin-bottom: 0;
+	height: 37px;
+	color: #306685;
+	background-color: #CBD6DC;
+    border: 1px #CBD6DC solid;
+	cursor: pointer;
+}
+
+.ajoutfichierPhoto input .btn_1 {
+	opacity: 0;
+}
+
+/* Affiche ou masque la prévisualisation de l'image sélectionnée */ 
+.previewMasque {
+	display: none;
+}
+
+.previewAffiche {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+/* Formulaire des champs du nouveau projet */
 .formAjout {
 	display: flex;
 	flex-direction: column;
@@ -379,22 +432,6 @@ p {
 	background-color: #0E2F28;
 }
 
-/* boutonInserePhoto btn-off_1 inactif */
-#modifyProject .btn-off_1 {
-	align-content: center;
-	justify-content: center;
-	font-size: 14px;
-	font-weight: 500;
-	font-family: 'Syne';
-	border-radius: 25px;
-	padding: 10px 20px 10px 20px;
-	height: 37px;
-	color: #306685;
-	background-color: #CBD6DC;
-    border: 1px #CBD6DC solid;
-	cursor: pointer;
-}
-
 /* bouton_2 inactif */
 #modifyProject .btn-off_2 {
 	align-content: center;
@@ -410,6 +447,23 @@ p {
 	color: white;
 	background-color: #A7A7A7;
     border: 1px #A7A7A7 solid;
+}
+
+/* bouton_2 actif */
+#modifyProject .btn-on_2 {
+	align-content: center;
+	justify-content: center;
+	margin-top: 20px;
+	font-size: 14px;
+	font-weight: 700;
+	font-family: 'Syne';
+	border-radius: 25px;
+	padding: 0 25px 0 25px;
+	height: 37px;
+	width: 237px;
+	color: white;
+	background-color: #0E2F28;
+	border: 1px #1D6154 solid;
 }
 
 /* Gestion des boutons filtres des projets */

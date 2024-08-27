@@ -75,14 +75,21 @@
 			<i id="fermer_2" class="fa-solid fa-xmark"></i>
 			<i id="retour" class="fa-solid fa-arrow-left"></i>
 			<h3 id="titreajoutPhoto">Ajout photo</h3>
-			<div class="cadreajoutPhoto">
-				<div id="Insertion" class="avantInsertion">
-					<img src="./assets/picture-svgrepo.png" alt="image vide">
-					<button id="boutonInserePhoto" class="btn-off_1">+ Ajouter photo</button>
-					<p class="info">jpg, png : 4mo max</p>
-				</div>
-			</div>
 			<form class="formAjout" action="#" method="post">
+				<div class="cadreajoutPhoto">
+					<div id="Insertion" class="avantInsertion">
+						<img src="./assets/picture-svgrepo.png" alt="image vide">
+						<label for="ajoutfichierPhoto" class="btn_1">+ Ajouter photo</label>
+						<input type="file" id="ajoutfichierPhoto" accept="image/jpg, image/png, image/jpeg">
+						<p class="info">jpg, png : 4mo max</p>
+						<!-- <img src="./assets/smiley-laughing-out-loud" id="preview" class="masquePreview" alt="Aperçu de l'image"> -->
+					</div>
+					<div>
+						<img src="./assets/smiley-laughing-out-loud" id="preview" class="previewMasque" alt="Aperçu de l'image">
+					</div>
+				</div>
+			
+				
 				<label for="titre">Titre</label>
 				<input type="text" name="titre" id="titre">
 				<label for="categorie">Catégorie</label>

@@ -28,7 +28,7 @@ function genererLogin(email, password) {
     .then (data => {
         //JSON.stringify(data)
         if (data.token) {
-            console.log("data =", data); // Vérif
+            //console.log("data =", data); // Vérif
             window.localStorage.setItem("userId", data.userId); // stockage du userId récupéré
             window.localStorage.setItem("token", data.token); // stockage du token récupéré
             console.log("userId =", data.userId); // Vérif
