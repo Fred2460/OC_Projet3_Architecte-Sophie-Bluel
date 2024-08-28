@@ -466,9 +466,15 @@ p {
 	height: 37px;
 	width: 237px;
 	color: white;
-	background-color: #0E2F28;
+	background-color: #1D6154;
 	border: 1px #1D6154 solid;
 	cursor: pointer;
+}
+
+#modifyProject .btn-on_2:hover {
+	color: white;
+	background-color: #0E2F28;
+	border: 1px #1D6154 solid;
 }
 
 /* Gestion des boutons filtres des projets */

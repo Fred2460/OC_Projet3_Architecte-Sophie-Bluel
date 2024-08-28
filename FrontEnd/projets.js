@@ -53,6 +53,8 @@ if (projets === null) {
 };
 console.log("projets après vérif début=", projets); // Vérif
 
+let idprojetMax = 1;
+
 function genererProjets(projets) {
     for (let i = 0; i < projets.length; i++) {
         const projet = projets[i];
@@ -82,6 +84,11 @@ function genererProjets(projets) {
 
         // ajout d'une balise image pour affichage projet
         idProjet.classList.add("image");
+
+        // recherche de l'Id projet maximal pour l'ajout de nouveaux projets
+        if (idProjet.id > idprojetMax) {
+            idprojetMax = idProjet.id;
+        }
 
     };
 };
@@ -145,7 +152,7 @@ function genererFiltre(categories, boutonOn) {
             nomCategorie.classList.add("btn-filtre");
         }
 
-        // ajout de l'option de la catégorie dans l'élément html select
+        // ajout de l'option de la catégorie dans l'élément html select pour l'ajout de nouveaux projets
         const elementSelectcategorie = document.querySelector(".selectCategorie");
         const optionCategorie = document.createElement("option");
         if (i != 0) {
@@ -371,22 +378,32 @@ function supprimerProjet(idProjet) {
     
 };
 
-// fonction ajouter photo pour nouveau projet
+// ********************* fonction AJOUTER PHOTO pour nouveau projet ****************************
 const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto");
+let urlPhoto;
 let validPhoto = false;
+let file;
+let fileExtension;
 
 ajoutfichierPhoto.addEventListener("change", function(event) {
-    // Choix de la photo du nouveau projet
-    // window.open("C:\\", "Sélectionner une photo", "width=800, height=600"); /// *********************** revoir l'url
     // si un fichier est sélectionné, afficher l'image
-    let file = event.target.files[0];
+    file = event.target.files[0];
+    fileExtension = file.name.split('.').pop();
     if (file && (file.type === "image/jpg" || file.type === "image/jpeg" || file.type === "image/png") && (Math.round(file.size / 1024) <= 4000)) {
         console.log("Fichier sélectionné=", file); // Vérif
+        console.log("Extension fichier sélectionné=", fileExtension); // Vérif
         //console.log("Taille fichier sélectionné=", (Math.round(file.size / 1024))); // Vérif
         //console.log("Type fichier sélectionné (type)=", file.type); // Vérif
         //console.log("Nom fichier sélectionné=", file.name); // Vérif
         //console.log("URL fichier sélectionné=", file.src); // Vérif
         validPhoto = true;
+        
+        // utilisation du formData pour l'API *****************************************************************
+        let formData = new FormData();
+        //formData.append("image", file); // ajout du nom du paramètre de l'API "image"
+        console.log("formData=", formData); // Vérif
+        window.localStorage.setItem("formData", formData); // réinitialisation du formData stocké
+
         // Masquer la div galeriePhoto et afficher la div ajoutPhoto
         const Insertion = document.getElementById("Insertion");
         Insertion.className = "apresInsertion"; // masquage des éléments de la div cadreAjoutPhoto vide
@@ -397,7 +414,7 @@ ajoutfichierPhoto.addEventListener("change", function(event) {
         // Utilisation de FileReader pour afficher aperçu
         const reader = new FileReader();
         reader.onload = function(e) {
-            const urlPhoto = e.target.result;
+            urlPhoto = e.target.result;
             console.log("URL avec reader=", urlPhoto);
             //Preview.setAttribute("src", urlPhoto);
             Preview.src = urlPhoto;
@@ -413,92 +430,99 @@ ajoutfichierPhoto.addEventListener("change", function(event) {
 
 // Activation du bouton de validation de nouveau projet
 
-/*
-// Fonction pour vérifier si tous les champs requis sont remplis
-function verifierChamps() {
-    const formulaire = document.getElementById("formAjout");
-    const boutonValidprojet = document.getElementById("boutonValidprojet");
-    
-    // Vérifie si tous les champs requis sont remplis
-    const tousLesChampsRemplis = document.querySelectorAll("required")
-//        .every(input => input.value.trim() !== "");
-
-    // Change l'apparence du bouton en fonction de l'état des champs
-    if (tousLesChampsRemplis) {
-        //submitBtn.disabled = false;
-        //submitBtn.classList.add('enabled');
-        boutonValidprojet.className = "btn-on_2"; // activer le bouton
-    } else {
-        //submitBtn.disabled = true;
-        //submitBtn.classList.remove('enabled');
-        boutonValidprojet.className = "btn-off_2"; // désactiver le bouton
-    };
-};
-
-// Ajoute un écouteur d'événements sur chaque champ pour surveiller les changements
-document.querySelectorAll("required").forEach(input => {
-    input.addEventListener('input', verifierChamps);
-});
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-// activation du bouton valider
-if (validPhoto && validTitre) {
-    const boutonValidationprojet = document.getElementById("boutonValidprojet");
-    boutonValidationprojet.className = "btn-on_2"; // activer le bouton
-    console.log("photo et titre valides="); // Vérif
-};
-*/
-
 // Catégorie valide renseignée
 let validCategorie = false;
 // ajout d'un écouteur d'évènement du sélecteur
 const selectCategorie = document.getElementById("categorie");
 selectCategorie.addEventListener("change", function() {
     let idcategorienouveauProjet = selectCategorie.options[selectCategorie.selectedIndex].value;
-    let nomcategorienouveauProjet = selectCategorie.options[selectCategorie.selectedIndex].text;
     if (idcategorienouveauProjet > 0) {
         validCategorie = true;
+    } else {
+        validCategorie = false;
     }
     // Titre valide renseigné
     let validTitre = false;
     let titrenouveauProjet = document.getElementById("titre").value;
-    console.log("Titre=", titrenouveauProjet);
-    console.log("Longueur titre=", titrenouveauProjet.length);
+    console.log("Titre=", titrenouveauProjet); // Vérif
+    //console.log("Longueur titre=", titrenouveauProjet.length); // Vérif
 
-    //if ((/^[A-Za-z]+$/.test(titrenouveauProjet)) && (titrenouveauProjet.length > 0)) {
     if (titrenouveauProjet.length > 0) {
         validTitre = true;
     } else {
         validTitre = false;
     };
-    console.log("validTitre=", validTitre); // Vérif
-    console.log("validPhoto=", validPhoto); // Vérif
+    //console.log("validTitre=", validTitre); // Vérif
+    //console.log("validPhoto=", validPhoto); // Vérif
 
     if (validPhoto && validTitre && validCategorie) {
         const boutonValidationprojet = document.getElementById("boutonValidprojet");
         boutonValidationprojet.className = "btn-on_2"; // activer le bouton
-        console.log("photo, titre et catégorie validés="); // Vérif
+        console.log("photo, titre et catégorie validés"); // Vérif
+
+        boutonValidationprojet.addEventListener("click", function() {
+            //console.log("idprojetMax=", idprojetMax); // Vérif
+            const idnouveauProjet = parseInt(idprojetMax) + 1; // création de l'id du nouveau projet
+            console.log("idnouveauProjet =", parseInt(idnouveauProjet)); // Vérif
+            let formData = window.localStorage.getItem("formData"); // récupération du formData stocké
+            console.log("formData=", formData); // Vérif
+            console.log("Envoi - titre =", titrenouveauProjet); // Vérif
+
+            // compléter l'url de l'image avec le titre *******************************************************************
+            let titreUrl = titrenouveauProjet;
+            titreUrl = titreUrl.replace(/\s+/g, "-");
+            let urlnouveauProjet = "http://localhost:5678/images/"; // début de l'url
+            //console.log("Envoi - url (avant modif)=", urlnouveauProjet); // Vérif
+            urlnouveauProjet = urlnouveauProjet + titreUrl + "." + fileExtension;
+            console.log("Envoi - url (après modif)=", urlnouveauProjet); // Vérif
+            console.log("Envoi - idCatégorie =", String(idcategorienouveauProjet)); // Vérif
+            console.log("Envoi - userId =", parseInt(userIdLogin)); // Vérif
+            //console.log("Requête=", JSON.stringify({ "id": parseInt(idnouveauProjet), "title": titrenouveauProjet, "imageUrl": urlnouveauProjet, "categoryId": String(idcategorienouveauProjet), "userId": parseInt(userIdLogin)}));
+            console.log("Requête=", JSON.stringify({ "image": formData, "title": titrenouveauProjet, "categoryId": String(idcategorienouveauProjet)}));
+            console.log("arrêt"); // Point d'arrêt deboggeur
+
+            
+            fetch("http://localhost:5678/api/works", {
+                method: "POST",
+                headers: {
+                    "accept": "application/json",
+                    "content-type": "application/json"
+                },
+                body: {
+                    "image": formData,
+                    "title": titrenouveauProjet,
+                    "categoryId": String(idcategorienouveauProjet),
+                }
+                // body: JSON.stringify({ "id": idnouveauProjet, "title": titrenouveauProjet, "imageUrl": urlnouveauProjet, "categoryId": idcategorienouveauProjet, "userId": userIdLogin })
+                /*
+                body: {
+                    "id": parseInt(idnouveauProjet),
+                    "title": titrenouveauProjet,
+                    "imageUrl": urlnouveauProjet,
+                    "categoryId": String(idcategorienouveauProjet),
+                    "userId": parseInt(userIdLogin)
+                }
+                    */
+            })
+
+            .then(response => response.json())
+            
+            .then(data => {
+                console.log("Projet envoyé avec succès ", data);
+            })
+            
+            .catch(error => {
+                console.log("Erreur lors de l'envoi du projet ", error);
+            })
+            
+        });
+
+    } else {
+        const boutonValidationprojet = document.getElementById("boutonValidprojet");
+        boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
+
     };
-    console.log("id catégorie sélectionnée=", idcategorienouveauProjet); // Vérif
-    console.log("nom catégorie sélectionnée=", nomcategorienouveauProjet); // Vérif
+
 });
-
-
-// if (validPhoto && validTitre && validCategorie) 
 
 // ************* A la fin de l'ajout projet, remettre validPhoto, validTitre et validCategorie à false ********************
