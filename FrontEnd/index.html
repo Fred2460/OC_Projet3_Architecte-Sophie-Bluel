@@ -80,22 +80,21 @@
 					<div id="Insertion" class="avantInsertion">
 						<img src="./assets/picture-svgrepo.png" alt="image vide">
 						<label for="ajoutfichierPhoto" class="btn_1">+ Ajouter photo</label>
-						<input type="file" id="ajoutfichierPhoto" accept="image/jpg, image/png, image/jpeg">
+						<input type="file" id="ajoutfichierPhoto" accept="image/jpg, image/png, image/jpeg" required>
 						<p class="info">jpg, png : 4mo max</p>
-						<!-- <img src="./assets/smiley-laughing-out-loud" id="preview" class="masquePreview" alt="Aperçu de l'image"> -->
 					</div>
 					<div>
-						<img src="./assets/Boys_band.jpg" id="preview" class="previewMasque" alt="Aperçu de l'image">
+						<img src="./assets/Alicante-unsplash.jpg" id="preview" class="previewMasque" alt="Aperçu de l'image">
 					</div>
-				</div>
-			
-				
+				</div>			
 				<label for="titre">Titre</label>
-				<input type="text" name="titre" id="titre">
+				<input type="text" name="titre" id="titre" required>
 				<label for="categorie">Catégorie</label>
-				<input type="text" name="categorie" id="categorie">
+				<select name="categorie" id="categorie" class="selectCategorie" required>
+					<option value="0" selected></option>
+				</select>
 				<hr>
-				<input class="btn-off_2" type="submit" value="Valider">
+				<input class="btn-off_2" type="submit" value="Valider" id="boutonValidprojet">
 			</form>
 		</div>
 	</section>

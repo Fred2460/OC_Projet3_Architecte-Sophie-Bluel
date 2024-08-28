@@ -380,6 +380,17 @@ p {
 	width: 420px;
 }
 
+.formAjout label {
+	align-items: flex-start;
+	align-content: flex-start;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 500;
+	color: #3D3D3D;
+	margin-top: 15px;
+	margin-bottom: 5px;
+}
+
 .formAjout input {
 	width: 420px;
 	height: 50px;
@@ -391,15 +402,16 @@ p {
 	color: #444444;
 }
 
-.formAjout label {
-	align-items: flex-start;
-	align-content: flex-start;
+.formAjout select {
+	width: 420px;
+	height: 50px;
+	box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+	border: none;
 	font-family: 'Work Sans';
 	font-size: 14px;
-	font-weight: 500;
-	color: #3D3D3D;
-	margin-top: 15px;
-	margin-bottom: 5px;
+	font-weight: 400;
+	color: #444444;
+	background-color: white;
 }
 
 .formAjout hr {
@@ -438,6 +450,7 @@ p {
 	color: white;
 	background-color: #A7A7A7;
     border: 1px #A7A7A7 solid;
+	cursor: not-allowed;
 }
 
 /* bouton_2 actif */
@@ -455,6 +468,7 @@ p {
 	color: white;
 	background-color: #0E2F28;
 	border: 1px #1D6154 solid;
+	cursor: pointer;
 }
 
 /* Gestion des boutons filtres des projets */

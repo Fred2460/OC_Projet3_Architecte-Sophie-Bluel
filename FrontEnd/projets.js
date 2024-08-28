@@ -105,7 +105,7 @@ if (categories === null) {
 } else {
     categories = JSON.parse(categories);
 };
-//console.log("categories après récup localStorage=", categories); // Vérif
+console.log("categories après récup localStorage=", categories); // Vérif
 
 // ************** FILTRE *****************
 // Ajout du bouton "Tous" dans tableau categories si inexistant
@@ -144,6 +144,15 @@ function genererFiltre(categories, boutonOn) {
             divFiltre.appendChild(nomCategorie);
             nomCategorie.classList.add("btn-filtre");
         }
+
+        // ajout de l'option de la catégorie dans l'élément html select
+        const elementSelectcategorie = document.querySelector(".selectCategorie");
+        const optionCategorie = document.createElement("option");
+        if (i != 0) {
+            optionCategorie.value = categorie.id;
+            optionCategorie.innerText = categorie.name;
+            elementSelectcategorie.appendChild(optionCategorie);
+        };
     };
 };
 
@@ -363,19 +372,21 @@ function supprimerProjet(idProjet) {
 };
 
 // fonction ajouter photo pour nouveau projet
-const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto")
+const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto");
+let validPhoto = false;
+
 ajoutfichierPhoto.addEventListener("change", function(event) {
     // Choix de la photo du nouveau projet
     // window.open("C:\\", "Sélectionner une photo", "width=800, height=600"); /// *********************** revoir l'url
     // si un fichier est sélectionné, afficher l'image
-    const file = event.target.files[0];
+    let file = event.target.files[0];
     if (file && (file.type === "image/jpg" || file.type === "image/jpeg" || file.type === "image/png") && (Math.round(file.size / 1024) <= 4000)) {
         console.log("Fichier sélectionné=", file); // Vérif
         //console.log("Taille fichier sélectionné=", (Math.round(file.size / 1024))); // Vérif
         //console.log("Type fichier sélectionné (type)=", file.type); // Vérif
         //console.log("Nom fichier sélectionné=", file.name); // Vérif
         //console.log("URL fichier sélectionné=", file.src); // Vérif
-        
+        validPhoto = true;
         // Masquer la div galeriePhoto et afficher la div ajoutPhoto
         const Insertion = document.getElementById("Insertion");
         Insertion.className = "apresInsertion"; // masquage des éléments de la div cadreAjoutPhoto vide
@@ -400,3 +411,94 @@ ajoutfichierPhoto.addEventListener("change", function(event) {
 
 });
 
+// Activation du bouton de validation de nouveau projet
+
+/*
+// Fonction pour vérifier si tous les champs requis sont remplis
+function verifierChamps() {
+    const formulaire = document.getElementById("formAjout");
+    const boutonValidprojet = document.getElementById("boutonValidprojet");
+    
+    // Vérifie si tous les champs requis sont remplis
+    const tousLesChampsRemplis = document.querySelectorAll("required")
+//        .every(input => input.value.trim() !== "");
+
+    // Change l'apparence du bouton en fonction de l'état des champs
+    if (tousLesChampsRemplis) {
+        //submitBtn.disabled = false;
+        //submitBtn.classList.add('enabled');
+        boutonValidprojet.className = "btn-on_2"; // activer le bouton
+    } else {
+        //submitBtn.disabled = true;
+        //submitBtn.classList.remove('enabled');
+        boutonValidprojet.className = "btn-off_2"; // désactiver le bouton
+    };
+};
+
+// Ajoute un écouteur d'événements sur chaque champ pour surveiller les changements
+document.querySelectorAll("required").forEach(input => {
+    input.addEventListener('input', verifierChamps);
+});
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+// activation du bouton valider
+if (validPhoto && validTitre) {
+    const boutonValidationprojet = document.getElementById("boutonValidprojet");
+    boutonValidationprojet.className = "btn-on_2"; // activer le bouton
+    console.log("photo et titre valides="); // Vérif
+};
+*/
+
+// Catégorie valide renseignée
+let validCategorie = false;
+// ajout d'un écouteur d'évènement du sélecteur
+const selectCategorie = document.getElementById("categorie");
+selectCategorie.addEventListener("change", function() {
+    let idcategorienouveauProjet = selectCategorie.options[selectCategorie.selectedIndex].value;
+    let nomcategorienouveauProjet = selectCategorie.options[selectCategorie.selectedIndex].text;
+    if (idcategorienouveauProjet > 0) {
+        validCategorie = true;
+    }
+    // Titre valide renseigné
+    let validTitre = false;
+    let titrenouveauProjet = document.getElementById("titre").value;
+    console.log("Titre=", titrenouveauProjet);
+    console.log("Longueur titre=", titrenouveauProjet.length);
+
+    //if ((/^[A-Za-z]+$/.test(titrenouveauProjet)) && (titrenouveauProjet.length > 0)) {
+    if (titrenouveauProjet.length > 0) {
+        validTitre = true;
+    } else {
+        validTitre = false;
+    };
+    console.log("validTitre=", validTitre); // Vérif
+    console.log("validPhoto=", validPhoto); // Vérif
+
+    if (validPhoto && validTitre && validCategorie) {
+        const boutonValidationprojet = document.getElementById("boutonValidprojet");
+        boutonValidationprojet.className = "btn-on_2"; // activer le bouton
+        console.log("photo, titre et catégorie validés="); // Vérif
+    };
+    console.log("id catégorie sélectionnée=", idcategorienouveauProjet); // Vérif
+    console.log("nom catégorie sélectionnée=", nomcategorienouveauProjet); // Vérif
+});
+
+
+// if (validPhoto && validTitre && validCategorie) 
+
+// ************* A la fin de l'ajout projet, remettre validPhoto, validTitre et validCategorie à false ********************
