@@ -385,6 +385,7 @@ let validPhoto = false;
 let file;
 let fileExtension;
 
+/*
 ajoutfichierPhoto.addEventListener("change", function(event) {
     // si un fichier est sélectionné, afficher l'image
     file = event.target.files[0];
@@ -415,10 +416,12 @@ ajoutfichierPhoto.addEventListener("change", function(event) {
         const reader = new FileReader();
         reader.onload = function(e) {
             urlPhoto = e.target.result;
-            console.log("URL avec reader=", urlPhoto);
+            console.log("URL avec reader 1=", urlPhoto);
             //Preview.setAttribute("src", urlPhoto);
             Preview.src = urlPhoto;
-        }
+        };
+        console.log("URL avec reader 2=", urlPhoto);
+        console.log("URL avec reader 3=", reader.result);
         //Preview.src = urlPhoto;
         
     };
@@ -427,6 +430,53 @@ ajoutfichierPhoto.addEventListener("change", function(event) {
     // *************************** à insérer après ajout du projet ou après une fermeture modale ou retour arrière fenêtre modale ******
 
 });
+*/
+
+/*
+let imgInp = document.getElementById("ajoutfichierPhoto");
+imgInp.onchange = evt => {
+    const [file] = imgInp.files
+    if (file) {
+      let img = URL.createObjectURL(file)
+      console.log("img=", img);
+    };
+};
+*/
+/*
+ajoutfichierPhoto.addEventListener("change", function(event) {
+    let reader = new FileReader();
+    reader.onload = function(){
+      let output = document.getElementById('preview');
+      output.src = reader.result;
+    };
+    console.log("event=", event.target.files[0]);
+    //reader.readAsDataURL(event.target.files[0]);
+    console.log("reader=", reader.readAsDataURL(event.target.files[0]))
+});
+*/
+let urlnouveauProjet;
+
+ajoutfichierPhoto.addEventListener('change', (e) => {
+    const file = ajoutfichierPhoto.files;
+    if (file) {
+        const fileReader = new FileReader();
+        fileReader.onload = function (e) {
+            //preview.innerHTML = '';
+
+            let img = document.getElementById('preview');
+            img.src = e.target.result;
+            urlnouveauProjet = img.src;
+            console.log("img.src=",img.src);
+            validPhoto = true;
+            //img.classList.add('w-100')
+            img.classList.replace("previewMasque", "previewAffiche");
+
+            //preview.appendChild(img);
+        }
+        console.log("file=", file[0]);
+        fileReader.readAsDataURL(file[0]);
+    }
+})
 
 // Activation du bouton de validation de nouveau projet
 
@@ -464,21 +514,21 @@ selectCategorie.addEventListener("change", function() {
             //console.log("idprojetMax=", idprojetMax); // Vérif
             const idnouveauProjet = parseInt(idprojetMax) + 1; // création de l'id du nouveau projet
             console.log("idnouveauProjet =", parseInt(idnouveauProjet)); // Vérif
-            let formData = window.localStorage.getItem("formData"); // récupération du formData stocké
-            console.log("formData=", formData); // Vérif
+            //let formData = window.localStorage.getItem("formData"); // récupération du formData stocké
+            //console.log("formData=", formData); // Vérif
             console.log("Envoi - titre =", titrenouveauProjet); // Vérif
 
             // compléter l'url de l'image avec le titre *******************************************************************
             let titreUrl = titrenouveauProjet;
             titreUrl = titreUrl.replace(/\s+/g, "-");
-            let urlnouveauProjet = "http://localhost:5678/images/"; // début de l'url
+            //let urlnouveauProjet = "http://localhost:5678/images/"; // début de l'url
             //console.log("Envoi - url (avant modif)=", urlnouveauProjet); // Vérif
-            urlnouveauProjet = urlnouveauProjet + titreUrl + "." + fileExtension;
+            //urlnouveauProjet = urlnouveauProjet + titreUrl + "." + fileExtension;
             console.log("Envoi - url (après modif)=", urlnouveauProjet); // Vérif
             console.log("Envoi - idCatégorie =", String(idcategorienouveauProjet)); // Vérif
             console.log("Envoi - userId =", parseInt(userIdLogin)); // Vérif
             //console.log("Requête=", JSON.stringify({ "id": parseInt(idnouveauProjet), "title": titrenouveauProjet, "imageUrl": urlnouveauProjet, "categoryId": String(idcategorienouveauProjet), "userId": parseInt(userIdLogin)}));
-            console.log("Requête=", JSON.stringify({ "image": formData, "title": titrenouveauProjet, "categoryId": String(idcategorienouveauProjet)}));
+            console.log("Requête=", JSON.stringify({ "image": urlnouveauProjet, "title": titrenouveauProjet, "categoryId": String(idcategorienouveauProjet)}));
             console.log("arrêt"); // Point d'arrêt deboggeur
 
             
@@ -489,7 +539,7 @@ selectCategorie.addEventListener("change", function() {
                     "content-type": "application/json"
                 },
                 body: {
-                    "image": formData,
+                    "image": urlnouveauProjet,
                     "title": titrenouveauProjet,
                     "categoryId": String(idcategorienouveauProjet),
                 }
