@@ -442,6 +442,7 @@ imgInp.onchange = evt => {
     };
 };
 */
+
 /*
 ajoutfichierPhoto.addEventListener("change", function(event) {
     let reader = new FileReader();
@@ -454,6 +455,8 @@ ajoutfichierPhoto.addEventListener("change", function(event) {
     console.log("reader=", reader.readAsDataURL(event.target.files[0]))
 });
 */
+
+// ************************ INSERTION FICHIER IMAGE PROJET *********************************
 let urlnouveauProjet;
 
 ajoutfichierPhoto.addEventListener('change', (e) => {
@@ -461,24 +464,24 @@ ajoutfichierPhoto.addEventListener('change', (e) => {
     if (file) {
         const fileReader = new FileReader();
         fileReader.onload = function (e) {
-            //preview.innerHTML = '';
-
             let img = document.getElementById('preview');
             img.src = e.target.result;
             urlnouveauProjet = img.src;
-            console.log("img.src=",img.src);
+            //console.log("img.src=",img.src); // Vérif
             validPhoto = true;
             //img.classList.add('w-100')
-            img.classList.replace("previewMasque", "previewAffiche");
+            img.className = "previewAffiche"; // affichage de l'image sélectionnée
 
-            //preview.appendChild(img);
-        }
+            // Masquer la div galeriePhoto et afficher la div ajoutPhoto
+            const Insertion = document.getElementById("Insertion");
+            Insertion.className = "apresInsertion"; // masquage des éléments de la div cadreAjoutPhoto vide
+        };
         console.log("file=", file[0]);
         fileReader.readAsDataURL(file[0]);
-    }
-})
+    };
+});
 
-// Activation du bouton de validation de nouveau projet
+// **************** ACTIVATION BOUTON DE VALIDATION ET ENVOI DU NOUVEAU PROJET ****************************
 
 // Catégorie valide renseignée
 let validCategorie = false;
@@ -512,8 +515,8 @@ selectCategorie.addEventListener("change", function() {
 
         boutonValidationprojet.addEventListener("click", function() {
             //console.log("idprojetMax=", idprojetMax); // Vérif
-            const idnouveauProjet = parseInt(idprojetMax) + 1; // création de l'id du nouveau projet
-            console.log("idnouveauProjet =", parseInt(idnouveauProjet)); // Vérif
+            //const idnouveauProjet = parseInt(idprojetMax) + 1; // création de l'id du nouveau projet
+            //console.log("idnouveauProjet =", parseInt(idnouveauProjet)); // Vérif
             //let formData = window.localStorage.getItem("formData"); // récupération du formData stocké
             //console.log("formData=", formData); // Vérif
             console.log("Envoi - titre =", titrenouveauProjet); // Vérif
@@ -524,9 +527,9 @@ selectCategorie.addEventListener("change", function() {
             //let urlnouveauProjet = "http://localhost:5678/images/"; // début de l'url
             //console.log("Envoi - url (avant modif)=", urlnouveauProjet); // Vérif
             //urlnouveauProjet = urlnouveauProjet + titreUrl + "." + fileExtension;
-            console.log("Envoi - url (après modif)=", urlnouveauProjet); // Vérif
+            //console.log("Envoi - url (après modif)=", urlnouveauProjet); // Vérif
             console.log("Envoi - idCatégorie =", String(idcategorienouveauProjet)); // Vérif
-            console.log("Envoi - userId =", parseInt(userIdLogin)); // Vérif
+            //console.log("Envoi - userId =", parseInt(userIdLogin)); // Vérif
             //console.log("Requête=", JSON.stringify({ "id": parseInt(idnouveauProjet), "title": titrenouveauProjet, "imageUrl": urlnouveauProjet, "categoryId": String(idcategorienouveauProjet), "userId": parseInt(userIdLogin)}));
             console.log("Requête=", JSON.stringify({ "image": urlnouveauProjet, "title": titrenouveauProjet, "categoryId": String(idcategorienouveauProjet)}));
             console.log("arrêt"); // Point d'arrêt deboggeur

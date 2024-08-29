@@ -1,3 +1,4 @@
+// ******************* REINITIALISATION DU LOCAL STORAGE ********************
 localStorage.clear();
 
 // ************** RECUPERATION DES DONNEES DE CONNEXION **************
