@@ -97,7 +97,7 @@ document.querySelector(".gallery").innerHTML = "";
 genererProjets(projets);
 
 
-// ************** CATEGORIES *****************
+// ************** RECUPERATION CATEGORIES *****************
 //Récupération des catégories éventuellement stockées dans le localStorage
 let categories = window.localStorage.getItem("categories");
 //console.log("categories avant récup localStorage=", categories); // Vérif
@@ -114,7 +114,8 @@ if (categories === null) {
 };
 console.log("categories après récup localStorage=", categories); // Vérif
 
-// ************** FILTRE *****************
+
+// *************************** AFFICHAGE FILTRES ****************************
 // Ajout du bouton "Tous" dans tableau categories si inexistant
 if (categories.includes("Tous") == false) {
     const boutonTous = {
@@ -206,7 +207,7 @@ for (let Bouton of boutonFiltrer) {
     });
 };
 
-// ********************* LOGOUT ********************
+// ********************************* LOGOUT ************************************
 // changement nav lien "Logout" en "Login"
 const logLink = document.getElementById("logLink");
 logLink.addEventListener("click", function () {
@@ -219,7 +220,7 @@ logLink.addEventListener("click", function () {
     }
 });
 
-// ********************* MODALE MODIFIER PROJETS *****************
+// ********************************* MODALE MODIFIER PROJETS *****************************
 // afficher la modale 
 const demandeModif = document.getElementById("modifier");
 if (demandeModif != null) {
@@ -284,7 +285,7 @@ boutonRetour.addEventListener("click", function() {
 });
 
 
-// fonction de génération des miniatures des projets
+// ************************ FONCTION DE GENERATION DES MINIATURES DES PROJETS ***********************
 function genererMiniProjets(projets) {
     //console.log("projets=", projets); // Vérif
     for (let i = 0; i < projets.length; i++) {
@@ -310,7 +311,7 @@ function genererMiniProjets(projets) {
         iconePoubelle.classList.add("fa-trash-can");
         iconePoubelle.setAttribute("Id", idProjet);
 
-    }
+    };
     
     //Récupération de tous les boutons poubelle
     const iconsPoubelle = document.querySelectorAll(".fa-solid.fa-trash-can");
@@ -324,8 +325,8 @@ function genererMiniProjets(projets) {
             // Demande de confirmation de suppression
             if (confirm("Suppression du projet " + iconId + " ?") == true) {
                 supprimerProjet(iconId);
-            }
-        })
+            };
+        });
     });
 
     // Ajout d'un écouteur d'évènement pour bouton "Ajouter une photo"
@@ -378,59 +379,10 @@ function supprimerProjet(idProjet) {
     
 };
 
-// ********************* fonction AJOUTER PHOTO pour nouveau projet ****************************
+// *************************** FONCTION AJOUTER PHOTO POUR NOUVEAU PROJET *******************************
 const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto");
-let urlPhoto;
 let validPhoto = false;
 let file;
-let fileExtension;
-
-/*
-ajoutfichierPhoto.addEventListener("change", function(event) {
-    // si un fichier est sélectionné, afficher l'image
-    file = event.target.files[0];
-    fileExtension = file.name.split('.').pop();
-    if (file && (file.type === "image/jpg" || file.type === "image/jpeg" || file.type === "image/png") && (Math.round(file.size / 1024) <= 4000)) {
-        console.log("Fichier sélectionné=", file); // Vérif
-        console.log("Extension fichier sélectionné=", fileExtension); // Vérif
-        //console.log("Taille fichier sélectionné=", (Math.round(file.size / 1024))); // Vérif
-        //console.log("Type fichier sélectionné (type)=", file.type); // Vérif
-        //console.log("Nom fichier sélectionné=", file.name); // Vérif
-        //console.log("URL fichier sélectionné=", file.src); // Vérif
-        validPhoto = true;
-        
-        // utilisation du formData pour l'API *****************************************************************
-        let formData = new FormData();
-        //formData.append("image", file); // ajout du nom du paramètre de l'API "image"
-        console.log("formData=", formData); // Vérif
-        window.localStorage.setItem("formData", formData); // réinitialisation du formData stocké
-
-        // Masquer la div galeriePhoto et afficher la div ajoutPhoto
-        const Insertion = document.getElementById("Insertion");
-        Insertion.className = "apresInsertion"; // masquage des éléments de la div cadreAjoutPhoto vide
-        // Affichage de la photo sélectionnée
-        const Preview = document.getElementById("preview");
-        Preview.className = "previewAffiche";
-
-        // Utilisation de FileReader pour afficher aperçu
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            urlPhoto = e.target.result;
-            console.log("URL avec reader 1=", urlPhoto);
-            //Preview.setAttribute("src", urlPhoto);
-            Preview.src = urlPhoto;
-        };
-        console.log("URL avec reader 2=", urlPhoto);
-        console.log("URL avec reader 3=", reader.result);
-        //Preview.src = urlPhoto;
-        
-    };
-
-    //Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto vide 
-    // *************************** à insérer après ajout du projet ou après une fermeture modale ou retour arrière fenêtre modale ******
-
-});
-*/
 
 /*
 let imgInp = document.getElementById("ajoutfichierPhoto");
@@ -461,15 +413,19 @@ let urlnouveauProjet;
 
 ajoutfichierPhoto.addEventListener('change', (e) => {
     const file = ajoutfichierPhoto.files;
-    if (file) {
+    if (file[0] && (file[0].type === "image/jpg" || file[0].type === "image/jpeg" || file[0].type === "image/png") && (Math.round(file[0].size / 1024) <= 4000)) {
+        //console.log("Fichier sélectionné=", file[0]); // Vérif
+        //console.log("Taille fichier sélectionné=", (Math.round(file[0].size / 1024))); // Vérif
+        //console.log("Type fichier sélectionné (type)=", file[0].type); // Vérif
+        //console.log("Nom fichier sélectionné=", file[0].name); // Vérif
+        validPhoto = true;
+
         const fileReader = new FileReader();
         fileReader.onload = function (e) {
             let img = document.getElementById('preview');
             img.src = e.target.result;
             urlnouveauProjet = img.src;
-            //console.log("img.src=",img.src); // Vérif
             validPhoto = true;
-            //img.classList.add('w-100')
             img.className = "previewAffiche"; // affichage de l'image sélectionnée
 
             // Masquer la div galeriePhoto et afficher la div ajoutPhoto
@@ -498,15 +454,12 @@ selectCategorie.addEventListener("change", function() {
     let validTitre = false;
     let titrenouveauProjet = document.getElementById("titre").value;
     console.log("Titre=", titrenouveauProjet); // Vérif
-    //console.log("Longueur titre=", titrenouveauProjet.length); // Vérif
 
     if (titrenouveauProjet.length > 0) {
         validTitre = true;
     } else {
         validTitre = false;
     };
-    //console.log("validTitre=", validTitre); // Vérif
-    //console.log("validPhoto=", validPhoto); // Vérif
 
     if (validPhoto && validTitre && validCategorie) {
         const boutonValidationprojet = document.getElementById("boutonValidprojet");
@@ -514,26 +467,11 @@ selectCategorie.addEventListener("change", function() {
         console.log("photo, titre et catégorie validés"); // Vérif
 
         boutonValidationprojet.addEventListener("click", function() {
-            //console.log("idprojetMax=", idprojetMax); // Vérif
-            //const idnouveauProjet = parseInt(idprojetMax) + 1; // création de l'id du nouveau projet
-            //console.log("idnouveauProjet =", parseInt(idnouveauProjet)); // Vérif
-            //let formData = window.localStorage.getItem("formData"); // récupération du formData stocké
-            //console.log("formData=", formData); // Vérif
             console.log("Envoi - titre =", titrenouveauProjet); // Vérif
-
-            // compléter l'url de l'image avec le titre *******************************************************************
-            let titreUrl = titrenouveauProjet;
-            titreUrl = titreUrl.replace(/\s+/g, "-");
-            //let urlnouveauProjet = "http://localhost:5678/images/"; // début de l'url
-            //console.log("Envoi - url (avant modif)=", urlnouveauProjet); // Vérif
-            //urlnouveauProjet = urlnouveauProjet + titreUrl + "." + fileExtension;
-            //console.log("Envoi - url (après modif)=", urlnouveauProjet); // Vérif
-            console.log("Envoi - idCatégorie =", String(idcategorienouveauProjet)); // Vérif
-            //console.log("Envoi - userId =", parseInt(userIdLogin)); // Vérif
-            //console.log("Requête=", JSON.stringify({ "id": parseInt(idnouveauProjet), "title": titrenouveauProjet, "imageUrl": urlnouveauProjet, "categoryId": String(idcategorienouveauProjet), "userId": parseInt(userIdLogin)}));
-            console.log("Requête=", JSON.stringify({ "image": urlnouveauProjet, "title": titrenouveauProjet, "categoryId": String(idcategorienouveauProjet)}));
+            idcategorienouveauProjet = parseInt(idcategorienouveauProjet);
+            console.log("Envoi - idCatégorie =", idcategorienouveauProjet); // Vérif
+            console.log("Requête=", JSON.stringify({ "image": urlnouveauProjet, "title": titrenouveauProjet, "categoryId": idcategorienouveauProjet}));
             console.log("arrêt"); // Point d'arrêt deboggeur
-
             
             fetch("http://localhost:5678/api/works", {
                 method: "POST",
@@ -544,18 +482,8 @@ selectCategorie.addEventListener("change", function() {
                 body: {
                     "image": urlnouveauProjet,
                     "title": titrenouveauProjet,
-                    "categoryId": String(idcategorienouveauProjet),
+                    "categoryId": idcategorienouveauProjet,
                 }
-                // body: JSON.stringify({ "id": idnouveauProjet, "title": titrenouveauProjet, "imageUrl": urlnouveauProjet, "categoryId": idcategorienouveauProjet, "userId": userIdLogin })
-                /*
-                body: {
-                    "id": parseInt(idnouveauProjet),
-                    "title": titrenouveauProjet,
-                    "imageUrl": urlnouveauProjet,
-                    "categoryId": String(idcategorienouveauProjet),
-                    "userId": parseInt(userIdLogin)
-                }
-                    */
             })
 
             .then(response => response.json())
