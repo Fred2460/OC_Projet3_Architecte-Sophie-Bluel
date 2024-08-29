@@ -410,6 +410,7 @@ ajoutfichierPhoto.addEventListener("change", function(event) {
 
 // ************************ INSERTION FICHIER IMAGE PROJET *********************************
 let urlnouveauProjet;
+let imageInput;
 
 ajoutfichierPhoto.addEventListener('change', (e) => {
     const file = ajoutfichierPhoto.files;
@@ -434,6 +435,7 @@ ajoutfichierPhoto.addEventListener('change', (e) => {
         };
         console.log("file=", file[0]);
         fileReader.readAsDataURL(file[0]);
+        imageInput = file[0];
     };
 });
 
@@ -473,6 +475,22 @@ selectCategorie.addEventListener("change", function() {
             console.log("Requête=", JSON.stringify({ "image": urlnouveauProjet, "title": titrenouveauProjet, "categoryId": idcategorienouveauProjet}));
             console.log("arrêt"); // Point d'arrêt deboggeur
             
+            // Création de l'objet FormData
+            //const imageInput = file[0];
+            const titleInput = titrenouveauProjet;
+            const categoryInput = idcategorienouveauProjet;
+            console.log("imageInput =", imageInput);
+            console.log("titleInput =", titleInput);
+            console.log("categoryInput =", categoryInput);
+
+            const formData = new FormData();
+            formData.append("image", imageInput);
+            formData.append("title", titleInput);
+            formData.append("category", categoryInput);
+            console.log("formData=", formData); // Vérif
+            console.log("arrêt"); // Point d'arrêt deboggeur
+
+            /*
             fetch("http://localhost:5678/api/works", {
                 method: "POST",
                 headers: {
@@ -484,6 +502,12 @@ selectCategorie.addEventListener("change", function() {
                     "title": titrenouveauProjet,
                     "categoryId": idcategorienouveauProjet,
                 }
+            })
+            */
+
+            fetch("http://localhost:5678/api/works", {
+                method: "POST",
+                body: formData,
             })
 
             .then(response => response.json())
