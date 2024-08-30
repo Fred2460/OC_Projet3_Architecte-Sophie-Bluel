@@ -472,52 +472,49 @@ selectCategorie.addEventListener("change", function() {
             console.log("Envoi - titre =", titrenouveauProjet); // Vérif
             idcategorienouveauProjet = parseInt(idcategorienouveauProjet);
             console.log("Envoi - idCatégorie =", idcategorienouveauProjet); // Vérif
-            console.log("Requête=", JSON.stringify({ "image": urlnouveauProjet, "title": titrenouveauProjet, "categoryId": idcategorienouveauProjet}));
-            console.log("arrêt"); // Point d'arrêt deboggeur
+            console.log("Requête=", JSON.stringify({ "image": urlnouveauProjet, "title": titrenouveauProjet, "categoryId": idcategorienouveauProjet})); // Vérif
+//            console.log("arrêt"); // Point d'arrêt deboggeur
             
             // Création de l'objet FormData
             //const imageInput = file[0];
             const titleInput = titrenouveauProjet;
             const categoryInput = idcategorienouveauProjet;
-            console.log("imageInput =", imageInput);
-            console.log("titleInput =", titleInput);
-            console.log("categoryInput =", categoryInput);
+            console.log("imageInput =", imageInput); // Vérif **************** A REVOIR **************
+            console.log("imageInput.files[0] =", imageInput.files[0]); // Vérif **************** A REVOIR **************
+            console.log("titleInput =", titleInput); // Vérif
+            console.log("categoryInput =", categoryInput); // Vérif
+            console.log("tokenLogin =", tokenLogin); // Vérif
 
             const formData = new FormData();
-            formData.append("image", imageInput);
+            formData.append("image", imageInput.files[0]); // **************** A REVOIR **************
             formData.append("title", titleInput);
             formData.append("category", categoryInput);
             console.log("formData=", formData); // Vérif
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value); // Vérif
+            };
             console.log("arrêt"); // Point d'arrêt deboggeur
 
-            /*
             fetch("http://localhost:5678/api/works", {
                 method: "POST",
                 headers: {
                     "accept": "application/json",
-                    "content-type": "application/json"
+                    "Authorization": `Bearer ${tokenLogin}`,
+                    "content-type": "multipart/form-data"
                 },
-                body: {
-                    "image": urlnouveauProjet,
-                    "title": titrenouveauProjet,
-                    "categoryId": idcategorienouveauProjet,
+                body: formData
+            })
+
+            .then(response => {
+                if (response.ok) {
+                    console.log("Projet envoyé avec succès");  
+                } else {
+                    console.log("Erreur lors de l'envoi du projet");  
                 }
-            })
-            */
-
-            fetch("http://localhost:5678/api/works", {
-                method: "POST",
-                body: formData,
-            })
-
-            .then(response => response.json())
-            
-            .then(data => {
-                console.log("Projet envoyé avec succès ", data);
             })
             
             .catch(error => {
-                console.log("Erreur lors de l'envoi du projet ", error);
+                console.log("Erreur lors de l'envoi du projet (catch) ", error);
             })
             
         });
