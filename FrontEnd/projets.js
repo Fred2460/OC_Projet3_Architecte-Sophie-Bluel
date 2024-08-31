@@ -1,4 +1,4 @@
-// ************** USER *****************
+// ***************************** LOGIN USER *****************************
 //Récupération du user eventuellement connecté dans le localStorage
 let userIdLogin = window.localStorage.getItem("userId"); // récupération du userId stocké
 let tokenLogin = window.localStorage.getItem("token"); // récupération du token stocké
@@ -53,8 +53,7 @@ if (projets === null) {
 };
 console.log("projets après vérif début=", projets); // Vérif
 
-let idprojetMax = 1;
-
+// fonction de génération de l'affichage de la gallery des projets
 function genererProjets(projets) {
     for (let i = 0; i < projets.length; i++) {
         const projet = projets[i];
@@ -84,11 +83,6 @@ function genererProjets(projets) {
 
         // ajout d'une balise image pour affichage projet
         idProjet.classList.add("image");
-
-        // recherche de l'Id projet maximal pour l'ajout de nouveaux projets
-        if (idProjet.id > idprojetMax) {
-            idprojetMax = idProjet.id;
-        }
 
     };
 };
@@ -170,7 +164,6 @@ genererFiltre(categories, boutonOn);
 
 
 // ************** GESTION DES APPUIS BOUTONS FILTRE *****************
-
 let boutonFiltrer = document.querySelectorAll(".btn-filtre"); //Récupération de tous les boutons
 let Bouton = document.querySelector(".btn-filtre.btn-on"); //Récupération du bouton activé
 
@@ -207,6 +200,7 @@ for (let Bouton of boutonFiltrer) {
     });
 };
 
+
 // ********************************* LOGOUT ************************************
 // changement nav lien "Logout" en "Login"
 const logLink = document.getElementById("logLink");
@@ -219,6 +213,7 @@ logLink.addEventListener("click", function () {
         window.localStorage.removeItem("token"); // réinitialisation du token stocké
     }
 });
+
 
 // ********************************* MODALE MODIFIER PROJETS *****************************
 // afficher la modale 
@@ -267,6 +262,9 @@ demandeFermer_2.addEventListener("click", function () {
     const Preview = document.getElementById("preview");
     Preview.className = "masquePreview";
 });
+
+// masquer la modale (click en dehors de la modale)
+// A FAIRE XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 // Ajout d'un écouteur d'évènement pour bouton "Retour"
 const boutonRetour = document.getElementById("retour")
@@ -380,38 +378,15 @@ function supprimerProjet(idProjet) {
 };
 
 // *************************** FONCTION AJOUTER PHOTO POUR NOUVEAU PROJET *******************************
-const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto");
-let validPhoto = false;
 let file;
+let validPhoto = false;
 
-/*
-let imgInp = document.getElementById("ajoutfichierPhoto");
-imgInp.onchange = evt => {
-    const [file] = imgInp.files
-    if (file) {
-      let img = URL.createObjectURL(file)
-      console.log("img=", img);
-    };
-};
-*/
-
-/*
-ajoutfichierPhoto.addEventListener("change", function(event) {
-    let reader = new FileReader();
-    reader.onload = function(){
-      let output = document.getElementById('preview');
-      output.src = reader.result;
-    };
-    console.log("event=", event.target.files[0]);
-    //reader.readAsDataURL(event.target.files[0]);
-    console.log("reader=", reader.readAsDataURL(event.target.files[0]))
-});
-*/
-
-// ************************ INSERTION FICHIER IMAGE PROJET *********************************
+// Insertion fichier image projet
 let urlnouveauProjet;
 let imageInput;
+let formData;
 
+const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto");
 ajoutfichierPhoto.addEventListener('change', (e) => {
     const file = ajoutfichierPhoto.files;
     if (file[0] && (file[0].type === "image/jpg" || file[0].type === "image/jpeg" || file[0].type === "image/png") && (Math.round(file[0].size / 1024) <= 4000)) {
@@ -422,79 +397,83 @@ ajoutfichierPhoto.addEventListener('change', (e) => {
         validPhoto = true;
 
         const fileReader = new FileReader();
-        fileReader.onload = function (e) {
+        //fileReader.onload = function (e) {
+        fileReader.onloadend = function (e) {
             let img = document.getElementById('preview');
             img.src = e.target.result;
             urlnouveauProjet = img.src;
+
+            let imageInput = e.target.result;
+            //console.log("imageInput 'e.target.result'=", imageInput); // Vérif
+            formData = new FormData();
+            formData.append("image", imageInput);
+            console.log("formData =", formData); // Vérif
+            console.log("arrêt"); // Point d'arrêt deboggeur
+
             validPhoto = true;
             img.className = "previewAffiche"; // affichage de l'image sélectionnée
 
-            // Masquer la div galeriePhoto et afficher la div ajoutPhoto
+            // Masquer les éléments de la div Insertion dans cadreajoutPhoto
             const Insertion = document.getElementById("Insertion");
-            Insertion.className = "apresInsertion"; // masquage des éléments de la div cadreAjoutPhoto vide
+            Insertion.className = "apresInsertion"; // masquage des éléments de la div Insertion dans cadreajoutPhoto
         };
-        console.log("file=", file[0]);
+        //console.log("file=", file[0]); // Vérif
         fileReader.readAsDataURL(file[0]);
-        imageInput = file[0];
+        //imageInput = file[0];
     };
 });
 
 // **************** ACTIVATION BOUTON DE VALIDATION ET ENVOI DU NOUVEAU PROJET ****************************
 
-// Catégorie valide renseignée
+let validTitre = false;
 let validCategorie = false;
-// ajout d'un écouteur d'évènement du sélecteur
+
+// ajout d'un écouteur d'évènement du sélecteur de catégorie
 const selectCategorie = document.getElementById("categorie");
 selectCategorie.addEventListener("change", function() {
-    let idcategorienouveauProjet = selectCategorie.options[selectCategorie.selectedIndex].value;
-    if (idcategorienouveauProjet > 0) {
+    // Vérification catégorie renseignée et valide
+    let categoryInput = parseInt(selectCategorie.options[selectCategorie.selectedIndex].value);
+    if (categoryInput > 0) {
         validCategorie = true;
     } else {
         validCategorie = false;
-    }
-    // Titre valide renseigné
-    let validTitre = false;
-    let titrenouveauProjet = document.getElementById("titre").value;
-    console.log("Titre=", titrenouveauProjet); // Vérif
+    };
 
-    if (titrenouveauProjet.length > 0) {
+    // Vérification titre renseigné et valide
+    let titleInput = document.getElementById("titre").value;
+    //console.log("Titre=", titleInput); // Vérif
+    if (titleInput.length > 0) {
         validTitre = true;
     } else {
         validTitre = false;
     };
 
+    // Si photo, titre et catégorie valides, activation du bouton "Valider"
     if (validPhoto && validTitre && validCategorie) {
         const boutonValidationprojet = document.getElementById("boutonValidprojet");
         boutonValidationprojet.className = "btn-on_2"; // activer le bouton
-        console.log("photo, titre et catégorie validés"); // Vérif
+        //console.log("photo, titre et catégorie validés"); // Vérif
 
+        // Ajout d'un écouter appui bouton "Valider"
         boutonValidationprojet.addEventListener("click", function() {
-            console.log("Envoi - titre =", titrenouveauProjet); // Vérif
-            idcategorienouveauProjet = parseInt(idcategorienouveauProjet);
-            console.log("Envoi - idCatégorie =", idcategorienouveauProjet); // Vérif
-            console.log("Requête=", JSON.stringify({ "image": urlnouveauProjet, "title": titrenouveauProjet, "categoryId": idcategorienouveauProjet})); // Vérif
-//            console.log("arrêt"); // Point d'arrêt deboggeur
-            
-            // Création de l'objet FormData
-            //const imageInput = file[0];
-            const titleInput = titrenouveauProjet;
-            const categoryInput = idcategorienouveauProjet;
-            console.log("imageInput =", imageInput); // Vérif **************** A REVOIR **************
-            console.log("imageInput.files[0] =", imageInput.files[0]); // Vérif **************** A REVOIR **************
+            // Création de l'objet FormData au click
+            //console.log("imageInput =", imageInput); // Vérif
             console.log("titleInput =", titleInput); // Vérif
             console.log("categoryInput =", categoryInput); // Vérif
             console.log("tokenLogin =", tokenLogin); // Vérif
+            console.log("arrêt"); // Point d'arrêt deboggeur
 
-            const formData = new FormData();
-            formData.append("image", imageInput.files[0]); // **************** A REVOIR **************
+            //const formData = new FormData();
+            //formData.append("image", imageInput);
             formData.append("title", titleInput);
             formData.append("category", categoryInput);
             console.log("formData=", formData); // Vérif
             for (let [key, value] of formData.entries()) {
-                console.log(key, value); // Vérif
+                console.log("key, value =", key, value); // Vérif
             };
             console.log("arrêt"); // Point d'arrêt deboggeur
-
+            
+            // Envoi du projet via API /works
             fetch("http://localhost:5678/api/works", {
                 method: "POST",
                 headers: {
@@ -504,7 +483,7 @@ selectCategorie.addEventListener("change", function() {
                 },
                 body: formData
             })
-
+            
             .then(response => {
                 if (response.ok) {
                     console.log("Projet envoyé avec succès");  
@@ -517,6 +496,23 @@ selectCategorie.addEventListener("change", function() {
                 console.log("Erreur lors de l'envoi du projet (catch) ", error);
             })
             
+            // Masquer la div ajoutmodale, 
+            const modifProjets = document.getElementById("modifyProject");
+            modifProjets.className = "modal-masque"; // masquage de la modale
+            // Masquer la div ajoutPhoto
+            const ajoutPhoto = document.getElementById("ajoutPhoto");
+            ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
+            const Insertion = document.getElementById("Insertion");
+            Insertion.className = "avantInsertion"; // affichage des éléments de la div Insertion dans cadreajoutPhoto
+            const Preview = document.getElementById("preview");
+            Preview.className = "masquePreview"; // Masquage de la miniature de la photo sélectionnée
+            // Désactivation du bouton "Valider" projet
+            const boutonValidationprojet = document.getElementById("boutonValidprojet");
+            boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
+
+            // Regénération de la gallery des projets
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(projets);
         });
 
     } else {

@@ -450,7 +450,7 @@ p {
 	color: white;
 	background-color: #A7A7A7;
     border: 1px #A7A7A7 solid;
-	cursor: not-allowed;
+	/*cursor: not-allowed;*/
 }
 
 /* bouton_2 actif */
