@@ -458,9 +458,11 @@ selectCategorie.addEventListener("change", function() {
         boutonValidationprojet.addEventListener("click", function() {
             // Création de l'objet FormData au click
             //console.log("imageInput =", imageInput); // Vérif
-            //console.log("titleInput =", titleInput); // Vérif
-            //console.log("categoryInput =", categoryInput); // Vérif
-            //console.log("tokenLogin =", tokenLogin); // Vérif
+            console.log("titleInput =", titleInput); // Vérif
+            console.log("categoryInput =", categoryInput); // Vérif
+            console.log("tokenLogin =", tokenLogin); // Vérif
+            //console.log("Authorization (avec $) =", `Bearer ${tokenLogin}`); // Vérif
+            console.log("Authorization (avec +) =", "Bearer " + tokenLogin); // Vérif
             //console.log("arrêt"); // Point d'arrêt deboggeur
 
             //const formData = new FormData();
@@ -478,8 +480,8 @@ selectCategorie.addEventListener("change", function() {
                 method: "POST",
                 headers: {
                     "accept": "application/json",
-                    "Authorization": `Bearer ${tokenLogin}`,
-                    "content-type": "multipart/form-data"
+                    "content-type": "multipart/form-data",
+                    "Authorization": "Bearer " + tokenLogin
                 },
                 body: formData
             })
