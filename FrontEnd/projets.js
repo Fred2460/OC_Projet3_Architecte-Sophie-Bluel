@@ -457,19 +457,11 @@ selectCategorie.addEventListener("change", function() {
         // Ajout d'un écouter appui bouton "Valider"
         boutonValidationprojet.addEventListener("click", function() {
             // Création de l'objet FormData au click
-            //console.log("imageInput =", imageInput); // Vérif
-            console.log("titleInput =", titleInput); // Vérif
-            console.log("categoryInput =", categoryInput); // Vérif
             console.log("tokenLogin =", tokenLogin); // Vérif
             //console.log("Authorization (avec $) =", `Bearer ${tokenLogin}`); // Vérif
             console.log("Authorization (avec +) =", "Bearer " + tokenLogin); // Vérif
-            //console.log("arrêt"); // Point d'arrêt deboggeur
-
-            //const formData = new FormData();
-            //formData.append("image", imageInput);
             formData.append("title", titleInput);
             formData.append("category", categoryInput);
-            //console.log("formData=", formData); // Vérif
             for (let [key, value] of formData.entries()) {
                 console.log("key, value =", key, value); // Vérif
             };
