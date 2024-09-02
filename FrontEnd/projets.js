@@ -5,11 +5,11 @@ let tokenLogin = window.localStorage.getItem("token"); // récupération du toke
 
 let userLogin = false;
 if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user connecté"
-    console.log("userIdLogin ou tokenLogin inexistant:", userIdLogin, tokenLogin);  // Vérif
+    //console.log("userIdLogin ou tokenLogin inexistant:", userIdLogin, tokenLogin);  // Vérif
     userLogin = false;
 
 } else { // cas "user connecté"
-    console.log("userIdLogin ou tokenLogin existants:", userIdLogin, tokenLogin); // Vérif
+    //console.log("userIdLogin ou tokenLogin existants:", userIdLogin, tokenLogin); // Vérif
     userLogin = true;
     // changement nav lien "Login" en "Logout"
     const logLink = document.getElementById("logLink");
@@ -382,7 +382,6 @@ let file;
 let validPhoto = false;
 
 // Insertion fichier image projet
-let urlnouveauProjet;
 let imageInput;
 let formData;
 
@@ -390,10 +389,6 @@ const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto");
 ajoutfichierPhoto.addEventListener('change', (e) => {
     const file = ajoutfichierPhoto.files;
     if (file[0] && (file[0].type === "image/jpg" || file[0].type === "image/jpeg" || file[0].type === "image/png") && (Math.round(file[0].size / 1024) <= 4000)) {
-        //console.log("Fichier sélectionné=", file[0]); // Vérif
-        //console.log("Taille fichier sélectionné=", (Math.round(file[0].size / 1024))); // Vérif
-        //console.log("Type fichier sélectionné (type)=", file[0].type); // Vérif
-        //console.log("Nom fichier sélectionné=", file[0].name); // Vérif
         validPhoto = true;
 
         const fileReader = new FileReader();
@@ -401,15 +396,7 @@ ajoutfichierPhoto.addEventListener('change', (e) => {
         fileReader.onloadend = function (e) {
             let img = document.getElementById('preview');
             img.src = e.target.result;
-            urlnouveauProjet = img.src;
-
-            let imageInput = e.target.result;
-            //console.log("imageInput 'e.target.result'=", imageInput); // Vérif
-            formData = new FormData();
-            formData.append("image", imageInput);
-            //console.log("formData =", formData); // Vérif
-            //console.log("arrêt"); // Point d'arrêt deboggeur
-
+            imageInput = e.target.result;
             validPhoto = true;
             img.className = "previewAffiche"; // affichage de l'image sélectionnée
 
@@ -417,9 +404,8 @@ ajoutfichierPhoto.addEventListener('change', (e) => {
             const Insertion = document.getElementById("Insertion");
             Insertion.className = "apresInsertion"; // masquage des éléments de la div Insertion dans cadreajoutPhoto
         };
-        //console.log("file=", file[0]); // Vérif
         fileReader.readAsDataURL(file[0]);
-        //imageInput = file[0];
+;
     };
 });
 
@@ -452,19 +438,24 @@ selectCategorie.addEventListener("change", function() {
     if (validPhoto && validTitre && validCategorie) {
         const boutonValidationprojet = document.getElementById("boutonValidprojet");
         boutonValidationprojet.className = "btn-on_2"; // activer le bouton
-        //console.log("photo, titre et catégorie validés"); // Vérif
 
         // Ajout d'un écouter appui bouton "Valider"
         boutonValidationprojet.addEventListener("click", function() {
             // Création de l'objet FormData au click
+            console.log("imageInput =", imageInput);
+            console.log("titleInput =", titleInput);
+            console.log("categoryInput =",categoryInput );
             console.log("tokenLogin =", tokenLogin); // Vérif
-            //console.log("Authorization (avec $) =", `Bearer ${tokenLogin}`); // Vérif
-            console.log("Authorization (avec +) =", "Bearer " + tokenLogin); // Vérif
+            console.log("Authorization (avec $) =", `Bearer ${tokenLogin}`); // Vérif
+            //console.log("Authorization (avec +) =", "Bearer " + tokenLogin); // Vérif
+            formData = new FormData();
+            formData.append("image", imageInput);
             formData.append("title", titleInput);
             formData.append("category", categoryInput);
             for (let [key, value] of formData.entries()) {
                 console.log("key, value =", key, value); // Vérif
             };
+            console.log("formData=", formData);
             console.log("arrêt"); // Point d'arrêt deboggeur
             
             // Envoi du projet via API /works
@@ -473,7 +464,7 @@ selectCategorie.addEventListener("change", function() {
                 headers: {
                     "accept": "application/json",
                     "content-type": "multipart/form-data",
-                    "Authorization": "Bearer " + tokenLogin
+                    "Authorization": `Bearer ${tokenLogin}`
                 },
                 body: formData
             })

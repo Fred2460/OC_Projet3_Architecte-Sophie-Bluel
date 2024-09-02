@@ -10,7 +10,7 @@ let errorMessage = document.getElementById("errorMessage");
 // ************** FONCTION CONNEXION *****************
 function genererLogin(email, password) {
     // Simulation connexion user ok
-    console.log("valeurs envoyées (email, password) Function=", email, password); // Vérif
+    //console.log("valeurs envoyées (email, password) Function=", email, password); // Vérif
     fetch("http://localhost:5678/api/users/login", {
         method: "POST",
         mode: "cors",
@@ -27,9 +27,7 @@ function genererLogin(email, password) {
     })
 
     .then (data => {
-        //JSON.stringify(data)
         if (data.token) {
-            //console.log("data =", data); // Vérif
             window.localStorage.setItem("userId", data.userId); // stockage du userId récupéré
             window.localStorage.setItem("token", data.token); // stockage du token récupéré
             console.log("userId =", data.userId); // Vérif
