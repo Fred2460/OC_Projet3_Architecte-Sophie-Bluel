@@ -387,16 +387,20 @@ let formData;
 
 const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto");
 ajoutfichierPhoto.addEventListener('change', (e) => {
-    const file = ajoutfichierPhoto.files;
-    if (file[0] && (file[0].type === "image/jpg" || file[0].type === "image/jpeg" || file[0].type === "image/png") && (Math.round(file[0].size / 1024) <= 4000)) {
+    //const file = ajoutfichierPhoto.files;
+    const file = ajoutfichierPhoto.files[0];
+    //if (file[0] && (file[0].type === "image/jpg" || file[0].type === "image/jpeg" || file[0].type === "image/png") && (Math.round(file[0].size / 1024) <= 4000)) {
+    if (file && (file.type === "image/jpg" || file.type === "image/jpeg" || file.type === "image/png") && (Math.round(file.size / 1024) <= 4000)) {
         validPhoto = true;
 
         const fileReader = new FileReader();
-        //fileReader.onload = function (e) {
-        fileReader.onloadend = function (e) {
+        //fileReader.onloadend = function (e) {
+        fileReader.onload = function (e) {
             let img = document.getElementById('preview');
             img.src = e.target.result;
             imageInput = e.target.result;
+            console.log("imageInput =", imageInput);
+            console.log("arrêt"); // Point d'arrêt deboggeur
             validPhoto = true;
             img.className = "previewAffiche"; // affichage de l'image sélectionnée
 
@@ -404,8 +408,9 @@ ajoutfichierPhoto.addEventListener('change', (e) => {
             const Insertion = document.getElementById("Insertion");
             Insertion.className = "apresInsertion"; // masquage des éléments de la div Insertion dans cadreajoutPhoto
         };
-        fileReader.readAsDataURL(file[0]);
-;
+        //fileReader.readAsDataURL(file[0]);
+        fileReader.readAsDataURL(file);
+
     };
 });
 
@@ -461,6 +466,7 @@ selectCategorie.addEventListener("change", function() {
             // Envoi du projet via API /works
             fetch("http://localhost:5678/api/works", {
                 method: "POST",
+                mode: "cors",
                 headers: {
                     "accept": "application/json",
                     "content-type": "multipart/form-data",
