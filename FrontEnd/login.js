@@ -34,9 +34,17 @@ function genererLogin(email, password) {
             console.log("token =", data.token); // Vérif
             window.location.replace("index.html#tportfolio"); // redirection vers la page d'accueil à la balise des projets
         } else {
-            errorMessage.textContent = "Erreur d'identifiant ou mot de passe.";    
-            //window.localStorage.removeItem("userId"); // réinitialisation du userId stocké}
-            //window.localStorage.removeItem("token"); // réinitialisation du token stocké
+            errorMessage.textContent = "Erreur d'identifiant ou mot de passe.";
+            // Attendre un appui clavier
+            document.addEventListener('keydown', function(event) {
+                // Une touche est pressée, affiche le texte
+                errorMessage.textContent = "";
+            });
+            // Attendre un clic de souris
+            document.addEventListener('click', function(event) {
+                // Un clic est détecté, affiche le texte
+                errorMessage.textContent = "";
+            });
         }
     })
 

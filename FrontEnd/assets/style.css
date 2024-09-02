@@ -226,6 +226,7 @@ li:hover {
 	height: 103px;
 	border: 1px #c4c4c4 solid;
 	margin: 15px 0px 15px 0px;
+	object-fit: contain;
 }
 
 .modal-masque {
@@ -370,7 +371,7 @@ p {
 	max-width: 100%;
 	width: 100%;
 	height: 100%;
-	object-fit: cover;
+	object-fit: contain;
 }
 
 /* Formulaire des champs du nouveau projet */
@@ -450,7 +451,6 @@ p {
 	color: white;
 	background-color: #A7A7A7;
     border: 1px #A7A7A7 solid;
-	/*cursor: not-allowed;*/
 }
 
 /* bouton_2 actif */
@@ -541,6 +541,7 @@ p {
 	width: 100%;
 	border: 1px #c4c4c4 solid;
 	margin-bottom: 7px;
+	object-fit: contain;
 }
 
 /* Affichage ou masquage des projets selon sélection filtre */

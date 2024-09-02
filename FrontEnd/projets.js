@@ -235,7 +235,16 @@ window.addEventListener("keydown", function (e){
     if (e.key === "Escape" || e.key === "Esc") {
         const modifProjets = document.getElementById("modifyProject");
         modifProjets.className = "modal-masque"; // masquage de la modale
-    }
+        // Masquer la div ajoutPhoto
+        const ajoutPhoto = document.getElementById("ajoutPhoto");
+        ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
+        // Afficher la div galeriePhoto et masquer la div ajoutPhoto
+        const Insertion = document.getElementById("Insertion");
+        Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
+        // Masquer la photo sélectionnée
+        const Preview = document.getElementById("preview");
+        Preview.className = "masquePreview";
+    };
 });
 
 // masquer la modale (appui bouton Fermer_1)
