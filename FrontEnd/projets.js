@@ -235,17 +235,33 @@ window.addEventListener("keydown", function (e){
     if (e.key === "Escape" || e.key === "Esc") {
         const modifProjets = document.getElementById("modifyProject");
         modifProjets.className = "modal-masque"; // masquage de la modale
-        // Masquer la div ajoutPhoto
-        const ajoutPhoto = document.getElementById("ajoutPhoto");
-        ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
         // Afficher la div galeriePhoto et masquer la div ajoutPhoto
         const Insertion = document.getElementById("Insertion");
         Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
         // Masquer la photo sélectionnée
         const Preview = document.getElementById("preview");
-        Preview.className = "masquePreview";
+        Preview.className = "previewMasque";
     };
 });
+
+/*
+// masquer la modale (click en dehors de la modale)
+//const modifProjets = document.getElementById("modifyProject");
+const modal = document.querySelector(".modal");
+window.addEventListener("click", function (e){
+    if (!modal.contains(e.target)) {
+        // fermer la modale
+        const modifProjets = document.getElementById("modifyProject");
+        modifProjets.className = "modal-masque"; // masquage de la modale
+        // Afficher la div galeriePhoto et masquer la div ajoutPhoto
+        const Insertion = document.getElementById("Insertion");
+        Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
+        // Masquer la photo sélectionnée
+        const Preview = document.getElementById("preview");
+        Preview.className = "previewMasque";
+    };
+});
+*/
 
 // masquer la modale (appui bouton Fermer_1)
 const demandeFermer_1 = document.getElementById("fermer_1");
@@ -269,7 +285,7 @@ demandeFermer_2.addEventListener("click", function () {
     Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
     // Masquer la photo sélectionnée
     const Preview = document.getElementById("preview");
-    Preview.className = "masquePreview";
+    Preview.className = "previewMasque";
 });
 
 // masquer la modale (click en dehors de la modale)
@@ -288,7 +304,7 @@ boutonRetour.addEventListener("click", function() {
     Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
     // Masquer la photo sélectionnée
     const Preview = document.getElementById("preview");
-    Preview.className = "masquePreview";
+    Preview.className = "previewMasque";
 });
 
 
@@ -505,7 +521,7 @@ selectCategorie.addEventListener("change", function() {
             const Insertion = document.getElementById("Insertion");
             Insertion.className = "avantInsertion"; // affichage des éléments de la div Insertion dans cadreajoutPhoto
             const Preview = document.getElementById("preview");
-            Preview.className = "masquePreview"; // Masquage de la miniature de la photo sélectionnée
+            Preview.className = "previewMasque"; // Masquage de la miniature de la photo sélectionnée
             // Désactivation du bouton "Valider" projet
             const boutonValidationprojet = document.getElementById("boutonValidprojet");
             boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
