@@ -205,7 +205,7 @@ for (let Bouton of boutonFiltrer) {
 // changement nav lien "Logout" en "Login"
 const logLink = document.getElementById("logLink");
 logLink.addEventListener("click", function () {
-    //console.log("logLink =", logLink);
+    //console.log("logLink =", logLink); // Vérif
     if (logLink.textContent === "Logout") {
         logLink.textContent = "Login";
         logLink.href = "index.html";
@@ -232,6 +232,7 @@ if (demandeModif != null) {
 
 // masquer la modale (appui sur Escape)
 window.addEventListener("keydown", function (e){
+    e.preventDefault();
     if (e.key === "Escape" || e.key === "Esc") {
         const modifProjets = document.getElementById("modifyProject");
         modifProjets.className = "modal-masque"; // masquage de la modale
@@ -249,6 +250,7 @@ window.addEventListener("keydown", function (e){
 //const modifProjets = document.getElementById("modifyProject");
 const modal = document.querySelector(".modal");
 window.addEventListener("click", function (e){
+    e.preventDefault();
     if (!modal.contains(e.target)) {
         // fermer la modale
         const modifProjets = document.getElementById("modifyProject");
@@ -527,7 +529,7 @@ selectCategorie.addEventListener("change", function() {
             boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
 
             // Regénération de la gallery des projets
-            document.querySelector(".gallery").innerHTML = "";
+            //document.querySelector(".gallery").innerHTML = "";
             genererProjets(projets);
             
         });
