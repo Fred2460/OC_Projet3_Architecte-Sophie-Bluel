@@ -232,7 +232,7 @@ if (demandeModif != null) {
 
 // masquer la modale (appui sur Escape)
 window.addEventListener("keydown", function (e){
-    e.preventDefault();
+    //e.preventDefault();
     if (e.key === "Escape" || e.key === "Esc") {
         const modifProjets = document.getElementById("modifyProject");
         modifProjets.className = "modal-masque"; // masquage de la modale
@@ -289,9 +289,6 @@ demandeFermer_2.addEventListener("click", function () {
     const Preview = document.getElementById("preview");
     Preview.className = "previewMasque";
 });
-
-// masquer la modale (click en dehors de la modale)
-// A FAIRE XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 // Ajout d'un écouteur d'évènement pour bouton "Retour"
 const boutonRetour = document.getElementById("retour")
@@ -414,9 +411,7 @@ let formData;
 
 const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto");
 ajoutfichierPhoto.addEventListener('change', (e) => {
-    //const file = ajoutfichierPhoto.files;
     const file = ajoutfichierPhoto.files[0];
-    //if (file[0] && (file[0].type === "image/jpg" || file[0].type === "image/jpeg" || file[0].type === "image/png") && (Math.round(file[0].size / 1024) <= 4000)) {
     if (file && (file.type === "image/jpg" || file.type === "image/jpeg" || file.type === "image/png") && (Math.round(file.size / 1024) <= 4000)) {
         validPhoto = true;
 
@@ -435,7 +430,6 @@ ajoutfichierPhoto.addEventListener('change', (e) => {
             const Insertion = document.getElementById("Insertion");
             Insertion.className = "apresInsertion"; // masquage des éléments de la div Insertion dans cadreajoutPhoto
         };
-        //fileReader.readAsDataURL(file[0]);
         fileReader.readAsDataURL(file);
 
     };
