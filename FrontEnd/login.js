@@ -62,7 +62,6 @@ function genererLogin(email, password) {
 // Ecoute appuie bouton "Se connecter"
 loginForm.addEventListener("submit", async (event) => {
     event.preventDefault(); // empêche le comportement pas défaut de rechargement de la page
-
     // récupération des valeurs du formulaire
     let email = emailInput.value;
     let password = passwordInput.value;
