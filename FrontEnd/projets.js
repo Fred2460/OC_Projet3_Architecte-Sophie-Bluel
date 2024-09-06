@@ -555,7 +555,7 @@ function vérifierboutonValider() {
 
 
 // ******************************* ENREGISTREMENT DU NOUVEAU PROJET *************************************
-function enregistrerProjet(valideProjet, imageInput, titleInput, categoryInput) {
+async function enregistrerProjet(valideProjet, imageInput, titleInput, categoryInput) {
     if (valideProjet != null) {
         // Ajout d'un écouter appui bouton "Valider"
         valideProjet.addEventListener("click", async function() {
@@ -581,7 +581,7 @@ function enregistrerProjet(valideProjet, imageInput, titleInput, categoryInput) 
             console.log("arrêt"); // Point d'arrêt deboggeur
 
             // Envoi du projet via API /works   
-            fetch("http://localhost:5678/api/works", {
+            const reponse = await fetch("http://localhost:5678/api/works", {
                 method: "POST",
                 mode: "no-cors",
                 headers: {
@@ -597,6 +597,19 @@ function enregistrerProjet(valideProjet, imageInput, titleInput, categoryInput) 
                 if (response.ok) {
                     console.log("Projet envoyé avec succès");
                     console.log("response.json()=", response.json());
+                    
+                    // Traitement du nouveau projet après réponse de l'API
+                    // ******************************************** A TESTER ********************************************************
+                    nouveauProjet = reponse.json();
+                    console.log("nouveauProjet=", nouveauProjet);
+                    // Transformation du projet en JSON
+                    projets.push(nouveauProjet); // ajout du nouveau projet dans le tableau JSON
+                    console.log("projets après vérif début=", projets); // Vérif
+                    // Transformation des projets en JSON
+                    const valeurProjets = JSON.stringify(projets);
+                    // Stockage des informations dans le localStorage
+                    window.localStorage.setItem("projets", valeurProjets);
+
                 } else {
                     console.log("response=", response);
                     console.log("Erreur lors de l'envoi du projet");  
