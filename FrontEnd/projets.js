@@ -597,7 +597,17 @@ async function enregistrerProjet(valideProjet, imageInput, titleInput, categoryI
                 if (response.ok) {
                     console.log("Projet envoyé avec succès");
                     console.log("response.json()=", response.json());
-                    
+                    return response.json();
+                } else {
+                    console.log("Erreur lors de l'envoi du projet");
+                    console.log("response=", response);
+                }
+            })
+
+            .then (data => {
+                if (data.ok) {
+                    console.log("Données projet récupérées avec succès");
+
                     // Traitement du nouveau projet après réponse de l'API
                     // ******************************************** A TESTER ********************************************************
                     nouveauProjet = reponse.json();
@@ -609,10 +619,8 @@ async function enregistrerProjet(valideProjet, imageInput, titleInput, categoryI
                     const valeurProjets = JSON.stringify(projets);
                     // Stockage des informations dans le localStorage
                     window.localStorage.setItem("projets", valeurProjets);
-
                 } else {
-                    console.log("response=", response);
-                    console.log("Erreur lors de l'envoi du projet");  
+                    console.log("Erreur lors de la récupération des données du projet");  
                 }
             })
 
