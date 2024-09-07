@@ -438,14 +438,10 @@ p {
 
 /* bouton_2 inactif */
 #modifyProject .btn-off_2 {
-	align-content: center;
-	justify-content: center;
 	margin-top: 20px;
-	font-size: 14px;
-	font-weight: 700;
+	margin-left: 90px;
 	font-family: 'Syne';
 	border-radius: 25px;
-	padding: 0 25px 0 25px;
 	height: 37px;
 	width: 237px;
 	color: white;
@@ -456,14 +452,10 @@ p {
 
 /* bouton_2 actif */
 #modifyProject .btn-on_2 {
-	align-content: center;
-	justify-content: center;
 	margin-top: 20px;
-	font-size: 14px;
-	font-weight: 700;
+	margin-left: 90px;
 	font-family: 'Syne';
 	border-radius: 25px;
-	padding: 0 25px 0 25px;
 	height: 37px;
 	width: 237px;
 	color: white;
@@ -639,6 +631,16 @@ input[type="submit"]:hover{
 }
 
 #errorMessage {
+	margin: auto;
+	text-align: center;
+	color: #b91b1b;
+	font-weight: 700;
+	font-size: 1.5em;
+	margin-top: 50px;
+	margin-bottom: 350px;
+}
+
+#errorMessageDelete {
 	margin: auto;
 	text-align: center;
 	color: #b91b1b;

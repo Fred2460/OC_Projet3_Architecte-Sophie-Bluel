@@ -44,8 +44,10 @@ if (projets === null) {
     // Récupération des projets depuis l'API
     const reponse = await fetch("http://localhost:5678/api/works");
     projets = await reponse.json();
+    //console.log("projets après fetch et .json=", projets); // Vérif
     // Transformation des projets en JSON
     const valeurProjets = JSON.stringify(projets);
+    //console.log("valeurProjets après json.stringify(projets)=", valeurProjets); // Vérif
     // Stockage des informations dans le localStorage
     window.localStorage.setItem("projets", valeurProjets);
 } else {
@@ -106,7 +108,7 @@ if (categories === null) {
 } else {
     categories = JSON.parse(categories);
 };
-console.log("categories après récup localStorage=", categories); // Vérif
+//console.log("categories après récup localStorage=", categories); // Vérif
 
 
 // *************************** AFFICHAGE FILTRES ****************************
@@ -257,7 +259,6 @@ window.addEventListener("keydown", function (e){
         validPhoto = false;
         validTitre = false;
         validCategorie = false;
-        valideProjet = false;
     };
 });
 
@@ -291,7 +292,6 @@ window.addEventListener("click", function (e){
         validPhoto = false;
         validTitre = false;
         validCategorie = false;
-        valideProjet = false;
     };
 });
 */
@@ -330,7 +330,6 @@ demandeFermer_2.addEventListener("click", function () {
     validPhoto = false;
     validTitre = false;
     validCategorie = false;
-    valideProjet = false;
 });
 
 // Ajout d'un écouteur d'évènement pour bouton "Retour"
@@ -358,7 +357,6 @@ boutonRetour.addEventListener("click", function() {
     validPhoto = false;
     validTitre = false;
     validCategorie = false;
-    valideProjet = false;
 });
 
 
@@ -420,40 +418,53 @@ function genererMiniProjets(projets) {
 
 
 // ********************* SUPPRESSION D'UN PROJET *****************
-function supprimerProjet(idProjet) {
-    //console.log("tokenLogin avant fetch=", tokenLogin); // Vérif
-    //console.log("idProjet à supprimer avant fetch=", idProjet); // Vérif
-    fetch("http://localhost:5678/api/works/" + idProjet, {
-        method: "DELETE",
-        headers: {
-            "accept": "application/json",
-            "Authorization": `Bearer ${tokenLogin}`
+let errorMessageDelete = document.getElementById("errorMessageDelete");
+async function supprimerProjet(idProjet) {
+    console.log("tokenLogin avant fetch=", tokenLogin); // Vérif
+    console.log("Bearer token avant fetch=", "Bearer " + tokenLogin); // Vérif
+    console.log("idProjet à supprimer avant fetch=", idProjet); // Vérif
+    console.log("Arrêt"); // Point d'arrêt deboggeur
+    try {
+        const response = await fetch("http://localhost:5678/api/works/" + idProjet, {
+            method: "DELETE",
+            headers: {
+                //"accept": "application/json",
+                "Authorization": "Bearer " + tokenLogin
+            }
+        })
+    
+        if (!response.ok) {
+            if (response.status === 401) {
+                errorMessageDelete.textContent = "Accès non autorisé";
+            } else {
+                errorMessageDelete.textContent = "Erreur";
+            }
+            document.addEventListener('keydown', function(event) { // Attendre une touche clavier
+                errorMessageDelete.textContent = "";
+            });
+            document.addEventListener('click', function(event) { // Attendre un clic de souris
+                // Un clic est détecté, affiche le texte
+                errorMessageDelete.textContent = "";
+            });
+        } else {
+            const indexProjet = projets.findIndex(projet => projet.id == idProjet); // détermination de l'index du projet à supprimer
+            projets.splice(indexProjet, 1); // suppression du projet sélectionné
+            const valeurProjets = JSON.stringify(projets);
+            window.localStorage.setItem("projets", valeurProjets); // mise à jour du localStorage
+
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(projets); // génération des images des projets
+            const modifProjets = document.getElementById("modifyProject");
+            modifProjets.className = "modal"; // affichage de la modale
+            document.querySelector("#projetsList").innerHTML = "";
+            genererMiniProjets(projets); // génération des miniatures des projets
         }
-    })
 
-    .catch(error => {
-        //errorMessage.textContent = "Erreur d'accès au site (catch), contactez votre administrateur.";
-        console.error(error);
-        console.log("Erreur de suppression");
-    })
-    
-    //console.log("idProjet à supprimer après fetch=", idProjet); // Vérif
-    const projet = projets[idProjet-1];
-    //console.log("projet=", projet); // Vérif
-    //console.log("Projets avant suppr=", projets); // Vérif
-    window.localStorage.removeItem("projets", projet); // suppression du projet dans le stockage local
-    
-    // regénération des miniatures des projets
-    //console.log("Projets après suppr=", projets); // Vérif
-    document.querySelector(".gallery").innerHTML = "";
-    genererProjets(projets); // génération des images des projets
+    } catch(error) {
+        errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur.";
+        alert(error);
+    }
 
-    //document.querySelector("#projetsList").innerHTML = "";
-    const modifProjets = document.getElementById("modifyProject");
-    //console.log("modifProjets=", modifProjets); // Vérif
-    modifProjets.className = "modal"; // affichage de la modale
-    genererMiniProjets(projets); // génération des miniatures des projets
-    
 };
 
 
@@ -545,120 +556,134 @@ function vérifierboutonValider() {
     const boutonValidationprojet = document.getElementById("boutonValidprojet");
     if (validPhoto && validTitre && validCategorie) {
         boutonValidationprojet.className = "btn-on_2"; // activer le bouton
-        // vérifier si le projet est complètement défini (bouton activé) pour lancer le fetch 
-        valideProjet = document.querySelector("#boutonValidprojet.btn-on_2")
-        enregistrerProjet(valideProjet, imageInput, titleInput, categoryInput);
+        // Ajout d'un écouter appui bouton "Valider"
+        boutonValidationprojet.addEventListener("click", enregistrerProjet(imageInput, titleInput, categoryInput));
     } else {
         boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
     };
 };
 
 
-// ******************************* ENREGISTREMENT DU NOUVEAU PROJET *************************************
-async function enregistrerProjet(valideProjet, imageInput, titleInput, categoryInput) {
-    if (valideProjet != null) {
-        // Ajout d'un écouter appui bouton "Valider"
-        valideProjet.addEventListener("click", async function() {
-            // Création de l'objet FormData au click
-            console.log("imageInput =", imageInput); // Vérif
-            console.log("titleInput =", titleInput); // Vérif
-            console.log("categoryInput =", categoryInput); // Vérif
-            console.log("tokenLogin =", tokenLogin); // Vérif
-            console.log("Authorization (avec $) =", `Bearer ${tokenLogin}`); // Vérif
-            //console.log("Authorization (avec +) =", "Bearer " + tokenLogin); // Vérif
-            const formData = new FormData();
-            formData.append("image", imageInput);
-            //formData.append("image", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=");
-            formData.append("title", titleInput);
-            //formData.append("title", "Titre projet");
-            formData.append("category", categoryInput);
-            //formData.append("category", 1);
-            //document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
-            for (let [key, value] of formData.entries()) {
-                console.log("key, value =", key, value); // Vérif
-            };
-            console.log("formData=", formData); // Vérif
-            console.log("arrêt"); // Point d'arrêt deboggeur
-
-            // Envoi du projet via API /works   
-            const reponse = await fetch("http://localhost:5678/api/works", {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "multipart/form-data",
-                    "Access-Control-Allow-Headers": "*",
-                    "Authorization": `Bearer ${tokenLogin}`
-                },
-                body: formData,
-            })
-
-            .then(response => {
-                if (response.ok) {
-                    console.log("Projet envoyé avec succès");
-                    console.log("response.json()=", response.json());
-                    return response.json();
-                } else {
-                    console.log("Erreur lors de l'envoi du projet");
-                    console.log("response=", response);
-                }
-            })
-
-            .then (data => {
-                if (data.ok) {
-                    console.log("Données projet récupérées avec succès");
-
-                    // Traitement du nouveau projet après réponse de l'API
-                    // ******************************************** A TESTER ********************************************************
-                    nouveauProjet = reponse.json();
-                    console.log("nouveauProjet=", nouveauProjet);
-                    // Transformation du projet en JSON
-                    projets.push(nouveauProjet); // ajout du nouveau projet dans le tableau JSON
-                    console.log("projets après vérif début=", projets); // Vérif
-                    // Transformation des projets en JSON
-                    const valeurProjets = JSON.stringify(projets);
-                    // Stockage des informations dans le localStorage
-                    window.localStorage.setItem("projets", valeurProjets);
-                } else {
-                    console.log("Erreur lors de la récupération des données du projet");  
-                }
-            })
-
-            .catch(error => {
-                console.log("Erreur lors de l'envoi du projet (catch) ", error);
-            })
-
-            // Masquer la div ajoutmodale, 
-            const modifProjets = document.getElementById("modifyProject");
-            modifProjets.className = "modal-masque"; // masquage de la modale
-            // Masquer la div galeriePhoto et masquer la div ajoutPhoto
-            const galeriePhoto = document.getElementById("galeriePhoto");
-            galeriePhoto.className = "modal-wrapper-masque"; // masquage de la div galeriePhoto
-            const ajoutPhoto = document.getElementById("ajoutPhoto");
-            ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
-            // Afficher la div galeriePhoto et masquer la div ajoutPhoto
-            const Insertion = document.getElementById("Insertion");
-            Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
-            // Masquer la photo sélectionnée
-            const Preview = document.getElementById("preview");
-            Preview.className = "previewMasque";
-            //document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
-            // Effacement du sélecteur de la catégorie
-            const selectCategorie = document.getElementById("categorie");
-            //selectCategorie.value = "";
-            // Désactiver le bouton Valider (création nouveau projet)
-            const boutonValidationprojet = document.getElementById("boutonValidprojet");
-            boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
-            // réinitialisation des variables de validation nouveau projet    
-            validPhoto = false;
-            validTitre = false;
-            validCategorie = false;
-            valideProjet = false;
-
-            // Regénération de la gallery des projets
-            document.querySelector(".gallery").innerHTML = "";
-            genererProjets(projets);
-
-        });
+// ******************************* FONCTION ENREGISTREMENT DU NOUVEAU PROJET *************************************
+let errorMessage = document.getElementById("errorMessage");
+async function enregistrerProjet(imageInput, titleInput, categoryInput) {
+    // Création de l'objet FormData
+    console.log("imageInput =", imageInput); // Vérif
+    console.log("titleInput =", titleInput); // Vérif
+    console.log("categoryInput =", categoryInput); // Vérif
+    console.log("tokenLogin =", tokenLogin); // Vérif
+    console.log("Authorization (avec $) =", `Bearer ${tokenLogin}`); // Vérif
+    const formData = new FormData();
+    formData.append("image", imageInput);
+    //formData.append("image", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=");
+    formData.append("title", titleInput);
+    //formData.append("title", "Titre projet");
+    formData.append("category", categoryInput);
+    //formData.append("category", 1);
+    //
+    for (let [key, value] of formData.entries()) {
+        console.log("key, value =", key, value); // Vérif
     };
+    //console.log("formData=", formData); // Vérif
+    console.log("arrêt"); // Point d'arrêt deboggeur
+
+    try {
+        // Envoi du projet via API /works   
+        const response = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "multipart/form-data",
+                "Access-Control-Allow-Headers": "*",
+                //"Authorization": `Bearer ${tokenLogin}`
+                "Authorization": "Bearer " + tokenLogin,
+            },
+            body: formData,
+        })
+
+        const responseProjet = await response.json();
+        console.log("reponse.json()=", responseProjet);
+        
+        if (!response.ok) {
+            throw new Error(`Une erreur s'est produite lors de l'ajout d'un élément (${response.status}). Veuillez réessayer plus tard.`)
+        }
+
+        /*
+        .then (response => {
+            response.json()
+            console.log("Données projet récupérées avec succès")
+            console.log("nouveauProjet=", nouveauProjet);
+        })
+
+        .then(data => {
+            console.log("data.id=", data.id);
+        })
+        */
+
+        /*
+        if (response.ok) { // HTTP-status est 200-299
+            let nouveauProjet = await response.json();
+            console.log("Données projet récupérées avec succès")
+            // Traitement du nouveau projet après réponse de l'API
+            // ******************************************** A TESTER ********************************************************
+            console.log("nouveauProjet=", nouveauProjet);
+            // Transformation du projet en JSON
+            projets.push(nouveauProjet); // ajout du nouveau projet dans le tableau JSON
+            console.log("projets après vérif début=", projets); // Vérif
+            // Transformation des projets en JSON
+            const valeurProjets = JSON.stringify(projets);
+            // Stockage des informations dans le localStorage
+            window.localStorage.setItem("projets", valeurProjets);
+        }
+        */
+
+    } catch (error) {
+            console.log("Erreur lors de l'envoi du projet ", error);
+            errorMessage.textContent = "Erreur d'envoi du projet."; // vérifier le code erreur *************************
+            // Attendre un appui clavier
+            document.addEventListener("keydown", function(event) {
+                event.preventDefault();
+                // Une touche est pressée, affiche le texte
+                errorMessage.textContent = "";
+            });
+            // Attendre un clic de souris
+            document.addEventListener("click", function(event) {
+                event.preventDefault();
+                // Un clic est détecté, affiche le texte
+                errorMessage.textContent = "";
+            });
+            alert(error);
+    };
+
+    // Masquer la div ajoutmodale, 
+    const modifProjets = document.getElementById("modifyProject");
+    modifProjets.className = "modal-masque"; // masquage de la modale
+    // Masquer la div galeriePhoto et masquer la div ajoutPhoto
+    const galeriePhoto = document.getElementById("galeriePhoto");
+    galeriePhoto.className = "modal-wrapper-masque"; // masquage de la div galeriePhoto
+    const ajoutPhoto = document.getElementById("ajoutPhoto");
+    ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
+    // Afficher la div galeriePhoto et masquer la div ajoutPhoto
+    const Insertion = document.getElementById("Insertion");
+    Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
+    // Masquer la photo sélectionnée
+    const Preview = document.getElementById("preview");
+    Preview.className = "previewMasque";
+    //document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
+    // Effacement du sélecteur de la catégorie
+    const selectCategorie = document.getElementById("categorie");
+    selectCategorie.value = "";
+    // Désactiver le bouton Valider (création nouveau projet)
+    const boutonValidationprojet = document.getElementById("boutonValidprojet");
+    boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
+    document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
+    // réinitialisation des variables de validation nouveau projet    
+    validPhoto = false;
+    validTitre = false;
+    validCategorie = false;
+
+    // Regénération de la gallery des projets
+    document.querySelector(".gallery").innerHTML = "";
+    genererProjets(projets);
 };
