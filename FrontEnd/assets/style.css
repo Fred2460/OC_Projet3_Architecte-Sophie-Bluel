@@ -62,10 +62,10 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
 }
 section {
-	margin: 50px 0
+	margin: 50px 0;
 }
 
 h1 {
@@ -123,6 +123,9 @@ li:hover {
 #introduction {
 	display: flex;
 	align-items: center;
+	margin-left: 95px;
+	margin-right: 95px;
+	gap: 40px;
 }
 
 #introduction figure {
@@ -132,7 +135,7 @@ li:hover {
 #introduction img {
 	display: block;
 	margin: auto;
-	width: 80%;
+	width: 100%;
 }
 
 #introduction article {
@@ -145,6 +148,11 @@ li:hover {
 
 #introduction p {
 	margin-bottom: 0.5em;
+}
+
+#portfolio {
+	margin-left: 95px;
+	margin-right: 95px;
 }
 
 #portfolio h2 {
@@ -188,8 +196,8 @@ li:hover {
 }
 
 #modifyProject h3 {
-	margin-top: 30px;
-	margin-bottom: 15px;
+	margin-top: 45px;
+	margin-bottom: 30px;
 }
 
 .modal-wrapper {
@@ -424,11 +432,11 @@ p {
 	align-content: center;
 	justify-content: center;
 	margin-top: 20px;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 700;
 	font-family: 'Syne';
 	border-radius: 25px;
-	padding: 0 20px 0 20px;
+	padding: 10px 60px 10px 60px;
 	height: 37px;
 }
 
@@ -516,8 +524,8 @@ p {
 	color: white;
 	background-color: #1D6154;
     border: 1px #1D6154 solid;
-	/*padding: 0 20px 0 20px;
-	height: 37px;*/
+	padding: 0 20px 0 20px;
+	height: 37px;
 }
 
 .gallery {
@@ -526,7 +534,6 @@ p {
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
-	font-size: 16px;
 	padding-top: 50px;
 }
 
@@ -547,12 +554,16 @@ p {
 }
 
 #contact {
-	width: 33%;
+	width: 50%;
 	margin: auto;
 }
 
 #contact > * {
 	text-align: center;
+}
+
+#contact p {
+	font-size:14px;
 }
 
 #contact h2{
@@ -676,3 +687,6 @@ footer nav ul {
 	margin: 2em;
 }
 
+footer nav li {
+	font-size: 14px;
+}

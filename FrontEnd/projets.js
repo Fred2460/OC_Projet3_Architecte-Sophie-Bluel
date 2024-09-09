@@ -35,21 +35,58 @@ if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user
 
 };
 
+
+// ************** RECUPERATION CATEGORIES *****************
+//Récupération des catégories éventuellement stockées dans le localStorage
+let categories = window.localStorage.getItem("categories");
+//console.log("categories avant récup localStorage=", categories); // Vérif
+if (categories === null) {
+    try {
+        // Récupération des catégories depuis l'API
+        const response = await fetch("http://localhost:5678/api/categories")
+        if (!response.ok) {
+            throw new Error(`Une erreur s'est produite (${response.status}). Veuillez réessayer plus tard.`);
+        }
+        categories = await response.json();
+        // Transformation des catégories en JSON
+        const valeurCategories = JSON.stringify(categories);
+        // Stockage des informations dans le localStorage
+        window.localStorage.setItem("categories", valeurCategories);
+    }
+    catch (error) {
+        alert(error);
+    }
+
+} else {
+    categories = JSON.parse(categories);
+};
+//console.log("categories après récup localStorage=", categories); // Vérif
+
+
 // ************** PROJETS *****************
 //Récupération des projets eventuellement stockés dans le localStorage
 let projets = window.localStorage.getItem("projets");
 //console.log("projets au début=", projets); // Vérif
 
 if (projets === null) {
-    // Récupération des projets depuis l'API
-    const reponse = await fetch("http://localhost:5678/api/works");
-    projets = await reponse.json();
-    //console.log("projets après fetch et .json=", projets); // Vérif
-    // Transformation des projets en JSON
-    const valeurProjets = JSON.stringify(projets);
-    //console.log("valeurProjets après json.stringify(projets)=", valeurProjets); // Vérif
-    // Stockage des informations dans le localStorage
-    window.localStorage.setItem("projets", valeurProjets);
+    try {
+        // Récupération des projets depuis l'API
+        const response = await fetch("http://localhost:5678/api/works");
+        if (!response.ok) {
+            throw new Error(`Une erreur s'est produite (${response.status}). Veuillez réessayer plus tard.`);
+        }
+        projets = await response.json();
+        //console.log("projets après fetch et .json=", projets); // Vérif
+        // Transformation des projets en JSON
+        const valeurProjets = JSON.stringify(projets);
+        //console.log("valeurProjets après json.stringify(projets)=", valeurProjets); // Vérif
+        // Stockage des informations dans le localStorage
+        window.localStorage.setItem("projets", valeurProjets);
+    }
+    catch (error) {
+        alert(error);
+    }
+
 } else {
     projets = JSON.parse(projets);
 };
@@ -63,20 +100,14 @@ function genererProjets(projets) {
         const divGallery = document.querySelector(".gallery");
         // Création d’une balise dédiée à un projet
         const idProjet = document.createElement("figure");
-        //idProjet.dataset.id = projets[i].id; 
-        idProjet.id = projets[i].id;
+        idProjet.id = "portfolioFigure_" + projets[i].id;
         idProjet.dataset.idCategorie = projet.category.id;
         // Création des balises 
         const imageProjet = document.createElement("img");
         imageProjet.src = projet.imageUrl;
+        imageProjet.alt = projet.title;
         const titreProjet = document.createElement("figcaption");
         titreProjet.innerText = projet.title;
-        const useridProjet = document.createElement("p");
-        useridProjet.innerText = projet.userId;
-        const categoryidProjet = document.createElement("p");
-        categoryidProjet.innerText = projet.category.id;
-        const categorynameProjet = document.createElement("p");
-        categorynameProjet.innerText = projet.category.name;
 
         // Rattachement de la balise projet à la division Gallery
         divGallery.appendChild(idProjet);
@@ -91,24 +122,6 @@ function genererProjets(projets) {
 
 document.querySelector(".gallery").innerHTML = "";
 genererProjets(projets);
-
-
-// ************** RECUPERATION CATEGORIES *****************
-//Récupération des catégories éventuellement stockées dans le localStorage
-let categories = window.localStorage.getItem("categories");
-//console.log("categories avant récup localStorage=", categories); // Vérif
-if (categories === null) {
-    // Récupération des catégories depuis l'API
-    const reponse = await fetch("http://localhost:5678/api/categories")
-    categories = await reponse.json();
-    // Transformation des catégories en JSON
-    const valeurCategories = JSON.stringify(categories);
-    // Stockage des informations dans le localStorage
-    window.localStorage.setItem("categories", valeurCategories);
-} else {
-    categories = JSON.parse(categories);
-};
-//console.log("categories après récup localStorage=", categories); // Vérif
 
 
 // *************************** AFFICHAGE FILTRES ****************************
@@ -182,7 +195,7 @@ for (let Bouton of boutonFiltrer) {
             const projet = projets[i];
             // Récupération de l'élément du DOM qui accueillera la galerie
             const divGallery = document.querySelector(".gallery");
-            const idProjet = document.getElementById(i + decalIncrement);
+            const idProjet = document.getElementById("portfolioFigure_" + (i + decalIncrement));
             if (idProjet != null) { // cas des projets supprimés
                 const idCategoryprojet = projet.category.id; //id de la catégorie du projet
                 
@@ -196,9 +209,8 @@ for (let Bouton of boutonFiltrer) {
                 i--; // neutralisation de l'incrément de la boucle for (cas d'un projet supprimé)
             }
         };
-        // repositionnement (en mode smooth) de l'affichage avec le titre des projets en haut de page 
-        const targetPortfolio = document.getElementById("portfolio");
-        targetPortfolio.scrollIntoView({behavior: "smooth"}); 
+        
+        document.getElementById("portfolio").scrollIntoView({behavior: "smooth"}); // repositionnement (en mode smooth) de l'affichage avec le titre des projets en haut de page 
     });
 };
 
@@ -207,7 +219,6 @@ for (let Bouton of boutonFiltrer) {
 // changement nav lien "Logout" en "Login"
 const logLink = document.getElementById("logLink");
 logLink.addEventListener("click", function () {
-    //console.log("logLink =", logLink); // Vérif
     if (logLink.textContent === "Logout") {
         logLink.textContent = "Login";
         logLink.href = "index.html";
@@ -222,11 +233,9 @@ logLink.addEventListener("click", function () {
 const demandeModif = document.getElementById("modifier");
 if (demandeModif != null) {
     demandeModif.addEventListener("click", function () {
-        const modifProjets = document.getElementById("modifyProject");
-        //console.log("modifProjets=", modifProjets); // Vérif
-        modifProjets.className = "modal"; // affichage de la modale
+        document.getElementById("modifyProject").className = "modal"; // affichage de la modale
+        
         document.querySelector("#projetsList").innerHTML = "";
-
         genererMiniProjets(projets); // génération des miniatures des projets
 
     })
@@ -235,30 +244,10 @@ if (demandeModif != null) {
 // masquer la modale (appui sur Escape)
 window.addEventListener("keydown", function (e){
     if (e.key === "Escape" || e.key === "Esc") {
-        const modifProjets = document.getElementById("modifyProject");
-        modifProjets.className = "modal-masque"; // masquage de la modale
-        // Masquer la div galeriePhoto et masquer la div ajoutPhoto
-        const galeriePhoto = document.getElementById("galeriePhoto");
-        galeriePhoto.className = "modal-wrapper-masque"; // masquage de la div galeriePhoto
-        const ajoutPhoto = document.getElementById("ajoutPhoto");
-        ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
-        // Afficher la div galeriePhoto et masquer la div ajoutPhoto
-        const Insertion = document.getElementById("Insertion");
-        Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
-        // Masquer la photo sélectionnée
-        const Preview = document.getElementById("preview");
-        Preview.className = "previewMasque";
-        document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
-        // Effacement du sélecteur de la catégorie
-        const selectCategorie = document.getElementById("categorie");
-        selectCategorie.value = "";
-        // Désactiver le bouton Valider (création nouveau projet)
-        const boutonValidationprojet = document.getElementById("boutonValidprojet");
-        boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
-        // réinitialisation des variables de validation nouveau projet    
-        validPhoto = false;
-        validTitre = false;
-        validCategorie = false;
+        document.getElementById("modifyProject").className = "modal-masque"; // masquage de la modale
+        document.getElementById("galeriePhoto").className = "modal-wrapper"; // réinitialiser l'affichage de la div galeriePhoto
+        
+        masquerModaleAjoutphoto(); // Masquer la modale 2 (Ajout photo)
     };
 });
 
@@ -299,65 +288,41 @@ window.addEventListener("click", function (e){
 // masquer la modale (appui bouton Fermer_1)
 const demandeFermer_1 = document.getElementById("fermer_1");
 demandeFermer_1.addEventListener("click", function () {
-    const modifProjets = document.getElementById("modifyProject");
-    modifProjets.className = "modal-masque"; // masquage de la modale
+    document.getElementById("modifyProject").className = "modal-masque"; // masquage de la modale
 });
 
 // masquer la modale (appui bouton Fermer_2)
 const demandeFermer_2 = document.getElementById("fermer_2");
 demandeFermer_2.addEventListener("click", function () {
-    const modifProjets = document.getElementById("modifyProject");
-    modifProjets.className = "modal-masque"; // masquage de la modale
-    // Afficher la div galeriePhoto et masquer la div ajoutPhoto
-    const galeriePhoto = document.getElementById("galeriePhoto");
-    galeriePhoto.className = "modal-wrapper"; // affichage de la div galeriePhoto
-    const ajoutPhoto = document.getElementById("ajoutPhoto");
-    ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
-    // Afficher la div galeriePhoto et masquer la div ajoutPhoto
-    const Insertion = document.getElementById("Insertion");
-    Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
-    // Masquer la photo sélectionnée
-    const Preview = document.getElementById("preview");
-    Preview.className = "previewMasque";
-    document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
-    // Effacement du sélecteur de la catégorie
-    const selectCategorie = document.getElementById("categorie");
-    selectCategorie.value = "";
-    // Désactiver le bouton Valider (création nouveau projet)
-    const boutonValidationprojet = document.getElementById("boutonValidprojet");
-    boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
-    // réinitialisation des variables de validation nouveau projet    
-    validPhoto = false;
-    validTitre = false;
-    validCategorie = false;
+    document.getElementById("modifyProject").className = "modal-masque"; // masquage de la modale
+    document.getElementById("galeriePhoto").className = "modal-wrapper"; // réinitialiser l'affichage de la div galeriePhoto
+
+    masquerModaleAjoutphoto(); // Masquer la modale 2 (Ajout photo)
 });
 
 // Ajout d'un écouteur d'évènement pour bouton "Retour"
 const boutonRetour = document.getElementById("retour")
 boutonRetour.addEventListener("click", function() {
     // Afficher la div galeriePhoto et masquer la div ajoutPhoto
-    const galeriePhoto = document.getElementById("galeriePhoto");
-    galeriePhoto.className = "modal-wrapper"; // affichage de la div galeriePhoto
-    const ajoutPhoto = document.getElementById("ajoutPhoto");
-    ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
-    // Afficher la div galeriePhoto et masquer la div ajoutPhoto
-    const Insertion = document.getElementById("Insertion");
-    Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
-    // Masquer la photo sélectionnée
-    const Preview = document.getElementById("preview");
-    Preview.className = "previewMasque";
+    document.getElementById("galeriePhoto").className = "modal-wrapper"; // affichage de la div galeriePhoto
+        
+    masquerModaleAjoutphoto(); // Masquer la modale 2 (Ajout photo)
+});
+
+
+// ************************ FONCTION MASQUER LA MODALE 2 (AJOUT PHOTO) ***************************
+function masquerModaleAjoutphoto() {
+    document.getElementById("ajoutPhoto").className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
+    document.getElementById("Insertion").className = "avantInsertion"; // réinitialisation de l'affichage des éléments de la div cadreAjoutPhoto
+    document.getElementById("preview").className = "previewMasque"; // Masquer la photo sélectionnée
     document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
-    // Effacement du sélecteur de la catégorie
-    const selectCategorie = document.getElementById("categorie");
-    selectCategorie.value = "";
-    // Désactiver le bouton Valider (création nouveau projet)
-    const boutonValidationprojet = document.getElementById("boutonValidprojet");
-    boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
+    document.getElementById("categorie").value = ""; // Effacement du sélecteur de la catégorie
+    document.getElementById("boutonValidprojet").className = "btn-off_2"; // désactiver le bouton Valider (création nouveau projet)
     // réinitialisation des variables de validation nouveau projet    
     validPhoto = false;
     validTitre = false;
     validCategorie = false;
-});
+};
 
 
 // ************************ FONCTION DE GENERATION DES MINIATURES DES PROJETS ***********************
@@ -365,23 +330,20 @@ function genererMiniProjets(projets) {
     //console.log("projets=", projets); // Vérif
     for (let i = 0; i < projets.length; i++) {
         const projet = projets[i];
-        //console.log("projet=", projet, i); // Vérif
         // Récupération de l'élément du DOM qui accueillera la galerie
         const divprojetsList = document.querySelector("#projetsList");
         // Création d’une balise dédiée à un projet
         const idProjet = projet.id;
-        //console.log("idProjet=", idProjet, i); // Vérif
-        const figProjet = document.createElement("figure");
+        const minifigProjet = document.createElement("figure");
         // Création des balises 
         const imageProjet = document.createElement("img");
         imageProjet.src = projet.imageUrl;
-        //const iconePoubelle = document.createElement("i");
         const iconePoubelle = document.createElement("i");
         // Rattachement de la balise projet à la division projetsList
-        divprojetsList.appendChild(figProjet);
-        figProjet.appendChild(imageProjet);
-        figProjet.appendChild(iconePoubelle);
-        imageProjet.setAttribute("Id", idProjet);
+        divprojetsList.appendChild(minifigProjet);
+        minifigProjet.appendChild(imageProjet);
+        minifigProjet.appendChild(iconePoubelle);
+        imageProjet.setAttribute("Id", "miniFig_" + idProjet);
         iconePoubelle.classList.add("fa-solid");
         iconePoubelle.classList.add("fa-trash-can");
         iconePoubelle.setAttribute("Id", idProjet);
@@ -390,16 +352,14 @@ function genererMiniProjets(projets) {
     
     //Récupération de tous les boutons poubelle
     const iconsPoubelle = document.querySelectorAll(".fa-solid.fa-trash-can");
-    //console.log("iconsPoubelle =", iconsPoubelle); // Vérif
 
     // Ajout d'un écouteur d'événement pour chaque icône poubelle
-    iconsPoubelle.forEach(icon => {
-        icon.addEventListener("click", function() {
-            // Récupérer l'attribut Id pour identifier l'icône cliquée
-            const iconId = icon.getAttribute("Id");
+    iconsPoubelle.forEach(iconId => {
+        iconId.addEventListener("click", function(e) {
+            console.log("iconId=", iconId);
             // Demande de confirmation de suppression
-            if (confirm("Suppression du projet " + iconId + " ?") == true) {
-                supprimerProjet(iconId);
+            if (confirm("Suppression du projet " + e.target.id + " ?") == true) {
+                supprimerProjet(e.target.id);
             };
         });
     });
@@ -408,10 +368,8 @@ function genererMiniProjets(projets) {
     const boutonAjoutProjet = document.getElementById("boutonAjoutPhoto")
     boutonAjoutProjet.addEventListener("click", function() {
         // Masquer la div galeriePhoto et afficher la div ajoutPhoto
-        const galeriePhoto = document.getElementById("galeriePhoto");
-        galeriePhoto.className = "modal-wrapper-masque"; // masquage de la div galeriePhoto
-        const ajoutPhoto = document.getElementById("ajoutPhoto");
-        ajoutPhoto.className = "modal-wrapper"; // affichage de la div ajoutPhoto
+        document.getElementById("galeriePhoto").className = "modal-wrapper-masque"; // masquage de la div galeriePhoto
+        document.getElementById("ajoutPhoto").className = "modal-wrapper"; // affichage de la div ajoutPhoto
     });
 
 };
@@ -420,15 +378,15 @@ function genererMiniProjets(projets) {
 // ********************* SUPPRESSION D'UN PROJET *****************
 let errorMessageDelete = document.getElementById("errorMessageDelete");
 async function supprimerProjet(idProjet) {
-    console.log("tokenLogin avant fetch=", tokenLogin); // Vérif
-    console.log("Bearer token avant fetch=", "Bearer " + tokenLogin); // Vérif
-    console.log("idProjet à supprimer avant fetch=", idProjet); // Vérif
-    console.log("Arrêt"); // Point d'arrêt deboggeur
+    //console.log("tokenLogin avant fetch=", tokenLogin); // Vérif
+    //console.log("Bearer token avant fetch=", "Bearer " + tokenLogin); // Vérif
+    //console.log("idProjet à supprimer avant fetch=", idProjet); // Vérif
+    //console.log("target.idProjet à supprimer avant fetch=", target.idProjet); // Vérif
+    //console.log("Arrêt"); // Point d'arrêt deboggeur
     try {
         const response = await fetch("http://localhost:5678/api/works/" + idProjet, {
             method: "DELETE",
             headers: {
-                //"accept": "application/json",
                 "Authorization": "Bearer " + tokenLogin
             }
         })
@@ -447,17 +405,24 @@ async function supprimerProjet(idProjet) {
                 errorMessageDelete.textContent = "";
             });
         } else {
+            /*
+            document.getElementById("miniFig_" + idProjet).remove(); // suppression de l'élément img de la galerie miniatures
+            document.getElementById(idProjet).remove(); // suppression de l'élément i de la galerie miniatures
+            document.getElementById("portfolioFigure_" + idProjet).remove(); // suppression de l'élément figure de la galerie portfolio
+            */
             const indexProjet = projets.findIndex(projet => projet.id == idProjet); // détermination de l'index du projet à supprimer
             projets.splice(indexProjet, 1); // suppression du projet sélectionné
             const valeurProjets = JSON.stringify(projets);
             window.localStorage.setItem("projets", valeurProjets); // mise à jour du localStorage
 
+            // génération des images des projets
             document.querySelector(".gallery").innerHTML = "";
-            genererProjets(projets); // génération des images des projets
-            const modifProjets = document.getElementById("modifyProject");
-            modifProjets.className = "modal"; // affichage de la modale
+            genererProjets(projets);
+            document.getElementById("modifyProject").className = "modal"; // affichage de la modale
+             // génération des miniatures des projets
             document.querySelector("#projetsList").innerHTML = "";
-            genererMiniProjets(projets); // génération des miniatures des projets
+            genererMiniProjets(projets);
+            
         }
 
     } catch(error) {
@@ -480,23 +445,23 @@ ajoutfichierPhoto.addEventListener("change", (e) => {
         validPhoto = true;
 
         const fileReader = new FileReader();
-        //fileReader.onloadend = function (e) {
         fileReader.onload = function (e) {
             let img = document.getElementById('preview');
             img.src = e.target.result;
-            imageInput = e.target.result;
-            //console.log("imageInput =", imageInput);
-            //console.log("arrêt"); // Point d'arrêt deboggeur
+            //corrections image pour formData
+            //imageInput = e.target.result; // Vérif
+            imageInput = file;
             validPhoto = true;
             img.className = "previewAffiche"; // affichage de l'image sélectionnée
 
-            // Masquer les éléments de la div Insertion dans cadreajoutPhoto
-            const Insertion = document.getElementById("Insertion");
-            Insertion.className = "apresInsertion"; // masquage des éléments de la div Insertion dans cadreajoutPhoto
+            document.getElementById("Insertion").className = "apresInsertion"; // masquage des éléments de la div Insertion dans cadreajoutPhoto
 
+            // ****************************************************** A VERIFIER ******************************
             vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
         };
         fileReader.readAsDataURL(file);
+        
+        // ****************************************************** A VERIFIER ******************************
         vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
 
     };
@@ -511,7 +476,6 @@ const boutontitreInput = document.getElementById("titre");
 boutontitreInput.addEventListener("click", function() {
     // Vérification titre renseigné et valide
     titleInput = document.getElementById("titre").value;
-    //console.log("Titre=", titleInput); // Vérif
     if (titleInput.length > 0) {
         validTitre = true;
         vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
@@ -532,7 +496,6 @@ selectCategorie.addEventListener("change", function() {
     categoryInput = parseInt(selectCategorie.options[selectCategorie.selectedIndex].value);
     if (categoryInput > 0) {
         validCategorie = true;
-        // vérification si le titre a été renseigné
         titleInput = document.getElementById("titre").value;
         if (titleInput.length > 0) {
             validTitre = true;
@@ -542,9 +505,7 @@ selectCategorie.addEventListener("change", function() {
         vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
     } else {
         validCategorie = false;
-        // Désactiver le bouton Valider (création nouveau projet)
-        const boutonValidationprojet = document.getElementById("boutonValidprojet");
-        boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
+        document.getElementById("boutonValidprojet").className = "btn-off_2"; // désactiver le bouton Valider (création nouveau projet)
     };
 
 });
@@ -568,58 +529,62 @@ function vérifierboutonValider() {
 let errorMessage = document.getElementById("errorMessage");
 async function enregistrerProjet(imageInput, titleInput, categoryInput) {
     // Création de l'objet FormData
-    console.log("imageInput =", imageInput); // Vérif
-    console.log("titleInput =", titleInput); // Vérif
-    console.log("categoryInput =", categoryInput); // Vérif
-    console.log("tokenLogin =", tokenLogin); // Vérif
-    console.log("Authorization (avec $) =", `Bearer ${tokenLogin}`); // Vérif
     const formData = new FormData();
     formData.append("image", imageInput);
-    //formData.append("image", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=");
     formData.append("title", titleInput);
-    //formData.append("title", "Titre projet");
     formData.append("category", categoryInput);
-    //formData.append("category", 1);
-    //
-    for (let [key, value] of formData.entries()) {
-        console.log("key, value =", key, value); // Vérif
-    };
-    //console.log("formData=", formData); // Vérif
-    console.log("arrêt"); // Point d'arrêt deboggeur
 
     try {
         // Envoi du projet via API /works   
         const response = await fetch("http://localhost:5678/api/works", {
             method: "POST",
-            mode: "no-cors",
+            //mode: "no-cors",
             headers: {
-                "Accept": "application/json",
-                "Content-Type": "multipart/form-data",
-                "Access-Control-Allow-Headers": "*",
+                //"Accept": "application/json",
+                //"Content-Type": "multipart/form-data",
+                //"Access-Control-Allow-Headers": "*",
                 //"Authorization": `Bearer ${tokenLogin}`
+                "accept": "application/json",
                 "Authorization": "Bearer " + tokenLogin,
             },
             body: formData,
         })
 
         const responseProjet = await response.json();
-        console.log("reponse.json()=", responseProjet);
+        console.log("reponse.json()=", responseProjet); // Vérif
         
         if (!response.ok) {
             throw new Error(`Une erreur s'est produite lors de l'ajout d'un élément (${response.status}). Veuillez réessayer plus tard.`)
+        } else {
+            // Récupération de l'élément du DOM qui accueillera la galerie
+            const divGallery = document.querySelector(".gallery");
+            // Création d’une balise dédiée à un projet
+            const idProjet = document.createElement("figure");
+            idProjet.id = "portfolioFigure_" + responseProjet.id;
+            idProjet.dataset.idCategorie = responseProjet.categoryId;
+            // Création des balises 
+            const imageProjet = document.createElement("img");
+            imageProjet.src = responseProjet.imageUrl;
+            imageProjet.alt = responseProjet.title;
+            const titreProjet = document.createElement("figcaption");
+            titreProjet.innerText = responseProjet.title;
+
+            // Rattachement de la balise projet à la division Gallery
+            divGallery.appendChild(idProjet);
+            idProjet.appendChild(imageProjet);
+            idProjet.appendChild(titreProjet);
+            // ajout d'une balise image pour affichage projet
+            idProjet.classList.add("image");
+
+            document.getElementById("modifyProject").className = "modal-masque"; // masquage de la modale
+            document.getElementById("galeriePhoto").className = "modal-wrapper"; // réinitialisation de la div galeriePhoto
+
+            masquerModaleAjoutphoto(); // Masquer la modale 2 (Ajout photo)
+
+            // Regénération de la gallery des projets
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(projets);
         }
-
-        /*
-        .then (response => {
-            response.json()
-            console.log("Données projet récupérées avec succès")
-            console.log("nouveauProjet=", nouveauProjet);
-        })
-
-        .then(data => {
-            console.log("data.id=", data.id);
-        })
-        */
 
         /*
         if (response.ok) { // HTTP-status est 200-299
@@ -644,46 +609,14 @@ async function enregistrerProjet(imageInput, titleInput, categoryInput) {
             // Attendre un appui clavier
             document.addEventListener("keydown", function(event) {
                 event.preventDefault();
-                // Une touche est pressée, affiche le texte
-                errorMessage.textContent = "";
+                errorMessage.textContent = ""; // Une touche est pressée, efface le message
             });
             // Attendre un clic de souris
             document.addEventListener("click", function(event) {
                 event.preventDefault();
-                // Un clic est détecté, affiche le texte
-                errorMessage.textContent = "";
+                errorMessage.textContent = ""; // Un click est détecté, efface le message
             });
             alert(error);
     };
 
-    // Masquer la div ajoutmodale, 
-    const modifProjets = document.getElementById("modifyProject");
-    modifProjets.className = "modal-masque"; // masquage de la modale
-    // Masquer la div galeriePhoto et masquer la div ajoutPhoto
-    const galeriePhoto = document.getElementById("galeriePhoto");
-    galeriePhoto.className = "modal-wrapper-masque"; // masquage de la div galeriePhoto
-    const ajoutPhoto = document.getElementById("ajoutPhoto");
-    ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
-    // Afficher la div galeriePhoto et masquer la div ajoutPhoto
-    const Insertion = document.getElementById("Insertion");
-    Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
-    // Masquer la photo sélectionnée
-    const Preview = document.getElementById("preview");
-    Preview.className = "previewMasque";
-    //document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
-    // Effacement du sélecteur de la catégorie
-    const selectCategorie = document.getElementById("categorie");
-    selectCategorie.value = "";
-    // Désactiver le bouton Valider (création nouveau projet)
-    const boutonValidationprojet = document.getElementById("boutonValidprojet");
-    boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
-    document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
-    // réinitialisation des variables de validation nouveau projet    
-    validPhoto = false;
-    validTitre = false;
-    validCategorie = false;
-
-    // Regénération de la gallery des projets
-    document.querySelector(".gallery").innerHTML = "";
-    genererProjets(projets);
 };
