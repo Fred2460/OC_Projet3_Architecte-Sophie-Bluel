@@ -6,6 +6,7 @@ let tokenLogin = window.localStorage.getItem("token"); // récupération du toke
 let userLogin = false;
 if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user connecté"
     userLogin = false;
+    document.getElementById("affichageFiltre").classList.add("filtre-on");     // affichage de la barre des filtres
 
 } else { // cas "user connecté"
     userLogin = true;
@@ -28,6 +29,20 @@ if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user
     sectionPortfolio.appendChild(iconeModifier);
     sectionPortfolio.appendChild(boutonModifier);
 };
+
+
+// ********************************* LOGOUT ************************************
+// changement nav lien "Logout" en "Login"
+const logLink = document.getElementById("logLink");
+logLink.addEventListener("click", function () {
+    if (logLink.textContent === "Logout") {
+        logLink.textContent = "Login";
+        logLink.href = "index.html";
+        window.localStorage.removeItem("userId"); // réinitialisation du userId stocké
+        window.localStorage.removeItem("token"); // réinitialisation du token stocké
+
+    }
+});
 
 
 // ************** RECUPERATION CATEGORIES par l'API *****************
@@ -55,7 +70,7 @@ if (categories.includes("Tous") == false) {
     }
     categories.push(boutonTous);
 };
-console.log("categories (après ajout Tous)=", categories); // Vérif
+
 
 // *************************** AFFICHAGE FILTRES ****************************
 function genererFiltre(categories, boutonOn) {
@@ -118,7 +133,6 @@ async function recuperationProjets() {
 };
 
 let projets = await recuperationProjets();
-console.log("projets=", projets); // Vérif
 
 
 // ************** AFFICHAGE GALERIE DES PROJETS *****************
@@ -130,7 +144,8 @@ function genererProjets(projets) {
         // Création d’une balise dédiée à un projet
         const idProjet = document.createElement("figure");
         idProjet.id = "portfolioFigure_" + projets[i].id;
-        idProjet.dataset.idCategorie = projet.category.id;
+        //idProjet.dataset.idCategorie = projet.category.id;
+        idProjet.dataset.idCategorie = projet.categoryId;
         // Création des balises 
         const imageProjet = document.createElement("img");
         imageProjet.src = projet.imageUrl;
@@ -188,19 +203,6 @@ for (let Bouton of boutonFiltrer) {
         document.getElementById("portfolio").scrollIntoView({behavior: "smooth"}); // repositionnement (en mode smooth) de l'affichage avec le titre des projets en haut de page 
     });
 };
-
-
-// ********************************* LOGOUT ************************************
-// changement nav lien "Logout" en "Login"
-const logLink = document.getElementById("logLink");
-logLink.addEventListener("click", function () {
-    if (logLink.textContent === "Logout") {
-        logLink.textContent = "Login";
-        logLink.href = "index.html";
-        window.localStorage.removeItem("userId"); // réinitialisation du userId stocké
-        window.localStorage.removeItem("token"); // réinitialisation du token stocké
-    }
-});
 
 
 // ********************************* MODALE MODIFIER PROJETS *****************************
@@ -351,11 +353,6 @@ function genererMiniProjets(projets) {
 // ********************* FONCTION SUPPRESSION D'UN PROJET *****************
 let errorMessageDelete = document.getElementById("errorMessageDelete");
 async function supprimerProjet(idProjet) {
-    //console.log("tokenLogin avant fetch=", tokenLogin); // Vérif
-    //console.log("Bearer token avant fetch=", "Bearer " + tokenLogin); // Vérif
-    //console.log("idProjet à supprimer avant fetch=", idProjet); // Vérif
-    //console.log("target.idProjet à supprimer avant fetch=", target.idProjet); // Vérif
-    //console.log("Arrêt"); // Point d'arrêt deboggeur
     try {
         const response = await fetch("http://localhost:5678/api/works/" + idProjet, {
             method: "DELETE",
@@ -377,11 +374,6 @@ async function supprimerProjet(idProjet) {
                 errorMessageDelete.textContent = "";
             });
         } else {
-            /*
-            document.getElementById("miniFig_" + idProjet).remove(); // suppression de l'élément img de la galerie miniatures
-            document.getElementById(idProjet).remove(); // suppression de l'élément i de la galerie miniatures
-            document.getElementById("portfolioFigure_" + idProjet).remove(); // suppression de l'élément figure de la galerie portfolio
-            */
             const indexProjet = projets.findIndex(projet => projet.id == idProjet); // détermination de l'index du projet à supprimer
             projets.splice(indexProjet, 1); // suppression du projet sélectionné
 
@@ -402,11 +394,13 @@ async function supprimerProjet(idProjet) {
 };
 
 
+
 // *************************** ECOUTEUR AJOUT PHOTO POUR NOUVEAU PROJET *******************************
 let file;
 let validPhoto;
 // Insertion fichier image projet
 let imageInput;
+document.getElementById("ajoutfichierPhoto").value = null;
 const ajoutfichierPhoto = document.getElementById("ajoutfichierPhoto");
 ajoutfichierPhoto.addEventListener("change", (e) => {
     const file = ajoutfichierPhoto.files[0];
@@ -433,16 +427,17 @@ ajoutfichierPhoto.addEventListener("change", (e) => {
 let titleInput;
 let validTitre;
 // ajout d'un écouteur d'évènement du choix du titre
+document.getElementById("titre").value = "";
 const boutontitreInput = document.getElementById("titre");
 boutontitreInput.addEventListener("click", function() {
     // Vérification titre renseigné et valide
     titleInput = document.getElementById("titre").value;
     if (titleInput.length > 0) {
         validTitre = true;
-        vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
     } else {
         validTitre = false;
     };
+    vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
 });
 
 
@@ -453,26 +448,29 @@ let validCategorie;
 const selectCategorie = document.getElementById("categorie");
 selectCategorie.addEventListener("change", function() {
     // Vérification catégorie renseignée et valide
-    categoryInput = parseInt(selectCategorie.options[selectCategorie.selectedIndex].value);
+    categoryInput = selectCategorie.options[selectCategorie.selectedIndex].value;
     if (categoryInput > 0) {
         validCategorie = true;
+        // vérification du titre du nouveau projet
         titleInput = document.getElementById("titre").value;
         if (titleInput.length > 0) {
             validTitre = true;
         } else {
             validTitre = false;
         };
-        vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
+        
     } else {
         validCategorie = false;
-        document.getElementById("boutonValidprojet").className = "btn-off_2"; // désactiver le bouton Valider (création nouveau projet)
     };
+    vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
 });
 
 
 // ********************** FONCTION ACTIVATION/DESACTIVATION DU BOUTON DE VALIDATION (nouveau projet) ****************************
-let valideProjet;
 function vérifierboutonValider() {
+    console.log("validPhoto (vérif)=", validPhoto);
+    console.log("validTitre (vérif)=", validTitre, titleInput);
+    console.log("validCategorie (vérif)=", validCategorie, categoryInput);
     const boutonValidationprojet = document.getElementById("boutonValidprojet");
     if (validPhoto && validTitre && validCategorie) {
         boutonValidationprojet.className = "btn-on_2"; // activer le bouton
@@ -497,12 +495,7 @@ async function enregistrerProjet(imageInput, titleInput, categoryInput) {
         // Envoi du projet via API /works   
         const response = await fetch("http://localhost:5678/api/works", {
             method: "POST",
-            //mode: "no-cors",
             headers: {
-                //"Accept": "application/json",
-                //"Content-Type": "multipart/form-data",
-                //"Access-Control-Allow-Headers": "*",
-                //"Authorization": `Bearer ${tokenLogin}`
                 "accept": "application/json",
                 "Authorization": "Bearer " + tokenLogin,
             },
@@ -510,15 +503,16 @@ async function enregistrerProjet(imageInput, titleInput, categoryInput) {
         })
 
         const responseProjet = await response.json();
-        console.log("reponse.json()=", responseProjet); // Vérif
         
         if (!response.ok) {
             throw new Error(`Une erreur s'est produite lors de l'ajout d'un élément (${response.status}). Veuillez réessayer plus tard.`)
         }
-        
+        console.log("projets avant push=", projets);
+        projets.push(responseProjet); // ajout du nouveau projet au tableau projets
+        console.log("projets après push=", projets);
         // Récupération de l'élément du DOM qui accueillera la galerie
         const divGallery = document.querySelector(".gallery");
-        // Création d’une balise dédiée à un projet
+        // Création d’une balise dédiée au nouveau projet
         const idProjet = document.createElement("figure");
         idProjet.id = "portfolioFigure_" + responseProjet.id;
         idProjet.dataset.idCategorie = responseProjet.categoryId;
@@ -537,25 +531,9 @@ async function enregistrerProjet(imageInput, titleInput, categoryInput) {
         document.getElementById("modifyProject").className = "modal-masque"; // masquage de la modale
         document.getElementById("galeriePhoto").className = "modal-wrapper"; // réinitialisation de la div galeriePhoto
         masquerModaleAjoutphoto(); // Masquer la modale 2 (Ajout photo)
-        // Regénération de la gallery des projets
+        // Regénération de la galerie des projets
         document.querySelector(".gallery").innerHTML = "";
         genererProjets(projets);
-        /*
-        if (response.ok) { // HTTP-status est 200-299
-            let nouveauProjet = await response.json();
-            console.log("Données projet récupérées avec succès")
-            // Traitement du nouveau projet après réponse de l'API
-            // ******************************************** A TESTER ********************************************************
-            console.log("nouveauProjet=", nouveauProjet);
-            // Transformation du projet en JSON
-            projets.push(nouveauProjet); // ajout du nouveau projet dans le tableau JSON
-            console.log("projets après vérif début=", projets); // Vérif
-            // Transformation des projets en JSON
-            const valeurProjets = JSON.stringify(projets);
-            // Stockage des informations dans le localStorage
-            window.localStorage.setItem("projets", valeurProjets);
-        }
-        */
 
     } catch (error) {
             console.log("Erreur lors de l'envoi du projet ", error);

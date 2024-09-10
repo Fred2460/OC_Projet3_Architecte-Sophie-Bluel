@@ -22,9 +22,7 @@ async function genererLogin(email, password) {
         // interrogation API login
         const response = await fetch("http://localhost:5678/api/users/login", {
             method: "POST",
-            //mode: "cors",
             headers: {
-                //"accept": "application/json",
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ email, password }),
@@ -50,8 +48,6 @@ async function genererLogin(email, password) {
             const data = await response.json();
             window.localStorage.setItem("userId", data.userId); // stockage du userId récupéré
             window.localStorage.setItem("token", data.token); // stockage du token récupéré
-            console.log("userId =", data.userId); // Vérif
-            console.log("token =", data.token); // Vérif
             window.location.replace("index.html#tportfolio"); // redirection vers la page d'accueil à la balise des projets
         }
 
