@@ -657,8 +657,8 @@ input[type="submit"]:hover{
 	color: #b91b1b;
 	font-weight: 700;
 	font-size: 1.5em;
-	margin-top: 50px;
-	margin-bottom: 350px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 .mdp_oublie {

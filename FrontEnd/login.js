@@ -61,6 +61,4 @@ async function genererLogin(email, password) {
         window.localStorage.removeItem("token"); // réinitialisation du token stocké
         alert(error);
     }
-
 };
-

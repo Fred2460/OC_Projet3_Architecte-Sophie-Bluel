@@ -5,22 +5,18 @@ let tokenLogin = window.localStorage.getItem("token"); // récupération du toke
 
 let userLogin = false;
 if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user connecté"
-    //console.log("userIdLogin ou tokenLogin inexistant:", userIdLogin, tokenLogin);  // Vérif
     userLogin = false;
 
 } else { // cas "user connecté"
-    //console.log("userIdLogin ou tokenLogin existants:", userIdLogin, tokenLogin); // Vérif
     userLogin = true;
     // changement nav lien "Login" en "Logout"
     const logLink = document.getElementById("logLink");
     logLink.textContent = "Logout";
     logLink.href = "#Logout";
-    // barre des filtres masquée
-    const affichageFiltre = document.getElementById("affichageFiltre");
-    affichageFiltre.classList.add("filtre-off");
+    document.getElementById("affichageFiltre").classList.add("filtre-off");     // masquage de la barre des filtres
+
     // ajout icône et bouton "modifier"
     const sectionPortfolio = document.querySelector("#portfolio h2");
-    //console.log("section portfolio=", sectionPortfolio); // Vérif
     const iconeModifier = document.createElement("i");
     iconeModifier.href = "#modifyProject";
     iconeModifier.classList.add("fa-regular");
@@ -29,102 +25,28 @@ if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user
     boutonModifier.innerText = "modifier";
     boutonModifier.href = "#modifyProject";
     boutonModifier.id = "modifier";
-    //console.log("boutonModifier=", boutonModifier); // Vérif
     sectionPortfolio.appendChild(iconeModifier);
     sectionPortfolio.appendChild(boutonModifier);
-
 };
 
 
-// ************** RECUPERATION CATEGORIES *****************
-//Récupération des catégories éventuellement stockées dans le localStorage
-let categories = window.localStorage.getItem("categories");
-//console.log("categories avant récup localStorage=", categories); // Vérif
-if (categories === null) {
+// ************** RECUPERATION CATEGORIES par l'API *****************
+async function recuperationCategories() {
     try {
         // Récupération des catégories depuis l'API
-        const response = await fetch("http://localhost:5678/api/categories")
+        const response = await fetch("http://localhost:5678/api/categories");
         if (!response.ok) {
             throw new Error(`Une erreur s'est produite (${response.status}). Veuillez réessayer plus tard.`);
         }
-        categories = await response.json();
-        // Transformation des catégories en JSON
-        const valeurCategories = JSON.stringify(categories);
-        // Stockage des informations dans le localStorage
-        window.localStorage.setItem("categories", valeurCategories);
-    }
+        const categories = response.json();
+        return categories;
+    } 
     catch (error) {
         alert(error);
-    }
-
-} else {
-    categories = JSON.parse(categories);
-};
-//console.log("categories après récup localStorage=", categories); // Vérif
-
-
-// ************** PROJETS *****************
-//Récupération des projets eventuellement stockés dans le localStorage
-let projets = window.localStorage.getItem("projets");
-//console.log("projets au début=", projets); // Vérif
-
-if (projets === null) {
-    try {
-        // Récupération des projets depuis l'API
-        const response = await fetch("http://localhost:5678/api/works");
-        if (!response.ok) {
-            throw new Error(`Une erreur s'est produite (${response.status}). Veuillez réessayer plus tard.`);
-        }
-        projets = await response.json();
-        //console.log("projets après fetch et .json=", projets); // Vérif
-        // Transformation des projets en JSON
-        const valeurProjets = JSON.stringify(projets);
-        //console.log("valeurProjets après json.stringify(projets)=", valeurProjets); // Vérif
-        // Stockage des informations dans le localStorage
-        window.localStorage.setItem("projets", valeurProjets);
-    }
-    catch (error) {
-        alert(error);
-    }
-
-} else {
-    projets = JSON.parse(projets);
-};
-console.log("projets après vérif début=", projets); // Vérif
-
-// fonction de génération de l'affichage de la gallery des projets
-function genererProjets(projets) {
-    for (let i = 0; i < projets.length; i++) {
-        const projet = projets[i];
-        // Récupération de l'élément du DOM qui accueillera la galerie
-        const divGallery = document.querySelector(".gallery");
-        // Création d’une balise dédiée à un projet
-        const idProjet = document.createElement("figure");
-        idProjet.id = "portfolioFigure_" + projets[i].id;
-        idProjet.dataset.idCategorie = projet.category.id;
-        // Création des balises 
-        const imageProjet = document.createElement("img");
-        imageProjet.src = projet.imageUrl;
-        imageProjet.alt = projet.title;
-        const titreProjet = document.createElement("figcaption");
-        titreProjet.innerText = projet.title;
-
-        // Rattachement de la balise projet à la division Gallery
-        divGallery.appendChild(idProjet);
-        idProjet.appendChild(imageProjet);
-        idProjet.appendChild(titreProjet);
-
-        // ajout d'une balise image pour affichage projet
-        idProjet.classList.add("image");
-
     };
 };
 
-document.querySelector(".gallery").innerHTML = "";
-genererProjets(projets);
-
-
-// *************************** AFFICHAGE FILTRES ****************************
+let categories = await recuperationCategories();
 // Ajout du bouton "Tous" dans tableau categories si inexistant
 if (categories.includes("Tous") == false) {
     const boutonTous = {
@@ -132,9 +54,10 @@ if (categories.includes("Tous") == false) {
         name: "Tous"
     }
     categories.push(boutonTous);
-}
-console.log("categories après récup localStorage et test Tous", categories); // Vérif
+};
+console.log("categories (après ajout Tous)=", categories); // Vérif
 
+// *************************** AFFICHAGE FILTRES ****************************
 function genererFiltre(categories, boutonOn) {
     // Tri des boutons Filtres selon l'id de la catégorie
     categories.sort((a, b) => a.id - b.id);
@@ -178,7 +101,59 @@ document.querySelector(".filtre").innerHTML = "";
 genererFiltre(categories, boutonOn);
 
 
-// ************** GESTION DES APPUIS BOUTONS FILTRE *****************
+// ************** RECUPERATION PROJETS par l'API *****************
+async function recuperationProjets() {
+    try {
+        // Récupération des projets depuis l'API
+        const response = await fetch("http://localhost:5678/api/works");
+        if (!response.ok) {
+            throw new Error(`Une erreur s'est produite (${response.status}). Veuillez réessayer plus tard.`);
+        }
+        const projets = response.json();
+        return projets;
+    }
+    catch (error) {
+        alert(error);
+    };
+};
+
+let projets = await recuperationProjets();
+console.log("projets=", projets); // Vérif
+
+
+// ************** AFFICHAGE GALERIE DES PROJETS *****************
+function genererProjets(projets) {
+    for (let i = 0; i < projets.length; i++) {
+        const projet = projets[i];
+        // Récupération de l'élément du DOM qui accueillera la galerie
+        const divGallery = document.querySelector(".gallery");
+        // Création d’une balise dédiée à un projet
+        const idProjet = document.createElement("figure");
+        idProjet.id = "portfolioFigure_" + projets[i].id;
+        idProjet.dataset.idCategorie = projet.category.id;
+        // Création des balises 
+        const imageProjet = document.createElement("img");
+        imageProjet.src = projet.imageUrl;
+        imageProjet.alt = projet.title;
+        const titreProjet = document.createElement("figcaption");
+        titreProjet.innerText = projet.title;
+
+        // Rattachement de la balise projet à la division Gallery
+        divGallery.appendChild(idProjet);
+        idProjet.appendChild(imageProjet);
+        idProjet.appendChild(titreProjet);
+
+        // ajout d'une balise image pour affichage projet
+        idProjet.classList.add("image");
+
+    };
+};
+
+document.querySelector(".gallery").innerHTML = "";
+genererProjets(projets);
+
+
+// ******************************** GESTION DES APPUIS BOUTONS FILTRE *******************************
 let boutonFiltrer = document.querySelectorAll(".btn-filtre"); //Récupération de tous les boutons
 let Bouton = document.querySelector(".btn-filtre.btn-on"); //Récupération du bouton activé
 
@@ -234,22 +209,22 @@ const demandeModif = document.getElementById("modifier");
 if (demandeModif != null) {
     demandeModif.addEventListener("click", function () {
         document.getElementById("modifyProject").className = "modal"; // affichage de la modale
-        
+        // génération des miniatures des projets
         document.querySelector("#projetsList").innerHTML = "";
-        genererMiniProjets(projets); // génération des miniatures des projets
-
+        genererMiniProjets(projets);
     })
 };
+
 
 // masquer la modale (appui sur Escape)
 window.addEventListener("keydown", function (e){
     if (e.key === "Escape" || e.key === "Esc") {
         document.getElementById("modifyProject").className = "modal-masque"; // masquage de la modale
         document.getElementById("galeriePhoto").className = "modal-wrapper"; // réinitialiser l'affichage de la div galeriePhoto
-        
         masquerModaleAjoutphoto(); // Masquer la modale 2 (Ajout photo)
     };
 });
+
 
 /*
 // masquer la modale (click en dehors de la modale)
@@ -285,32 +260,33 @@ window.addEventListener("click", function (e){
 });
 */
 
+
 // masquer la modale (appui bouton Fermer_1)
 const demandeFermer_1 = document.getElementById("fermer_1");
 demandeFermer_1.addEventListener("click", function () {
     document.getElementById("modifyProject").className = "modal-masque"; // masquage de la modale
 });
 
+
 // masquer la modale (appui bouton Fermer_2)
 const demandeFermer_2 = document.getElementById("fermer_2");
 demandeFermer_2.addEventListener("click", function () {
     document.getElementById("modifyProject").className = "modal-masque"; // masquage de la modale
     document.getElementById("galeriePhoto").className = "modal-wrapper"; // réinitialiser l'affichage de la div galeriePhoto
-
     masquerModaleAjoutphoto(); // Masquer la modale 2 (Ajout photo)
 });
+
 
 // Ajout d'un écouteur d'évènement pour bouton "Retour"
 const boutonRetour = document.getElementById("retour")
 boutonRetour.addEventListener("click", function() {
     // Afficher la div galeriePhoto et masquer la div ajoutPhoto
     document.getElementById("galeriePhoto").className = "modal-wrapper"; // affichage de la div galeriePhoto
-        
     masquerModaleAjoutphoto(); // Masquer la modale 2 (Ajout photo)
 });
 
 
-// ************************ FONCTION MASQUER LA MODALE 2 (AJOUT PHOTO) ***************************
+// Fonction Masquer la modale 2 (AJOUT PHOTO)
 function masquerModaleAjoutphoto() {
     document.getElementById("ajoutPhoto").className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
     document.getElementById("Insertion").className = "avantInsertion"; // réinitialisation de l'affichage des éléments de la div cadreAjoutPhoto
@@ -325,9 +301,8 @@ function masquerModaleAjoutphoto() {
 };
 
 
-// ************************ FONCTION DE GENERATION DES MINIATURES DES PROJETS ***********************
+// ************************ FONCTION GENERATION DES MINIATURES DES PROJETS ***********************
 function genererMiniProjets(projets) {
-    //console.log("projets=", projets); // Vérif
     for (let i = 0; i < projets.length; i++) {
         const projet = projets[i];
         // Récupération de l'élément du DOM qui accueillera la galerie
@@ -347,7 +322,6 @@ function genererMiniProjets(projets) {
         iconePoubelle.classList.add("fa-solid");
         iconePoubelle.classList.add("fa-trash-can");
         iconePoubelle.setAttribute("Id", idProjet);
-
     };
     
     //Récupération de tous les boutons poubelle
@@ -371,11 +345,10 @@ function genererMiniProjets(projets) {
         document.getElementById("galeriePhoto").className = "modal-wrapper-masque"; // masquage de la div galeriePhoto
         document.getElementById("ajoutPhoto").className = "modal-wrapper"; // affichage de la div ajoutPhoto
     });
-
 };
 
 
-// ********************* SUPPRESSION D'UN PROJET *****************
+// ********************* FONCTION SUPPRESSION D'UN PROJET *****************
 let errorMessageDelete = document.getElementById("errorMessageDelete");
 async function supprimerProjet(idProjet) {
     //console.log("tokenLogin avant fetch=", tokenLogin); // Vérif
@@ -390,7 +363,6 @@ async function supprimerProjet(idProjet) {
                 "Authorization": "Bearer " + tokenLogin
             }
         })
-    
         if (!response.ok) {
             if (response.status === 401) {
                 errorMessageDelete.textContent = "Accès non autorisé";
@@ -412,8 +384,6 @@ async function supprimerProjet(idProjet) {
             */
             const indexProjet = projets.findIndex(projet => projet.id == idProjet); // détermination de l'index du projet à supprimer
             projets.splice(indexProjet, 1); // suppression du projet sélectionné
-            const valeurProjets = JSON.stringify(projets);
-            window.localStorage.setItem("projets", valeurProjets); // mise à jour du localStorage
 
             // génération des images des projets
             document.querySelector(".gallery").innerHTML = "";
@@ -429,7 +399,6 @@ async function supprimerProjet(idProjet) {
         errorMessage.textContent = "Erreur d'accès au site, contactez votre administrateur.";
         alert(error);
     }
-
 };
 
 
@@ -448,21 +417,13 @@ ajoutfichierPhoto.addEventListener("change", (e) => {
         fileReader.onload = function (e) {
             let img = document.getElementById('preview');
             img.src = e.target.result;
-            //corrections image pour formData
-            //imageInput = e.target.result; // Vérif
             imageInput = file;
             validPhoto = true;
             img.className = "previewAffiche"; // affichage de l'image sélectionnée
-
             document.getElementById("Insertion").className = "apresInsertion"; // masquage des éléments de la div Insertion dans cadreajoutPhoto
-
-            // ****************************************************** A VERIFIER ******************************
             vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
         };
         fileReader.readAsDataURL(file);
-        
-        // ****************************************************** A VERIFIER ******************************
-        vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
 
     };
 });
@@ -482,7 +443,6 @@ boutontitreInput.addEventListener("click", function() {
     } else {
         validTitre = false;
     };
-
 });
 
 
@@ -507,11 +467,10 @@ selectCategorie.addEventListener("change", function() {
         validCategorie = false;
         document.getElementById("boutonValidprojet").className = "btn-off_2"; // désactiver le bouton Valider (création nouveau projet)
     };
-
 });
 
 
-// ********************************* FONCTION ACTIVATION/DESACTIVATION DU BOUTON DE VALIDATION ****************************************
+// ********************** FONCTION ACTIVATION/DESACTIVATION DU BOUTON DE VALIDATION (nouveau projet) ****************************
 let valideProjet;
 function vérifierboutonValider() {
     const boutonValidationprojet = document.getElementById("boutonValidprojet");
@@ -555,37 +514,32 @@ async function enregistrerProjet(imageInput, titleInput, categoryInput) {
         
         if (!response.ok) {
             throw new Error(`Une erreur s'est produite lors de l'ajout d'un élément (${response.status}). Veuillez réessayer plus tard.`)
-        } else {
-            // Récupération de l'élément du DOM qui accueillera la galerie
-            const divGallery = document.querySelector(".gallery");
-            // Création d’une balise dédiée à un projet
-            const idProjet = document.createElement("figure");
-            idProjet.id = "portfolioFigure_" + responseProjet.id;
-            idProjet.dataset.idCategorie = responseProjet.categoryId;
-            // Création des balises 
-            const imageProjet = document.createElement("img");
-            imageProjet.src = responseProjet.imageUrl;
-            imageProjet.alt = responseProjet.title;
-            const titreProjet = document.createElement("figcaption");
-            titreProjet.innerText = responseProjet.title;
-
-            // Rattachement de la balise projet à la division Gallery
-            divGallery.appendChild(idProjet);
-            idProjet.appendChild(imageProjet);
-            idProjet.appendChild(titreProjet);
-            // ajout d'une balise image pour affichage projet
-            idProjet.classList.add("image");
-
-            document.getElementById("modifyProject").className = "modal-masque"; // masquage de la modale
-            document.getElementById("galeriePhoto").className = "modal-wrapper"; // réinitialisation de la div galeriePhoto
-
-            masquerModaleAjoutphoto(); // Masquer la modale 2 (Ajout photo)
-
-            // Regénération de la gallery des projets
-            document.querySelector(".gallery").innerHTML = "";
-            genererProjets(projets);
         }
-
+        
+        // Récupération de l'élément du DOM qui accueillera la galerie
+        const divGallery = document.querySelector(".gallery");
+        // Création d’une balise dédiée à un projet
+        const idProjet = document.createElement("figure");
+        idProjet.id = "portfolioFigure_" + responseProjet.id;
+        idProjet.dataset.idCategorie = responseProjet.categoryId;
+        // Création des balises 
+        const imageProjet = document.createElement("img");
+        imageProjet.src = responseProjet.imageUrl;
+        imageProjet.alt = responseProjet.title;
+        const titreProjet = document.createElement("figcaption");
+        titreProjet.innerText = responseProjet.title;
+        // Rattachement de la balise projet à la division Gallery
+        divGallery.appendChild(idProjet);
+        idProjet.appendChild(imageProjet);
+        idProjet.appendChild(titreProjet);
+        // ajout d'une balise image pour affichage projet
+        idProjet.classList.add("image");
+        document.getElementById("modifyProject").className = "modal-masque"; // masquage de la modale
+        document.getElementById("galeriePhoto").className = "modal-wrapper"; // réinitialisation de la div galeriePhoto
+        masquerModaleAjoutphoto(); // Masquer la modale 2 (Ajout photo)
+        // Regénération de la gallery des projets
+        document.querySelector(".gallery").innerHTML = "";
+        genererProjets(projets);
         /*
         if (response.ok) { // HTTP-status est 200-299
             let nouveauProjet = await response.json();
