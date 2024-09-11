@@ -105,7 +105,11 @@ function genererFiltre(categories, boutonOn) {
         // ajout de l'option de la catégorie dans l'élément html select pour l'ajout de nouveaux projets
         const elementSelectcategorie = document.querySelector(".selectCategorie");
         const optionCategorie = document.createElement("option");
-        if (i != 0) {
+        if (i === 0) {
+            optionCategorie.value = 0;
+            optionCategorie.innerText = "";
+            elementSelectcategorie.appendChild(optionCategorie);
+        } else {
             optionCategorie.value = categorie.id;
             optionCategorie.innerText = categorie.name;
             elementSelectcategorie.appendChild(optionCategorie);
@@ -296,7 +300,7 @@ function masquerModaleAjoutphoto() {
     document.getElementById("Insertion").className = "avantInsertion"; // réinitialisation de l'affichage des éléments de la div cadreAjoutPhoto
     document.getElementById("preview").className = "previewMasque"; // Masquer la photo sélectionnée
     document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
-    document.getElementById("categorie").value = ""; // Effacement du sélecteur de la catégorie
+    //document.getElementById("categorie").value = ""; // Effacement du sélecteur de la catégorie
     document.getElementById("boutonValidprojet").className = "btn-off_2"; // désactiver le bouton Valider (création nouveau projet)
     // réinitialisation des variables de validation nouveau projet    
     validPhoto = false;
@@ -448,9 +452,10 @@ let categoryInput;
 let validCategorie;
 // ajout d'un écouteur d'évènement du sélecteur de catégorie
 const selectCategorie = document.getElementById("categorie");
-selectCategorie.addEventListener("change", function() {
+selectCategorie.addEventListener("click", function() {
     // Vérification catégorie renseignée et valide
-    categoryInput = selectCategorie.options[selectCategorie.selectedIndex].value;
+    categoryInput = parseInt(selectCategorie.options[selectCategorie.selectedIndex].value);
+    console.log("categoryInput=", categoryInput);
     if (categoryInput > 0) {
         validCategorie = true;
         // vérification du titre du nouveau projet
