@@ -54,16 +54,16 @@ table {
 }
 /** end reset css**/
 body {
-	max-width: 1140px;
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
-header {
-	display: flex;
-	justify-content: space-between;
-	margin: 50px 0;
+
+main {
+    max-width: 1140px;
+    margin: auto;
 }
+
 section {
 	margin: 50px 0;
 }
@@ -96,6 +96,51 @@ h3 {
 	font-size: 26px;
 }
 
+/* header-Bandeau "Mode édition" */
+.mode-edition-masque {
+	display: none;
+}
+
+.mode-edition {
+	margin: 0;
+    background-color: black;
+    height: 60px;
+    align-content: center;
+}
+
+.mode-edition p {
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+    text-align: center;
+}
+
+.mode-edition i {
+    margin-right: 10px;
+}
+
+/* header-logo-nav */
+.logo-nav {
+    max-width: 1140px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto 140px;
+	padding-top: 50px;;
+}
+
+.logo-nav a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-nav li {
+    font-size: 16px;
+}
+
+.logo-nav .active-page {
+    font-weight: bold;
+}
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -120,6 +165,7 @@ li:hover {
 	color: #B1663C;
 }
 
+/* Introduction */
 #introduction {
 	display: flex;
 	align-items: center;
@@ -218,6 +264,7 @@ li:hover {
 	display: none;
 }
 
+/* modale ajout nouveau projet */
 #projetsList {
 	width: 75%;
 	display: flex;
@@ -304,6 +351,17 @@ hr {
 	margin: 30px 0px 10px 0px;
 }
 
+#errorMessageDelete {
+	margin: auto;
+	text-align: center;
+	color: #b91b1b;
+	font-weight: 700;
+	font-size: 1.5em;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+/* modale ajout nouveau projet */
 .cadreajoutPhoto {
 	display: flex;
 	flex-direction: column;
@@ -325,7 +383,7 @@ hr {
 	display: none;
 }
 
-.cadreajoutPhoto img {
+.cadreajoutPhoto .avantInsertion img {
 	border: 0;
 	width: 76px;
 	height: 76px;
@@ -373,10 +431,11 @@ p {
 	display: none;
 }
 
-/* ********************************************************************************************************** */
-.cadreajoutPhoto .previewAffiche img {
-	display: block;
-	max-width: 100%;
+.cadreajoutPhoto .previewAffiche {
+	border: 0;
+	margin: 0;
+	max-width: 420px;
+	max-height: 170px;
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
@@ -515,8 +574,6 @@ p {
 	color: #1D6154;
 	background-color: white;
     border: 1px #1D6154 solid;
-	/*padding: 0 20px 0 20px;
-	height: 37px;*/
 }
 
 /* bouton actif */
@@ -528,6 +585,7 @@ p {
 	height: 37px;
 }
 
+/* affichage galerie photo */
 .gallery {
 	width: 100%;
 	display: grid;
@@ -539,7 +597,6 @@ p {
 
 .gallery img {
 	width: 100%;
-	border: 1px #c4c4c4 solid;
 	margin-bottom: 7px;
 	object-fit: contain;
 }
@@ -553,6 +610,7 @@ p {
 	display: none;
 }
 
+/* formulaire de contact */
 #contact {
 	width: 50%;
 	margin: auto;
@@ -591,7 +649,6 @@ p {
 #contact textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-	/*width: 380px;*/
 }
 
 input[type="submit"]{
@@ -609,6 +666,7 @@ input[type="submit"]:hover{
 	background-color: #0E2F28;
 }
 
+/* formulaire de login */
 #login {
 	width: 33%;
 	margin: auto;
@@ -651,16 +709,6 @@ input[type="submit"]:hover{
 	margin-bottom: 350px;
 }
 
-#errorMessageDelete {
-	margin: auto;
-	text-align: center;
-	color: #b91b1b;
-	font-weight: 700;
-	font-size: 1.5em;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
 .mdp_oublie {
 	width: 50%;
 	margin: auto;
@@ -675,6 +723,7 @@ input[type="submit"]:hover{
 
 }
 
+/* footer */
 footer {
 	align-content: center;
 	background-color: white;
@@ -689,4 +738,5 @@ footer nav ul {
 
 footer nav li {
 	font-size: 14px;
+	padding-right: 90px;
 }

@@ -7,6 +7,7 @@ let userLogin = false;
 if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user connecté"
     userLogin = false;
     document.getElementById("affichageFiltre").classList.add("filtre-on");     // affichage de la barre des filtres
+    document.getElementById("edition").className = "mode-edition-masque"; // masquage du bandeau "Mode édition" 
 
 } else { // cas "user connecté"
     userLogin = true;
@@ -15,6 +16,7 @@ if ((tokenLogin === null) || (tokenLogin === "undefined")) { // cas "pas de user
     logLink.textContent = "Logout";
     logLink.href = "#Logout";
     document.getElementById("affichageFiltre").classList.add("filtre-off");     // masquage de la barre des filtres
+    document.getElementById("edition").className = "mode-edition"; // affichage du bandeau "Mode édition" 
 
     // ajout icône et bouton "modifier"
     const sectionPortfolio = document.querySelector("#portfolio h2");
