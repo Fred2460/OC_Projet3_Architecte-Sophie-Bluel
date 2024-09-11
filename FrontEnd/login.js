@@ -26,7 +26,6 @@ async function genererLogin(email, password) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ email, password }),
-            // "sophie.bluel@test.tld" "S0phie"
         })
 
         if (!response.ok) {

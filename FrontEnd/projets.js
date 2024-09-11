@@ -234,41 +234,6 @@ window.addEventListener("keydown", function (e){
 });
 
 
-/*
-// masquer la modale (click en dehors de la modale)
-//const modifProjets = document.getElementById("modifyProject");
-const modal = document.querySelector(".modal-wrapper");
-window.addEventListener("click", function (e){
-    if (!modal.contains(e.target)) {
-        const modifProjets = document.getElementById("modifyProject");
-        modifProjets.className = "modal-masque"; // masquage de la modale
-        // Masquer la div galeriePhoto et masquer la div ajoutPhoto
-        const galeriePhoto = document.getElementById("galeriePhoto");
-        galeriePhoto.className = "modal-wrapper-masque"; // masquage de la div galeriePhoto
-        const ajoutPhoto = document.getElementById("ajoutPhoto");
-        ajoutPhoto.className = "modal-wrapper-masque"; // masquage de la div ajoutPhoto
-        // Afficher la div galeriePhoto et masquer la div ajoutPhoto
-        const Insertion = document.getElementById("Insertion");
-        Insertion.className = "avantInsertion"; // affichage des éléments de la div cadreAjoutPhoto
-        // Masquer la photo sélectionnée
-        const Preview = document.getElementById("preview");
-        Preview.className = "previewMasque";
-        document.getElementById("titre").value = ""; // effacement du champs titre dans formulaire
-        // Effacement du sélecteur de la catégorie
-        const selectCategorie = document.getElementById("categorie");
-        selectCategorie.value = "";
-        // Désactiver le bouton Valider (création nouveau projet)
-        const boutonValidationprojet = document.getElementById("boutonValidprojet");
-        boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
-        // réinitialisation des variables de validation nouveau projet    
-        validPhoto = false;
-        validTitre = false;
-        validCategorie = false;
-    };
-});
-*/
-
-
 // masquer la modale (appui bouton Fermer_1)
 const demandeFermer_1 = document.getElementById("fermer_1");
 demandeFermer_1.addEventListener("click", function () {
@@ -338,7 +303,6 @@ function genererMiniProjets(projets) {
     // Ajout d'un écouteur d'événement pour chaque icône poubelle
     iconsPoubelle.forEach(iconId => {
         iconId.addEventListener("click", function(e) {
-            console.log("iconId=", iconId);
             // Demande de confirmation de suppression
             if (confirm("Suppression du projet " + e.target.id + " ?") == true) {
                 supprimerProjet(e.target.id);
@@ -390,7 +354,6 @@ async function supprimerProjet(idProjet) {
              // génération des miniatures des projets
             document.querySelector("#projetsList").innerHTML = "";
             genererMiniProjets(projets);
-            
         }
 
     } catch(error) {
@@ -455,7 +418,6 @@ const selectCategorie = document.getElementById("categorie");
 selectCategorie.addEventListener("click", function() {
     // Vérification catégorie renseignée et valide
     categoryInput = parseInt(selectCategorie.options[selectCategorie.selectedIndex].value);
-    console.log("categoryInput=", categoryInput);
     if (categoryInput > 0) {
         validCategorie = true;
         // vérification du titre du nouveau projet
@@ -475,9 +437,6 @@ selectCategorie.addEventListener("click", function() {
 
 // ********************** FONCTION ACTIVATION/DESACTIVATION DU BOUTON DE VALIDATION (nouveau projet) ****************************
 function vérifierboutonValider() {
-    console.log("validPhoto (vérif)=", validPhoto);
-    console.log("validTitre (vérif)=", validTitre, titleInput);
-    console.log("validCategorie (vérif)=", validCategorie, categoryInput);
     const boutonValidationprojet = document.getElementById("boutonValidprojet");
     if (validPhoto && validTitre && validCategorie) {
         boutonValidationprojet.className = "btn-on_2"; // activer le bouton
@@ -508,15 +467,13 @@ async function enregistrerProjet(imageInput, titleInput, categoryInput) {
             },
             body: formData,
         })
-
         const responseProjet = await response.json();
         
         if (!response.ok) {
             throw new Error(`Une erreur s'est produite lors de l'ajout d'un élément (${response.status}). Veuillez réessayer plus tard.`)
         }
-        console.log("projets avant push=", projets);
         projets.push(responseProjet); // ajout du nouveau projet au tableau projets
-        console.log("projets après push=", projets);
+        
         // Récupération de l'élément du DOM qui accueillera la galerie
         const divGallery = document.querySelector(".gallery");
         // Création d’une balise dédiée au nouveau projet
@@ -543,7 +500,6 @@ async function enregistrerProjet(imageInput, titleInput, categoryInput) {
         genererProjets(projets);
 
     } catch (error) {
-            console.log("Erreur lors de l'envoi du projet ", error);
             errorMessage.textContent = "Erreur d'envoi du projet."; // vérifier le code erreur *************************
             // Attendre un appui clavier
             document.addEventListener("keydown", function(event) {
