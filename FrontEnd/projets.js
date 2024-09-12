@@ -384,10 +384,10 @@ ajoutfichierPhoto.addEventListener("change", (e) => {
             validPhoto = true;
             img.className = "previewAffiche"; // affichage de l'image sélectionnée
             document.getElementById("Insertion").className = "apresInsertion"; // masquage des éléments de la div Insertion dans cadreajoutPhoto
-            vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
+            //verifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
         };
         fileReader.readAsDataURL(file);
-
+        verifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
     };
 });
 
@@ -406,7 +406,7 @@ boutontitreInput.addEventListener("click", function() {
     } else {
         validTitre = false;
     };
-    vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
+    verifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
 });
 
 
@@ -415,7 +415,7 @@ let categoryInput;
 let validCategorie;
 // ajout d'un écouteur d'évènement du sélecteur de catégorie
 const selectCategorie = document.getElementById("categorie");
-selectCategorie.addEventListener("click", function() {
+selectCategorie.addEventListener("change", function() {
     // Vérification catégorie renseignée et valide
     categoryInput = parseInt(selectCategorie.options[selectCategorie.selectedIndex].value);
     if (categoryInput > 0) {
@@ -431,17 +431,20 @@ selectCategorie.addEventListener("click", function() {
     } else {
         validCategorie = false;
     };
-    vérifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
+    verifierboutonValider(); // vérification du statut du bouton de validation projet selon les 3 champs nécessaires
 });
 
 
 // ********************** FONCTION ACTIVATION/DESACTIVATION DU BOUTON DE VALIDATION (nouveau projet) ****************************
-function vérifierboutonValider() {
+function verifierboutonValider() {
     const boutonValidationprojet = document.getElementById("boutonValidprojet");
     if (validPhoto && validTitre && validCategorie) {
         boutonValidationprojet.className = "btn-on_2"; // activer le bouton
         // Ajout d'un écouter appui bouton "Valider"
-        boutonValidationprojet.addEventListener("click", enregistrerProjet(imageInput, titleInput, categoryInput));
+        document.getElementById("formulaire").addEventListener("submit", function(e) {
+            e.preventDefault();
+            enregistrerProjet(imageInput, titleInput, categoryInput);
+        });
     } else {
         boutonValidationprojet.className = "btn-off_2"; // désactiver le bouton
     };
