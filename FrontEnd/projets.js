@@ -271,6 +271,7 @@ function masquerModaleAjoutphoto() {
     validPhoto = false;
     validTitre = false;
     validCategorie = false;
+    categoryInput = 0;
 };
 
 
@@ -476,7 +477,7 @@ async function enregistrerProjet(imageInput, titleInput, categoryInput) {
             throw new Error(`Une erreur s'est produite lors de l'ajout d'un élément (${response.status}). Veuillez réessayer plus tard.`)
         }
         projets.push(responseProjet); // ajout du nouveau projet au tableau projets
-        
+
         // Récupération de l'élément du DOM qui accueillera la galerie
         const divGallery = document.querySelector(".gallery");
         // Création d’une balise dédiée au nouveau projet
